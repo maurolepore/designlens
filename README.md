@@ -1,16 +1,23 @@
 # designlog
 
-A design history tool for open source projects. Generates design history through staged planning, task decomposition, and retrospective decision records.
+A design history tool for open source projects. Generates design history
+through staged planning, task decomposition, and retrospective decision
+records.
 
 ## What is designlog?
 
-designlog helps teams and solo developers maintain a living record of design decisions. Each project "stage" produces a `plan.md` (the design), `tasks.md` (the breakdown), and anonymized `decisions.md` (the reasoning). Combined with session transcript summaries, this creates a comprehensive archaeological record of how and why the code evolved the way it did.
+designlog helps maintain a living record of design decisions. Each project
+"stage" produces a `plan.md` (the design), `tasks.md` (the breakdown), and
+anonymized `decisions.md` (the reasoning). Combined with session transcript
+summaries, this creates a comprehensive archaeological record of how and why
+the code evolved the way it did.
 
-Designed for open source workflows: specs live in the repo itself (`/specs`), are committed to git, and tell the story of the project to future contributors.
+Designed for open source workflows: specs live in the repo itself (`/specs`),
+are committed to git, and tell the story of the project to future contributors.
 
 ## Installation
 
-### macOS / Linux
+### Linux / macOS
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/ropensci-review-tools/designlog/main/install.sh | bash
