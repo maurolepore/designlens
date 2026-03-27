@@ -6,9 +6,9 @@ OS="$(uname -s)"
 
 case "$OS" in
   Darwin|Linux)
-    echo "Installing speclog for $OS..."
+    echo "Installing designlog for $OS..."
 
-    INSTALL_DIR="/usr/local/lib/speclog"
+    INSTALL_DIR="/usr/local/lib/designlog"
     BIN_DIR="/usr/local/bin"
 
     # Check if we need sudo
@@ -33,14 +33,14 @@ case "$OS" in
     $SUDO cp "$SCRIPT_DIR"/LICENSE "$INSTALL_DIR/"
 
     echo "Making scripts executable..."
-    $SUDO chmod +x "$INSTALL_DIR"/bin/speclog
+    $SUDO chmod +x "$INSTALL_DIR"/bin/designlog
     $SUDO chmod +x "$INSTALL_DIR"/lib/*.sh
 
     echo "Creating symlink..."
-    $SUDO ln -sf "$INSTALL_DIR/bin/speclog" "$BIN_DIR/speclog"
+    $SUDO ln -sf "$INSTALL_DIR/bin/designlog" "$BIN_DIR/designlog"
 
-    echo "✓ speclog installed successfully!"
-    echo "Run 'speclog init' in your project directory to get started."
+    echo "✓ designlog installed successfully!"
+    echo "Run 'designlog init' in your project directory to get started."
     ;;
 
   MINGW*|MSYS*|CYGWIN*)

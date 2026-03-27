@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# speclog main entry point
+# designlog main entry point
 # Routes commands to lib scripts
 
 set -e
@@ -12,10 +12,10 @@ LIB_DIR="$SCRIPT_DIR/../lib"
 # Help text
 show_help() {
   cat << 'EOF'
-speclog - Design history and spec tracking
+designlog - Design history and architectural decision tracking
 
 USAGE:
-  speclog <command> [options]
+  designlog <command> [options]
 
 COMMANDS:
   init                Initialize a project (run once)
@@ -24,17 +24,17 @@ COMMANDS:
   transcript <file>   Normalize a transcript to standard format
   status              Show current project state
   version             Show installed version
-  update              Update speclog to latest version
+  update              Update designlog to latest version
   help                Show this help message
 
 EXAMPLES:
-  speclog init
-  speclog new-stage "auth-system"
-  speclog status
-  speclog retrospective
-  speclog transcript my-session.md
+  designlog init
+  designlog new-stage "auth-system"
+  designlog status
+  designlog retrospective
+  designlog transcript my-session.md
 
-For full documentation, see the docs/conventions.md in the speclog repo.
+For full documentation, see the docs/conventions.md in the designlog repo.
 EOF
 }
 
@@ -47,7 +47,7 @@ case "$1" in
   new-stage)
     if [ -z "$2" ]; then
       echo "Error: new-stage requires a name argument"
-      echo "Usage: speclog new-stage <name>"
+      echo "Usage: designlog new-stage <name>"
       exit 1
     fi
     source "$LIB_DIR/new-stage.sh"
@@ -60,7 +60,7 @@ case "$1" in
   transcript)
     if [ -z "$2" ]; then
       echo "Error: transcript requires a file argument"
-      echo "Usage: speclog transcript <file>"
+      echo "Usage: designlog transcript <file>"
       exit 1
     fi
     source "$LIB_DIR/transcript.sh"

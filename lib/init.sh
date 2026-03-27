@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Initialize a project to use speclog
+# Initialize a project to use designlog
 # Creates /specs folder, lockfile, and AGENTS.md pointer
 
 spec_init() {
@@ -71,27 +71,27 @@ EOF
   # Detect and create AGENTS.md / CLAUDE.md
   if [ -f "AGENTS.md" ]; then
     echo ""
-    echo "AGENTS.md already exists. Append speclog reference? (y/n)"
+    echo "AGENTS.md already exists. Append designlog reference? (y/n)"
     read -r response
     if [ "$response" = "y" ]; then
       cat >> AGENTS.md << 'EOF'
 
-## speclog
+## designlog
 
-This project uses **speclog** for design history tracking. Read the specs in `/specs` and `/docs/conventions.md` (if present) for the development workflow and design decisions.
+This project uses **designlog** for design history tracking. Read the specs in `/specs` and `/docs/conventions.md` (if present) for the development workflow and design decisions.
 EOF
       echo "✓ Appended to AGENTS.md"
     fi
   elif [ -f "CLAUDE.md" ]; then
     echo ""
-    echo "CLAUDE.md already exists. Append speclog reference? (y/n)"
+    echo "CLAUDE.md already exists. Append designlog reference? (y/n)"
     read -r response
     if [ "$response" = "y" ]; then
       cat >> CLAUDE.md << 'EOF'
 
 ## speclog
 
-This project uses **speclog** for design history tracking. Read the specs in `/specs` for the development workflow and design decisions.
+This project uses **designlog** for design history tracking. Read the specs in `/specs` for the development workflow and design decisions.
 EOF
       echo "✓ Appended to CLAUDE.md"
     fi
@@ -100,14 +100,14 @@ EOF
     cat > AGENTS.md << 'EOF'
 # Agent Instructions
 
-## speclog
+## designlog
 
-This project uses **speclog** for design history tracking.
+This project uses **designlog** for design history tracking.
 
 When starting a session:
 1. Read `/specs/README.md` to understand the current project state
 2. Check the latest numbered stage folder for plan.md, tasks.md, and decisions.md
-3. Run `speclog status` to see what's next
+3. Run `designlog status` to see what's next
 4. Follow the guidance in `/docs/conventions.md` for the workflow
 
 The specs folder contains the full design history and development philosophy. Refer to it when making architectural decisions.
@@ -116,10 +116,10 @@ EOF
   fi
 
   echo ""
-  echo "✓ speclog initialized successfully!"
+  echo "✓ designlog initialized successfully!"
   echo ""
   echo "Next steps:"
-  echo "  1. Commit the changes: git add -A && git commit -m 'Initialize speclog'"
+  echo "  1. Commit the changes: git add -A && git commit -m 'Initialize designlog'"
   echo "  2. Start a coding session with your agent (Claude Code, etc.)"
-  echo "  3. Run 'speclog new-stage \"name\"' to begin the first design phase"
+  echo "  3. Run 'designlog new-stage \"name\"' to begin the first design phase"
 }
