@@ -20,12 +20,20 @@ spec_init() {
   mkdir -p specs
   echo "✓ Created /specs directory"
 
+  # Read version from installed tool
+  VERSION_FILE="${LIB_DIR}/../VERSION"
+  if [ -f "$VERSION_FILE" ]; then
+    TOOL_VERSION=$(cat "$VERSION_FILE")
+  else
+    TOOL_VERSION="unknown"
+  fi
+
   # Create lockfile
-  cat > .specmeta.json << 'EOF'
+  cat > .specmeta.json << EOF
 {
-  "tool": "speclog",
-  "version": "0.1.0",
-  "docs": "https://github.com/[org]/speclog/docs/conventions.md",
+  "tool": "designlog",
+  "version": "$TOOL_VERSION",
+  "docs": "https://github.com/[org]/designlog/docs/conventions.md",
   "active": true
 }
 EOF

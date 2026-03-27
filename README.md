@@ -1,10 +1,10 @@
-# speclog
+# designlog
 
-A spec tracking tool for open source projects. Generates design history through staged planning, task decomposition, and retrospective decision records.
+A design history tool for open source projects. Generates design history through staged planning, task decomposition, and retrospective decision records.
 
-## What is speclog?
+## What is designlog?
 
-speclog helps teams and solo developers maintain a living record of design decisions. Each project "stage" produces a `plan.md` (the design), `tasks.md` (the breakdown), and automatically-generated `decisions.md` (the why). Combined with session transcripts, this creates a comprehensive archaeological record of how and why the code evolved the way it did.
+designlog helps teams and solo developers maintain a living record of design decisions. Each project "stage" produces a `plan.md` (the design), `tasks.md` (the breakdown), and anonymized `decisions.md` (the reasoning). Combined with session transcript summaries, this creates a comprehensive archaeological record of how and why the code evolved the way it did.
 
 Designed for open source workflows: specs live in the repo itself (`/specs`), are committed to git, and tell the story of the project to future contributors.
 
@@ -37,22 +37,25 @@ speclog init
 
 ```bash
 # Initialize a project (run once)
-speclog init
+designlog init
 
 # Start a new stage (inside your agent, or from terminal)
-speclog new-stage "auth-system"
+designlog new-stage "auth-system"
 
 # Check project state
-speclog status
+designlog status
 
 # Generate design decisions (auto-triggered or manual)
-speclog retrospective
+designlog retrospective
+
+# Check version
+designlog version
 ```
 
 ## Updating
 
 ```bash
-speclog update
+designlog update
 ```
 
 ## Documentation
@@ -62,12 +65,13 @@ See `/docs/conventions.md` for the full specification of the workflow, formats, 
 ## Repository Structure
 
 ```
-speclog/
+designlog/
   README.md
+  VERSION
   install.sh
   install.ps1
   bin/
-    speclog
+    designlog
   lib/
     init.sh
     new-stage.sh

@@ -23,6 +23,7 @@ COMMANDS:
   retrospective       Generate design decisions file
   transcript <file>   Normalize a transcript to standard format
   status              Show current project state
+  version             Show installed version
   update              Update speclog to latest version
   help                Show this help message
 
@@ -68,6 +69,14 @@ case "$1" in
   status)
     source "$LIB_DIR/status.sh"
     spec_status
+    ;;
+  version|-v|--version)
+    VERSION_FILE="$SCRIPT_DIR/../VERSION"
+    if [ -f "$VERSION_FILE" ]; then
+      echo "designlog $(cat "$VERSION_FILE")"
+    else
+      echo "designlog (version unknown)"
+    fi
     ;;
   update)
     source "$LIB_DIR/update.sh"
