@@ -46,7 +46,7 @@ case "$OS" in
   MINGW*|MSYS*|CYGWIN*)
     echo "Detected Windows environment with Git Bash/WSL..."
     echo "Please run install.ps1 in PowerShell instead:"
-    echo "  irm https://raw.githubusercontent.com/[repo]/install.ps1 | iex"
+    echo "  irm https://raw.githubusercontent.com/ropensci-review-tools/designlog/main/install.ps1 | iex"
     exit 1
     ;;
 

@@ -6,12 +6,12 @@
   "Author": "rOpenSci",
   "License": "MIT",
   "Language": "en-GB",
-  "URL": "https://github.com/ropensci/designlog",
-  "BugReports": "https://github.com/ropensci/designlog/issues",
+  "URL": "https://github.com/ropensci-review-tools/designlog",
+  "BugReports": "https://github.com/ropensci-review-tools/designlog/issues",
   "SystemRequirements": "bash (>= 3.2), curl, git",
   "Repository": {
     "type": "git",
-    "url": "https://github.com/ropensci/designlog.git"
+    "url": "https://github.com/ropensci-review-tools/designlog.git"
   },
   "Keywords": [
     "design-history",

@@ -13,7 +13,7 @@ Designed for open source workflows: specs live in the repo itself (`/specs`), ar
 ### macOS / Linux
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/[repo]/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ropensci-review-tools/designlog/main/install.sh | bash
 ```
 
 Then:
@@ -25,7 +25,7 @@ speclog init
 
 Run in PowerShell:
 ```powershell
-irm https://raw.githubusercontent.com/[repo]/install.ps1 | iex
+irm https://raw.githubusercontent.com/ropensci-review-tools/designlog/main/install.ps1 | iex
 ```
 
 Then:
