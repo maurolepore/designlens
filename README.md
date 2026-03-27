@@ -40,7 +40,7 @@ After installation, navigate to your git repository and run:
 designlog init
 ```
 
-This creates `/specs` folder and initializes designlog in your project.
+This creates `/specs` folder and initializes designlog in your project. For existing projects, you'll be asked if you want to capture design history from your git log—this creates a starting point documenting architectural decisions from your project's evolution.
 
 ## Quick Start
 
