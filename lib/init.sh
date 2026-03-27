@@ -74,82 +74,55 @@ EOF
   read -r capture_history
   if [ "$capture_history" = "y" ]; then
     mkdir -p specs/000-dev-history
+    echo "✓ Created specs/000-dev-history/"
+    echo ""
+    echo "Copy this prompt into your agent to generate design history:"
+    echo ""
+    echo "============================================"
+    echo ""
+    cat << 'EOF'
+Analyze this project's git history and generate a design-history.md file
+summarizing its architectural evolution.
 
-    cat > specs/000-dev-history/design-history.md << 'EOF'
-# Design History
-
-This document captures the design evolution of the project based on its git history.
-
-## How to Populate This
-
-Review your project's git history to identify key architectural decisions and design evolution:
-
-### Quick Commands to Explore History
+Run these commands to explore the history:
 
 ```bash
-# See commit summary by author
-git shortlog -sn
-
-# Find commits touching specific files/directories
-git log --oneline -- src/
-git log --oneline -- config/
-
-# Show commits with larger changes (likely architectural)
-git log --all --oneline --stat | head -50
-
-# Examine specific areas of history
-git log --oneline -S "SearchTerm" --                   # Find commits changing specific code
-git log --all --oneline --since="2 years ago"         # Restrict time period
-
-# Review key diffs
-git show <commit-hash>                                  # Full diff of a commit
-git log -p --all -- path/to/file | head -200          # Recent changes to a file
+git log --oneline --all | head -100
+git log --all --oneline --stat | head -100
+git log --all --oneline --since="1 year ago"
+git log --all --oneline --grep="feature\|design\|architecture\|refactor"
 ```
 
-### What to Look For
+Then examine key commits with: git show <hash>
 
-Focus on commits that:
-- Added major new features or systems
-- Introduced significant architectural patterns
-- Changed fundamental approach to solving a problem
-- Added or changed major dependencies
-- Refactored large sections of code
+Create specs/000-dev-history/design-history.md that documents:
 
-### Template Sections
+1. **Project Evolution** - Major phases and architectural decisions
+2. **Key Decisions** - Strategic choices that shaped the codebase
+   - What was decided
+   - Why (constraints, requirements at the time)
+   - Impact (what changed)
 
-Fill in the major phases of development:
+Focus on:
+- Initial architecture and core design choices
+- Major refactors or architectural changes
+- Significant feature additions that changed direction
+- Technology/dependency decisions
+- Changes in development approach or patterns
 
-**Phase 1: Initial Architecture (commits X-Y)**
-- Key decision: [What was decided]
-- Rationale: [Why]
-- Impact: [What changed as a result]
+Avoid:
+- Documenting every commit
+- Minor bug fixes or small improvements
+- Implementation details (focus on why, not what)
 
-**Phase 2: [Name] (commits X-Y)**
-- Key decision: [...]
-- Rationale: [...]
-- Impact: [...]
+Keep it concise (~300-500 words). Cherry-pick the most important decisions
+and changes, using git history as the source but making strategic choices
+about what's worth documenting for future contributors.
 
-### Notes
-
-- Don't try to document every commit—focus on strategic decisions
-- Look for patterns: if commits keep revisiting the same area, that's usually important
-- Check commit messages for explicit mentions of "design", "architecture", "refactor"
-- When in doubt, look at the diff size (git log --stat) for magnitude of change
-
----
-
-## Project Evolution
-
-(Edit this section with your findings)
-
+Output the file to: specs/000-dev-history/design-history.md
 EOF
-    echo "✓ Created specs/000-dev-history/design-history.md"
     echo ""
-    echo "To populate design-history.md:"
-    echo "  1. Review git history: git log --oneline --all"
-    echo "  2. Examine key commits and diffs"
-    echo "  3. Edit specs/000-dev-history/design-history.md with findings"
-    echo "  4. Focus on architectural decisions, not every change"
+    echo "============================================"
   fi
 
   # Detect and create AGENTS.md / CLAUDE.md
