@@ -68,17 +68,15 @@ For instructions on *creating* new specs, see the project's AGENTS.md or CLAUDE.
 EOF
   echo "✓ Created specs/README.md"
 
-  # Ask about capturing existing design history
-  echo ""
-  echo "Capture existing design history from git log? (y/n)"
-  read -r capture_history
-  if [ "$capture_history" = "y" ]; then
+  # Check for extensive git history and auto-capture if present
+  COMMIT_COUNT=$(git rev-list --count HEAD 2>/dev/null || echo 0)
+  HISTORY_THRESHOLD=50
+
+  if [ "$COMMIT_COUNT" -gt "$HISTORY_THRESHOLD" ]; then
     mkdir -p specs/000-dev-history
-    echo "✓ Created specs/000-dev-history/"
+    echo "✓ Created specs/000-dev-history/ (detected $COMMIT_COUNT commits)"
     echo ""
-    echo "Copy this prompt into your agent to generate design history:"
-    echo ""
-    echo "============================================"
+    echo "Generating design history from git analysis..."
     echo ""
     cat << 'EOF'
 Analyze this project's git history and generate a design-history.md file
@@ -121,8 +119,6 @@ about what's worth documenting for future contributors.
 
 Output the file to: specs/000-dev-history/design-history.md
 EOF
-    echo ""
-    echo "============================================"
   fi
 
   # Detect and create AGENTS.md / CLAUDE.md
