@@ -24,9 +24,9 @@ The core value: future contributors can understand *why* the code is the way it 
 Every design stage produces three artifacts:
 - **plan.md** — The design vision (what and why)
 - **tasks.md** — The execution breakdown (how)
-- **design-decisions.md** — The reasoning summary (why we chose this path)
+- **design-decisions.md** — The reasoning summary, integrated with prior work (why we chose this path, and how it builds on earlier decisions)
 
-Combined with session transcript summaries, these form a complete archaeological record of the project's evolution.
+Combined with session transcript summaries, these form a complete archaeological record of the project's evolution. Each `design-decisions.md` documents what's new in that stage while cross-referencing prior decisions to show how the design evolves—keeping each document concise without losing the narrative arc.
 
 ---
 
@@ -138,15 +138,17 @@ When all tasks are complete:
    - Tool outputs a structured prompt
    - Developer/agent pastes it into the coding agent
 
-2. **Agent analyzes** the stage
+2. **Agent analyzes** the stage and project history
    - Reads plan.md, tasks.md, and the session transcript (if available)
-   - Summarizes key design decisions made
-   - Attributes them: human vs AI, who proposed, who decided
-   - Documents important tradeoffs
+   - Reviews design-decisions.md from all previous stages (000-design-history, 001, 002, etc.)
+   - Summarizes key design decisions made **in this stage**
+   - Shows how this stage builds on or extends prior architectural decisions
+   - Identifies tradeoffs specific to this stage
 
 3. **Agent writes** design-decisions.md
-   - Concise summary (under 500 words typically)
-   - Clear sections: Decisions, Tradeoffs, Attribution, Deferred Items
+   - Documents **what's new in this stage** (200–400 words typically)
+   - Cross-references prior decisions to show integration (e.g., "See 001-auth for the foundational decision on token storage")
+   - Clear sections: Summary, New Design Decisions, Integration with Prior Work, Deferred Items
    - Markdown format
 
 **Output:** `/specs/NNN-stage-name/design-decisions.md`
@@ -253,7 +255,9 @@ The tool will warn if the previous stage lacks design-decisions.md and offer to 
 
 ### design-decisions.md
 
-**Purpose:** Document design decisions made during this stage.
+**Purpose:** Document design decisions made during this stage, integrated with the project's overall design evolution.
+
+Each `design-decisions.md` focuses on **what's new in this stage** while cross-referencing previous decisions to show how the design builds over time. This keeps documents concise while preserving the complete architectural narrative.
 
 **Template:**
 
@@ -261,38 +265,47 @@ The tool will warn if the previous stage lacks design-decisions.md and offer to 
 # Design Decisions: [Stage Title]
 
 ## Summary
-[1-2 sentences: what was accomplished, what was decided]
+[1-2 sentences: what was accomplished and the key decisions made in THIS stage]
 
-## Key Decisions
+## New Design Decisions
 
-### Decision 1: [What was decided]
+### Decision 1: [What was decided in this stage]
 **Chosen:** [The option selected]
 **Rationale:** [Why this was chosen over alternatives]
-**Proposed by:** [Human/AI, and who]
 **Tradeoffs:** [What was given up]
+**Relates to:** [Brief cross-reference if building on prior work]
 
 ### Decision 2: [What was decided]
 **Chosen:** [The option selected]
 ...
 
-## Important Tradeoffs
-[If multiple decisions involved significant tradeoffs, summarize them here]
+## Integration with Prior Work
+[How this stage's decisions connect to and build on previous stages.
+Use cross-references to earlier design-decisions.md files to avoid repetition.
+Example: "Building on the auth system from 001-auth (see that stage's decisions on token storage)"]
 
-## Attribution
-- **Human inputs:** [What the human contributed — constraints, feedback, direction]
-- **AI role:** [What the AI contributed — proposals, analysis, implementation]
+## Issues Resolved
+- [Issue from plan.md and how it was resolved]
 
-## Deferred Decisions
-[Items that came up but were explicitly deferred to a later stage]
+## Deferred Items
+[Things discussed but deferred to later stages]
 
-## Open Questions
-[Items that remain unresolved]
+## Process Notes
+[How design evolved or changed direction; blockers encountered]
 ```
 
 **Style:**
-- Concise (typically 300–500 words)
-- Attribution is honest: decisions aren't just "made" — they come from someone or some interaction
+- Concise (typically 200–400 words for later stages, 300–500 for early stages)
+- Focus on **what's new**, not what was already decided
+- Use cross-references freely: "See NNN-stage/design-decisions.md for..." is preferred over repeating prior reasoning
 - Focus on the *why*, not the *what* (the what is in the code already)
+- Each stage's doc should be readable on its own, but complete history is reconstructed by reading from 000-design-history forward
+
+**Cross-referencing guidance:**
+- When a decision builds on previous work, reference the earlier stage explicitly
+- Include the stage folder name and section where the prior decision was made
+- Example: "See 001-core-architecture/design-decisions.md#New%20Design%20Decisions for the foundational decision on module structure"
+- This approach keeps each doc focused while preserving the narrative arc
 
 ### .transcript.md
 
