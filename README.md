@@ -23,6 +23,8 @@ are committed to git, and tell the story of the project to future contributors.
 curl -fsSL https://raw.githubusercontent.com/ropensci-review-tools/designlog/main/install.sh | bash
 ```
 
+This installs a lightweight bash-based tool (~50KB) to `/usr/local/lib/designlog` with a symlink at `/usr/local/bin/designlog`. No dependencies beyond bash, curl, and git.
+
 ### Setup
 
 After installation, navigate to the git repository where you want to use designlog and run:
@@ -71,6 +73,22 @@ designlog version
 ```bash
 designlog update
 ```
+
+## Uninstalling
+
+To remove designlog:
+
+```bash
+designlog uninstall
+```
+
+Or manually:
+```bash
+rm -rf /usr/local/lib/designlog
+rm /usr/local/bin/designlog
+```
+
+This leaves your projects' `/specs` folders and design history intact—only the tool itself is removed.
 
 ## Documentation
 
