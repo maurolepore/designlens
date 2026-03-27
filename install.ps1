@@ -15,12 +15,14 @@ if (-not (Test-Path $InstallDir)) {
     Write-Host "Created installation directory: $InstallDir"
 }
 
-# Copy directories
+# Copy directories and metadata
 Write-Host "Copying files..."
 Copy-Item -Path "$ScriptDir\bin" -Destination "$InstallDir\" -Recurse -Force
 Copy-Item -Path "$ScriptDir\lib" -Destination "$InstallDir\" -Recurse -Force
 Copy-Item -Path "$ScriptDir\docs" -Destination "$InstallDir\" -Recurse -Force
 Copy-Item -Path "$ScriptDir\README.md" -Destination "$InstallDir\" -Force
+Copy-Item -Path "$ScriptDir\designlog.json" -Destination "$InstallDir\" -Force
+Copy-Item -Path "$ScriptDir\LICENSE" -Destination "$InstallDir\" -Force
 
 # Make scripts executable (Git Bash requirement)
 Write-Host "Making scripts executable for Git Bash..."

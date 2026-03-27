@@ -23,7 +23,7 @@ are committed to git, and tell the story of the project to future contributors.
 curl -fsSL https://raw.githubusercontent.com/ropensci-review-tools/designlog/main/install.sh | bash
 ```
 
-This installs a lightweight bash-based tool (~50KB) to `/usr/local/lib/designlog` with a symlink at `/usr/local/bin/designlog`. No dependencies beyond bash, curl, and git.
+This installs a lightweight bash-based tool (~50KB) to `/usr/local/lib/designlog` with a symlink at `/usr/local/bin/designlog`. If `/usr/local` is not writable, it falls back to `~/.local/lib/designlog` automatically (no sudo needed). If using the user-local fallback, you may need to add `~/.local/bin` to your PATH.
 
 ### Setup
 

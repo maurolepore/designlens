@@ -8,38 +8,53 @@ case "$OS" in
   Darwin|Linux)
     echo "Installing designlog for $OS..."
 
-    INSTALL_DIR="/usr/local/lib/designlog"
-    BIN_DIR="/usr/local/bin"
-
-    # Check if we need sudo
-    if [ ! -w "$BIN_DIR" ]; then
-      SUDO="sudo"
-    else
-      SUDO=""
-    fi
-
     # Get the directory where install.sh is located
     SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+    # Try system-wide installation first, fall back to user local
+    if [ -w "/usr/local/lib" ]; then
+      INSTALL_DIR="/usr/local/lib/designlog"
+      BIN_DIR="/usr/local/bin"
+      SUDO=""
+      SYSTEM_WIDE=true
+    else
+      INSTALL_DIR="$HOME/.local/lib/designlog"
+      BIN_DIR="$HOME/.local/bin"
+      SUDO=""
+      SYSTEM_WIDE=false
+      mkdir -p "$BIN_DIR"
+    fi
+
+    echo "Installation directory: $INSTALL_DIR"
     echo "Creating installation directory..."
-    $SUDO mkdir -p "$INSTALL_DIR"
+    mkdir -p "$INSTALL_DIR"
 
     echo "Copying files..."
-    $SUDO cp -r "$SCRIPT_DIR"/bin "$INSTALL_DIR/"
-    $SUDO cp -r "$SCRIPT_DIR"/lib "$INSTALL_DIR/"
-    $SUDO cp -r "$SCRIPT_DIR"/docs "$INSTALL_DIR/"
-    $SUDO cp "$SCRIPT_DIR"/README.md "$INSTALL_DIR/"
-    $SUDO cp "$SCRIPT_DIR"/designlog.json "$INSTALL_DIR/"
-    $SUDO cp "$SCRIPT_DIR"/LICENSE "$INSTALL_DIR/"
+    cp -r "$SCRIPT_DIR"/bin "$INSTALL_DIR/"
+    cp -r "$SCRIPT_DIR"/lib "$INSTALL_DIR/"
+    cp -r "$SCRIPT_DIR"/docs "$INSTALL_DIR/"
+    cp "$SCRIPT_DIR"/README.md "$INSTALL_DIR/"
+    cp "$SCRIPT_DIR"/designlog.json "$INSTALL_DIR/"
+    cp "$SCRIPT_DIR"/LICENSE "$INSTALL_DIR/"
 
     echo "Making scripts executable..."
-    $SUDO chmod +x "$INSTALL_DIR"/bin/designlog
-    $SUDO chmod +x "$INSTALL_DIR"/lib/*.sh
+    chmod +x "$INSTALL_DIR"/bin/designlog
+    chmod +x "$INSTALL_DIR"/lib/*.sh
 
     echo "Creating symlink..."
-    $SUDO ln -sf "$INSTALL_DIR/bin/designlog" "$BIN_DIR/designlog"
+    ln -sf "$INSTALL_DIR/bin/designlog" "$BIN_DIR/designlog"
 
     echo "✓ designlog installed successfully!"
+    echo ""
+    if [ "$SYSTEM_WIDE" = false ]; then
+      # Check if ~/.local/bin is in PATH
+      if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+        echo "⚠️  $HOME/.local/bin is not in your PATH"
+        echo "Add this line to ~/.bashrc, ~/.zshrc, or equivalent:"
+        echo "  export PATH=\"\$HOME/.local/bin:\$PATH\""
+        echo ""
+      fi
+    fi
     echo "Run 'designlog init' in your project directory to get started."
     ;;
 
