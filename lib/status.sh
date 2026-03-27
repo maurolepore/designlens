@@ -43,7 +43,7 @@ spec_status() {
 
   [ -f "$latest_stage/plan.md" ] && plan_exists=true
   [ -f "$latest_stage/tasks.md" ] && tasks_exists=true
-  [ -f "$latest_stage/decisions.md" ] && decisions_exists=true
+  [ -f "$latest_stage/design-decisions.md" ] && decisions_exists=true
 
   # Check task completion
   if [ "$tasks_exists" = true ]; then
@@ -75,11 +75,12 @@ spec_status() {
 
   if [ "$tasks_complete" = false ]; then
     echo "→ Next action: Execute remaining tasks"
+    echo "  (Implement the code changes)"
     return
   fi
 
   if [ "$decisions_exists" = false ]; then
-    echo "→ Next action: Generate design decisions"
+    echo "→ Next action: Generate design decisions summary"
     echo "  Run: speclog retrospective"
     return
   fi

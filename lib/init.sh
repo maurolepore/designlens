@@ -47,16 +47,17 @@ EOF
 
 This directory contains the design history and specification documents for this project.
 
-Each numbered folder represents a design stage:
+Each numbered folder represents a design stage with:
 
 - **plan.md** — The design for this stage (what we're building and why)
 - **tasks.md** — Breakdown into actionable tasks
-- **decisions.md** — Auto-generated summary of design decisions made during this stage
-- **.transcript.md** — Raw session transcript(s) from the agent/developer conversation
+- **[implementation]** — Execute the tasks; code changes go into the project
+- **design-decisions.md** — Summary of design decisions made during this stage
+- **.transcript.md** — Session transcript(s) from the design/implementation process
 
 ## How to read these specs
 
-Start with the most recent numbered folder. Read plan.md first for the overall intention, then tasks.md for the breakdown, then decisions.md for the reasoning behind specific choices.
+Start with the most recent numbered folder. Read plan.md first for the design intention, then tasks.md for the breakdown. The implementation (actual code changes) will be visible in git. Finally, read design-decisions.md for the reasoning behind the choices made.
 
 The transcript files contain the full conversation history and are useful for understanding edge cases or decisions that were discussed but not chosen.
 
@@ -73,8 +74,8 @@ EOF
   HISTORY_THRESHOLD=50
 
   if [ "$COMMIT_COUNT" -gt "$HISTORY_THRESHOLD" ]; then
-    mkdir -p specs/000-dev-history
-    echo "✓ Created specs/000-dev-history/ (detected $COMMIT_COUNT commits)"
+    mkdir -p specs/000-design-history
+    echo "✓ Created specs/000-design-history/ (detected $COMMIT_COUNT commits)"
     echo ""
     echo "Generating design history from git analysis..."
     echo ""
@@ -117,7 +118,7 @@ Keep it concise (~300-500 words). Cherry-pick the most important decisions
 and changes, using git history as the source but making strategic choices
 about what's worth documenting for future contributors.
 
-Output the file to: specs/000-dev-history/design-history.md
+Output the file to: specs/000-design-history/design-decisions.md
 EOF
   fi
 
@@ -159,7 +160,7 @@ This project uses **designlog** for design history tracking.
 
 When starting a session:
 1. Read `/specs/README.md` to understand the current project state
-2. Check the latest numbered stage folder for plan.md, tasks.md, and decisions.md
+2. Check the latest numbered stage folder for plan.md, tasks.md, and design-decisions.md
 3. Run `designlog status` to see what's next
 4. Follow the guidance in `/docs/conventions.md` for the workflow
 

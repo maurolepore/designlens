@@ -8,7 +8,7 @@ records.
 
 designlog helps maintain a living record of design decisions. Each project
 "stage" produces a `plan.md` (the design), `tasks.md` (the breakdown), and
-anonymized `decisions.md` (the reasoning). Combined with session transcript
+anonymized `design-decisions.md` (the reasoning). Combined with session transcript
 summaries, this creates a comprehensive archaeological record of how and why
 the code evolved the way it did.
 

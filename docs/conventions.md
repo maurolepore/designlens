@@ -24,7 +24,7 @@ The core value: future contributors can understand *why* the code is the way it 
 Every design stage produces three artifacts:
 - **plan.md** — The design vision (what and why)
 - **tasks.md** — The execution breakdown (how)
-- **decisions.md** — The reasoning summary (why we chose this path)
+- **design-decisions.md** — The reasoning summary (why we chose this path)
 
 Combined with session transcript summaries, these form a complete archaeological record of the project's evolution.
 
@@ -39,12 +39,12 @@ your-project/
     001-initial-concept/
       plan.md
       tasks.md
-      decisions.md
+      design-decisions.md
       .transcript.md
     002-auth-system/
       plan.md
       tasks.md
-      decisions.md
+      design-decisions.md
       .transcript.md
     003-...
   .specmeta.json
@@ -144,12 +144,12 @@ When all tasks are complete:
    - Attributes them: human vs AI, who proposed, who decided
    - Documents important tradeoffs
 
-3. **Agent writes** decisions.md
+3. **Agent writes** design-decisions.md
    - Concise summary (under 500 words typically)
    - Clear sections: Decisions, Tradeoffs, Attribution, Deferred Items
    - Markdown format
 
-**Output:** `/specs/NNN-stage-name/decisions.md`
+**Output:** `/specs/NNN-stage-name/design-decisions.md`
 
 ### Phase 5: Commit
 
@@ -164,7 +164,7 @@ The stage is complete. All three files are in git.
 
 Run `speclog new-stage "next-stage-name"` to begin the cycle again.
 
-The tool will warn if the previous stage lacks decisions.md and offer to run retrospective.
+The tool will warn if the previous stage lacks design-decisions.md and offer to run retrospective.
 
 ---
 
@@ -251,7 +251,7 @@ The tool will warn if the previous stage lacks decisions.md and offer to run ret
 - Acceptance criteria are testable
 - Checkbox format: `- [ ]` (unchecked), `- [x]` (checked)
 
-### decisions.md
+### design-decisions.md
 
 **Purpose:** Document design decisions made during this stage.
 
@@ -339,7 +339,7 @@ The tool will warn if the previous stage lacks decisions.md and offer to run ret
    - If a stage has no plan.md, help the human develop the design
    - If a stage has no tasks.md, break the plan into tasks
    - If tasks are incomplete, help execute them
-   - If all tasks are done but no decisions.md exists, run the retrospective
+   - If all tasks are done but no design-decisions.md exists, run the retrospective
 
 ### During the Session
 
@@ -526,7 +526,7 @@ A: Not recommended. tasks.md is the bridge between intention (plan.md) and actio
 A: Add it to tasks.md and update the task count in the checklist. This is part of normal development.
 
 **Q: How do we handle mistakes or design changes mid-stage?**
-A: Update plan.md and tasks.md to reflect the change. Git will track the changes. Mention the decision in decisions.md at retrospective time.
+A: Update plan.md and tasks.md to reflect the change. Git will track the changes. Mention the decision in design-decisions.md at retrospective time.
 
 **Q: Can multiple people work on one stage?**
 A: Yes. Use git branches and merging as normal. The transcript summary should depersonalize contributions (no names) and use git metadata (branch author) for attribution if needed.
@@ -544,7 +544,7 @@ A: As long as it needs. Some stages might be a few hours; others might be weeks.
 speclog init                    # Initialize project (once)
 speclog new-stage <name>        # Create new stage
 speclog status                  # Show current state and next action
-speclog retrospective           # Generate decisions.md
+speclog retrospective           # Generate design-decisions.md
 speclog transcript <file>       # Normalize a transcript
 speclog update                  # Update to latest version
 ```
@@ -567,7 +567,7 @@ git commit -m "WIP: Feature implementation"
 
 # Complete the stage
 speclog retrospective
-git add specs/feature-name/decisions.md
+git add specs/feature-name/design-decisions.md
 git commit -m "feature-name: Design decisions"
 
 # Merge
@@ -579,4 +579,4 @@ git merge specs/feature-name
 
 ## Examples
 
-See the project's `/specs` folder for real examples of plan.md, tasks.md, and decisions.md files generated through the tool.
+See the project's `/specs` folder for real examples of plan.md, tasks.md, and design-decisions.md files generated through the tool.

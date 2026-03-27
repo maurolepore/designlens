@@ -26,8 +26,8 @@ spec_new_stage() {
   if [ "$max_num" -gt 0 ]; then
     printf -v prev_num "%03d" "$max_num"
     prev_dir=$(ls -d specs/$prev_num-* 2>/dev/null | head -1)
-    if [ -d "$prev_dir" ] && [ ! -f "$prev_dir/decisions.md" ]; then
-      echo "Warning: Previous stage ($prev_dir) has no decisions.md"
+    if [ -d "$prev_dir" ] && [ ! -f "$prev_dir/design-decisions.md" ]; then
+      echo "Warning: Previous stage ($prev_dir) has no design-decisions.md"
       echo "Run 'speclog retrospective' to generate design decisions first? (y/n)"
       read -r response
       if [ "$response" = "y" ]; then
@@ -90,8 +90,8 @@ EOF
   echo "  1. Edit $stage_dir/plan.md with the design plan"
   echo "  2. Edit $stage_dir/tasks.md with the task breakdown"
   echo "  3. Run 'speclog status' to see current state"
-  echo "  4. Execute the tasks"
-  echo "  5. Run 'speclog retrospective' to generate decisions.md"
+  echo "  4. Execute the tasks (implement the code changes)"
+  echo "  5. Run 'speclog retrospective' to generate design-decisions.md"
   echo ""
   echo "Remember to record the session transcript in $stage_dir/.transcript.md"
 }

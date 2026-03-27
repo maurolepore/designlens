@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Generate decisions.md from the current stage
+# Generate design-decisions.md from the current stage
 # Uses agent to summarize design decisions from plan and transcript
 
 spec_retrospective() {
@@ -22,9 +22,9 @@ spec_retrospective() {
     exit 1
   fi
 
-  # Check if decisions.md already exists
-  if [ -f "$latest_stage/decisions.md" ]; then
-    echo "decisions.md already exists for $latest_stage"
+  # Check if design-decisions.md already exists
+  if [ -f "$latest_stage/design-decisions.md" ]; then
+    echo "design-decisions.md already exists for $latest_stage"
     echo "Overwrite? (y/n)"
     read -r response
     if [ "$response" != "y" ]; then
@@ -43,9 +43,9 @@ spec_retrospective() {
     exit 1
   fi
 
-  echo "Generating decisions.md for $latest_stage..."
+  echo "Generating design-decisions.md for $latest_stage..."
   echo ""
-  echo "Copy this prompt into your agent (Claude Code, etc.) to generate decisions.md:"
+  echo "After implementing all tasks, review with agent to generate design-decisions.md:"
   echo ""
   echo "============================================"
   echo ""
@@ -78,7 +78,7 @@ spec_retrospective() {
   echo ""
   echo "## INSTRUCTIONS"
   echo ""
-  echo "Generate a structured summary transcript called 'decisions.md' following these rules:"
+  echo "Generate a structured summary transcript called 'design-decisions.md' following these rules:"
   echo ""
   echo "### ANONYMIZATION REQUIREMENTS (non-negotiable):"
   echo "- NO personal names, email addresses, or identifying information"
@@ -126,7 +126,7 @@ spec_retrospective() {
   echo "### Length:"
   echo "300–500 words typically. Concise, scannable, focused on reasoning."
   echo ""
-  echo "Save the result to: $latest_stage/.transcript.md"
+  echo "Save the result to: $latest_stage/design-decisions.md"
   echo "============================================"
   echo ""
   echo "After generating .transcript.md, commit the changes:"
