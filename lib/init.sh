@@ -68,6 +68,90 @@ For instructions on *creating* new specs, see the project's AGENTS.md or CLAUDE.
 EOF
   echo "✓ Created specs/README.md"
 
+  # Ask about capturing existing design history
+  echo ""
+  echo "Capture existing design history from git log? (y/n)"
+  read -r capture_history
+  if [ "$capture_history" = "y" ]; then
+    mkdir -p specs/000-dev-history
+
+    cat > specs/000-dev-history/design-history.md << 'EOF'
+# Design History
+
+This document captures the design evolution of the project based on its git history.
+
+## How to Populate This
+
+Review your project's git history to identify key architectural decisions and design evolution:
+
+### Quick Commands to Explore History
+
+```bash
+# See commit summary by author
+git shortlog -sn
+
+# Find commits touching specific files/directories
+git log --oneline -- src/
+git log --oneline -- config/
+
+# Show commits with larger changes (likely architectural)
+git log --all --oneline --stat | head -50
+
+# Examine specific areas of history
+git log --oneline -S "SearchTerm" --                   # Find commits changing specific code
+git log --all --oneline --since="2 years ago"         # Restrict time period
+
+# Review key diffs
+git show <commit-hash>                                  # Full diff of a commit
+git log -p --all -- path/to/file | head -200          # Recent changes to a file
+```
+
+### What to Look For
+
+Focus on commits that:
+- Added major new features or systems
+- Introduced significant architectural patterns
+- Changed fundamental approach to solving a problem
+- Added or changed major dependencies
+- Refactored large sections of code
+
+### Template Sections
+
+Fill in the major phases of development:
+
+**Phase 1: Initial Architecture (commits X-Y)**
+- Key decision: [What was decided]
+- Rationale: [Why]
+- Impact: [What changed as a result]
+
+**Phase 2: [Name] (commits X-Y)**
+- Key decision: [...]
+- Rationale: [...]
+- Impact: [...]
+
+### Notes
+
+- Don't try to document every commit—focus on strategic decisions
+- Look for patterns: if commits keep revisiting the same area, that's usually important
+- Check commit messages for explicit mentions of "design", "architecture", "refactor"
+- When in doubt, look at the diff size (git log --stat) for magnitude of change
+
+---
+
+## Project Evolution
+
+(Edit this section with your findings)
+
+EOF
+    echo "✓ Created specs/000-dev-history/design-history.md"
+    echo ""
+    echo "To populate design-history.md:"
+    echo "  1. Review git history: git log --oneline --all"
+    echo "  2. Examine key commits and diffs"
+    echo "  3. Edit specs/000-dev-history/design-history.md with findings"
+    echo "  4. Focus on architectural decisions, not every change"
+  fi
+
   # Detect and create AGENTS.md / CLAUDE.md
   if [ -f "AGENTS.md" ]; then
     echo ""
