@@ -1,41 +1,40 @@
 #!/bin/bash
 
-# Normalize a transcript to the standard format
-# Converts various transcript formats to the standard human:/assistant: markdown
+# Helper for creating decision transcript summaries
+# Guides depersonalization and anonymization of session notes
 
 spec_transcript() {
   local input_file="$1"
-  local output_file="${input_file%.md}.normalized.md"
 
   if [ ! -f "$input_file" ]; then
     echo "Error: File not found: $input_file"
     exit 1
   fi
 
-  echo "Normalizing transcript: $input_file"
-  echo "Output: $output_file"
+  echo "⚠️  Transcript summary depersonalization helper"
   echo ""
-  echo "⚠️  Manual review required."
+  echo "Note: speclog transcripts are SUMMARIES of design decisions, not raw conversation."
+  echo "They must be carefully anonymized before being committed to a project repo."
   echo ""
-  echo "The transcript.sh tool can assist with reformatting, but normalizing"
-  echo "transcripts from different tools requires understanding the source format."
+  echo "If you have raw session notes and want to convert them to a speclog transcript:"
   echo ""
-  echo "Standard speclog transcript format:"
+  echo "1. Run 'speclog retrospective' to get a structured prompt for your agent"
+  echo "2. The agent will generate a properly anonymized summary transcript"
   echo ""
-  echo "## Turn 1"
-  echo "**human:** ..."
+  echo "To review an existing transcript for PII:"
   echo ""
-  echo "## Turn 2"
-  echo "**assistant:** ..."
+  echo "Checklist:"
+  echo "  ☐ No personal names mentioned"
+  echo "  ☐ No email addresses or identifiers"
+  echo "  ☐ No personal anecdotes or preferences"
+  echo "  ☐ Uses passive voice or role-based language"
+  echo "  ☐ No user counts, revenue, or business-specific details that identify the company"
+  echo "  ☐ Focuses on technical reasoning and decisions, not the people"
+  echo "  ☐ Follows the structured format (Session Overview, Decisions, Tradeoffs, etc.)"
   echo ""
-  echo "---"
+  echo "Edit the file manually to remove any identifying information:"
+  echo "  $input_file"
   echo ""
-  echo "Steps to normalize:"
-  echo "  1. Review $input_file"
-  echo "  2. Convert to the format above (Turn N, human:/assistant: labels)"
-  echo "  3. Save to $latest_stage/.transcript.md"
-  echo "  4. Verify with: cat $latest_stage/.transcript.md"
-  echo ""
-  echo "If you're converting from Claude API JSON output, consider using:"
-  echo "  https://github.com/[org]/speclog/tools/json-to-transcript.py"
+  echo "Verify compliance with:"
+  echo "  grep -E '(email|@|facebook|twitter|slack|company|revenue|users?)' $input_file"
 }

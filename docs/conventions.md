@@ -26,7 +26,7 @@ Every design stage produces three artifacts:
 - **tasks.md** — The execution breakdown (how)
 - **decisions.md** — The reasoning summary (why we chose this path)
 
-Combined with session transcripts, these form a complete archaeological record of the project's evolution.
+Combined with session transcript summaries, these form a complete archaeological record of the project's evolution.
 
 ---
 
@@ -59,7 +59,7 @@ your-project/
 - Within each stage: everything is self-contained
 - **.specmeta.json** is a tiny lockfile with tool metadata (optional to commit, but recommended)
 - **AGENTS.md/CLAUDE.md** points agents to the specs on session start
-- Transcripts are dot-prefixed (`.transcript.md`) to signal they're raw artifacts
+- **Transcripts** (`.transcript.md`) are depersonalized decision summaries, safe for public repos. They document *what* was decided and *why*, not *who decided it*
 
 ### Handling Parallel Development
 
@@ -369,11 +369,16 @@ The tool will warn if the previous stage lacks decisions.md and offer to run ret
 1. **Confirm all tasks are done:**
    - Run `speclog status` — it should say "Stage complete!"
 
-2. **Generate decisions.md:**
+2. **Generate .transcript.md (decision summary):**
    - Run `speclog retrospective`
-   - Follow the prompt it provides
-   - Write a concise summary of key decisions and tradeoffs
-   - Be specific about attribution: what came from the human vs. the AI
+   - Follow the detailed prompt it provides
+   - **Critical:** Follow anonymization rules strictly
+     - No personal names or identifying information
+     - No personal anecdotes or preferences
+     - Role-based language only ("a contributor decided", not "Mark decided")
+     - Focus on technical reasoning, not people
+   - Create a structured summary of key decisions, rationale, and tradeoffs
+   - Typically 300–500 words, scannable format
 
 3. **Guide the human to commit:**
    ```bash
@@ -389,34 +394,72 @@ The tool will warn if the previous stage lacks decisions.md and offer to run ret
 ### Key Principles
 
 - **Specs are for humans first:** Write them clearly, as if a contributor 6 months from now will read them
-- **Attribute honestly:** Design decisions come from somewhere — acknowledge the source
+- **Anonymize ruthlessly:** No personal identifying information in transcripts — they're part of the project's public record
+- **Focus on decisions, not people:** What was decided and why, not who proposed it
 - **Mark uncertainty:** Don't pretend to be certain when you're not; use "Open Questions"
 - **Facilitate, don't control:** The human makes the design calls; your job is to explore, propose, and document
+- **Preserve reasoning:** Keep the *why* behind decisions, even after anonymization
 
 ---
 
 ## Transcript Format Specification
 
-**Why a standard?** Transcripts should be readable and parseable regardless of the tool that created them.
+**Purpose:** Document key design decisions, rationale, and reasoning from a stage session. Transcripts are *summaries*, not raw recordings — designed to be readable by future contributors and appropriately anonymized.
+
+**Why a standard?** Design decision summaries should be readable, maintainable, and devoid of personal identifying information. They focus on the *thinking process* and *decisions made*, not the people involved.
+
+### Anonymization Principles
+
+All transcripts must adhere to these principles:
+
+1. **No personal identifiers** — No names, email addresses, or identifying details
+2. **Role-based only** — Reference contributions by role ("a human contributor", "the AI assistant"), not by individual
+3. **Decision-focused** — Document *what was decided and why*, not *who proposed it*
+4. **Depersonalized language** — Use "it was decided" rather than "I decided"; "was proposed" rather than "I proposed"
+5. **Redact sensitive specifics** — Remove business details, user counts, financial info, or other context that might be identifying
+6. **Preserve reasoning** — Keep the *why* behind decisions, just without the personal attribution
 
 ### Format
 
-```
-## Turn N
-**human:** [Message text]
+```markdown
+# Transcript Summary: [Stage Title]
 
-## Turn N+1
-**assistant:** [Message text]
+## Session Overview
+[1-2 sentences: What was discussed and decided at a high level]
+
+## Design Decisions Made
+
+### Decision 1: [What was decided]
+**Chosen:** [The option selected]
+**Rationale:** [Why this was chosen over alternatives; focus on technical/business reasons]
+**Tradeoffs:** [What was sacrificed or deferred]
+**Key constraint:** [Any critical requirement that drove the decision, e.g., "GDPR compliance requirement"]
+
+### Decision 2: [What was decided]
+[Same structure as above]
+
+## Issues/Questions Resolved
+- [Issue 1: how it was explored and resolved]
+- [Issue 2: what was clarified]
+
+## Important Tradeoffs
+[Broader tradeoffs discussed that affected multiple decisions]
+
+## Deferred Items
+[Things explicitly discussed but deferred to later stages]
+
+## Process Notes
+- [Any notes about how the design evolved or changed direction]
+- [Blockers encountered and how they were resolved]
 ```
 
 ### Rules
 
-1. **Turns are numbered** starting from 1
-2. **Each speaker is labeled** with `**human:**` or `**assistant:**`
-3. **Message text is the full, unparaphrased content**
-4. **Newlines within a message** are preserved as-is
-5. **Only two speaker roles** — use git metadata (branch, commit author) for disambiguation if multiple humans are involved
-6. **File naming:**
+1. **Summary, not transcript** — Condense the discussion, don't reproduce turn-by-turn conversation
+2. **No personal pronouns or names** — Use passive voice or role-based language
+3. **Technical clarity** — Explain options considered and why one was chosen; assume future readers are technical
+4. **Brevity** — Typically 300–500 words; concise and scannable
+5. **File naming:**
    - First transcript: `.transcript.md`
    - Additional transcripts: `.transcript-1.md`, `.transcript-2.md`, etc.
    - Stored within the stage folder alongside plan.md and tasks.md
@@ -424,40 +467,46 @@ The tool will warn if the previous stage lacks decisions.md and offer to run ret
 ### Example
 
 ```markdown
-## Turn 1
-**human:** Let's design the authentication system. I want it to be secure but not overly complex for a small team.
+# Transcript Summary: Authentication System
 
-## Turn 2
-**assistant:** Good starting point. A few questions to narrow it down:
-1. How many users are you expecting?
-2. Do you need SSO or is basic login sufficient?
-3. Any compliance requirements (GDPR, HIPAA, etc.)?
+## Session Overview
+The authentication system design was discussed, exploring tradeoffs between simplicity and security. JWT tokens were selected as the foundation, with a hybrid approach to token revocation for immediate logout capability when needed.
 
-## Turn 3
-**human:** Maybe 1000 users initially, scaling to 10k. No SSO needed yet. GDPR compliance is important since we have EU users.
+## Design Decisions Made
 
-## Turn 4
-**assistant:** With that in mind, I'd suggest:
-- JWT tokens for stateless auth
-- Bcrypt for password hashing
-- Refresh tokens for session management
-- Minimal user data collection (just email, name)
+### Decision 1: Token-based authentication (JWT)
+**Chosen:** JWT tokens with bcrypt password hashing
+**Rationale:** Stateless tokens reduce server complexity while scaling to thousands of users. Bcrypt provides strong password security with built-in salt handling.
+**Tradeoffs:** Stateless design means no server-side token revocation without additional infrastructure; mitigated by short token lifetimes and refresh token mechanism.
+**Key constraint:** System must scale to 10,000+ users; GDPR compliance required for EU user base.
 
-This keeps it simple while meeting GDPR (we don't collect unnecessary data).
+### Decision 2: Token revocation approach
+**Chosen:** Hybrid approach — short token lifetime (5–15 min) + optional revocation list for urgent logout
+**Rationale:** Short lifetimes provide quick logout for most users without revocation overhead. Revocation list added for admin/security scenarios requiring immediate logout (compromised account, permissions change).
+**Tradeoffs:** Adds operational complexity for revocation; partially mitigated by making it optional for v1.
+**Alternatives considered:** Persistent sessions (higher server cost), long-lived tokens with revocation (all logouts incur cost), short tokens only (can't force immediate logout).
 
-## Turn 5
-**human:** JWT sounds good. But I'm concerned about token revocation — what if we need to immediately log someone out?
+### Decision 3: User data minimization
+**Chosen:** Collect only email and name; defer additional profile data
+**Rationale:** Minimal data collection simplifies GDPR compliance (data retention, user export, deletion). Extensible if needed later.
+**Tradeoffs:** Limits profile features in v1; planned as separate stage.
 
-## Turn 6
-**assistant:** Valid concern. We have options:
-1. Accept short token lifetime (5–15 minutes) and log out at refresh
-2. Keep a revocation list for immediate logout
-3. Hybrid: short lifetime + optional revocation for urgent cases
+## Issues/Questions Resolved
+- **Token revocation concern:** Raised risk of users being unable to log out immediately after account compromise. Resolved with hybrid approach: most logouts are fast (short lifetime), urgent cases handled by revocation list.
+- **Scaling uncertainty:** Clarified expected user growth (1000 → 10k) and confirmed JWT's suitability at this scale.
 
-Option 1 is simplest; Option 3 is safest. Given GDPR, I'd lean toward 3.
+## Important Tradeoffs
+The session explored a fundamental tradeoff between stateless simplicity and immediate logout capability. The chosen hybrid approach accepts the complexity of an optional revocation mechanism to enable both statelessness and urgent logout scenarios.
 
-## Turn 7
-**human:** Let's do Option 3. And we can add the revocation list as a task for Phase 2 if we don't need it immediately.
+## Deferred Items
+- Revocation list implementation deferred to Phase 2 if urgent logout is needed in production
+- Additional user profile fields deferred to separate stage
+- SSO/federated auth deferred; only basic login in v1
+
+## Process Notes
+- Initial concern about token lifetime vs logout response was the main design challenge
+- Decision evolved through option exploration to a hybrid approach, avoiding all-or-nothing tradeoff
+- Architecture accommodates future GDPR audit well; minimal data retention burden
 ```
 
 ---
@@ -480,7 +529,7 @@ A: Add it to tasks.md and update the task count in the checklist. This is part o
 A: Update plan.md and tasks.md to reflect the change. Git will track the changes. Mention the decision in decisions.md at retrospective time.
 
 **Q: Can multiple people work on one stage?**
-A: Yes. Use git branches and merging as normal. The transcript will have multiple human turns; use git metadata to see who said what.
+A: Yes. Use git branches and merging as normal. The transcript summary should depersonalize contributions (no names) and use git metadata (branch author) for attribution if needed.
 
 **Q: How long should a stage be?**
 A: As long as it needs. Some stages might be a few hours; others might be weeks. If a stage is getting very long, consider breaking it into multiple stages.
