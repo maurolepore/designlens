@@ -30,6 +30,8 @@ Run in PowerShell:
 irm https://raw.githubusercontent.com/ropensci-review-tools/designlog/main/install.ps1 | iex
 ```
 
+This installs a lightweight CLI tool (~50KB, no dependencies) that you can use from your terminal.
+
 ### First Use
 
 After installation, navigate to your git repository and run:
