@@ -14,18 +14,20 @@ spec_init() {
     exit 1
   fi
 
-  echo "Initializing speclog project..."
+  echo "Initializing designlog project..."
 
   # Create /specs directory
   mkdir -p specs
   echo "✓ Created /specs directory"
 
-  # Read version from installed tool
-  VERSION_FILE="${LIB_DIR}/../VERSION"
-  if [ -f "$VERSION_FILE" ]; then
-    TOOL_VERSION=$(cat "$VERSION_FILE")
+  # Read metadata from installed tool
+  METADATA_FILE="${LIB_DIR}/../designlog.json"
+  if [ -f "$METADATA_FILE" ]; then
+    TOOL_VERSION=$(grep -o '"Version": *"[^"]*"' "$METADATA_FILE" | cut -d'"' -f4)
+    TOOL_URL=$(grep -o '"URL": *"[^"]*"' "$METADATA_FILE" | cut -d'"' -f4)
   else
     TOOL_VERSION="unknown"
+    TOOL_URL="https://github.com/ropensci/designlog"
   fi
 
   # Create lockfile
@@ -33,7 +35,7 @@ spec_init() {
 {
   "tool": "designlog",
   "version": "$TOOL_VERSION",
-  "docs": "https://github.com/[org]/designlog/docs/conventions.md",
+  "docs": "$TOOL_URL/blob/main/docs/conventions.md",
   "active": true
 }
 EOF

@@ -1,0 +1,28 @@
+{
+  "Title": "designlog",
+  "Description": "Design history and decision tracking tool for open source projects",
+  "Version": "0.1.0",
+  "Author": "rOpenSci",
+  "License": "MIT",
+  "Language": "en-GB",
+  "URL": "https://github.com/ropensci/designlog",
+  "BugReports": "https://github.com/ropensci/designlog/issues",
+  "SystemRequirements": "bash (>= 3.2), curl, git",
+  "Repository": {
+    "type": "git",
+    "url": "https://github.com/ropensci/designlog.git"
+  },
+  "Keywords": [
+    "design-history",
+    "specifications",
+    "decision-tracking",
+    "documentation",
+    "open-source",
+    "retrospective"
+  ],
+  "Platforms": [
+    "darwin",
+    "linux",
+    "windows"
+  ]
+}

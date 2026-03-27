@@ -67,7 +67,8 @@ See `/docs/conventions.md` for the full specification of the workflow, formats, 
 ```
 designlog/
   README.md
-  VERSION
+  designlog.json     (tool metadata and version)
+  LICENSE            (MIT license)
   install.sh
   install.ps1
   bin/
@@ -85,4 +86,4 @@ designlog/
 
 ## License
 
-TBD
+MIT. See [LICENSE](LICENSE) file for details.

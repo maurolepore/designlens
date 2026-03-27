@@ -29,7 +29,8 @@ case "$OS" in
     $SUDO cp -r "$SCRIPT_DIR"/lib "$INSTALL_DIR/"
     $SUDO cp -r "$SCRIPT_DIR"/docs "$INSTALL_DIR/"
     $SUDO cp "$SCRIPT_DIR"/README.md "$INSTALL_DIR/"
-    $SUDO cp "$SCRIPT_DIR"/VERSION "$INSTALL_DIR/"
+    $SUDO cp "$SCRIPT_DIR"/designlog.json "$INSTALL_DIR/"
+    $SUDO cp "$SCRIPT_DIR"/LICENSE "$INSTALL_DIR/"
 
     echo "Making scripts executable..."
     $SUDO chmod +x "$INSTALL_DIR"/bin/speclog

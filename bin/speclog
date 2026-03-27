@@ -71,9 +71,14 @@ case "$1" in
     spec_status
     ;;
   version|-v|--version)
-    VERSION_FILE="$SCRIPT_DIR/../VERSION"
-    if [ -f "$VERSION_FILE" ]; then
-      echo "designlog $(cat "$VERSION_FILE")"
+    METADATA_FILE="$SCRIPT_DIR/../designlog.json"
+    if [ -f "$METADATA_FILE" ]; then
+      VERSION=$(grep -o '"Version": *"[^"]*"' "$METADATA_FILE" | cut -d'"' -f4)
+      if [ -n "$VERSION" ]; then
+        echo "designlog $VERSION"
+      else
+        echo "designlog (version unknown)"
+      fi
     else
       echo "designlog (version unknown)"
     fi
