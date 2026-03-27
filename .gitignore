@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+.directory
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Local development
+node_modules/
+__pycache__/
+*.pyc

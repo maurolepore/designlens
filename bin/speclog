@@ -1,0 +1,89 @@
+#!/bin/bash
+
+# speclog main entry point
+# Routes commands to lib scripts
+
+set -e
+
+# Get the directory where this script is installed
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+LIB_DIR="$SCRIPT_DIR/../lib"
+
+# Help text
+show_help() {
+  cat << 'EOF'
+speclog - Design history and spec tracking
+
+USAGE:
+  speclog <command> [options]
+
+COMMANDS:
+  init                Initialize a project (run once)
+  new-stage <name>    Create a new spec stage
+  retrospective       Generate design decisions file
+  transcript <file>   Normalize a transcript to standard format
+  status              Show current project state
+  update              Update speclog to latest version
+  help                Show this help message
+
+EXAMPLES:
+  speclog init
+  speclog new-stage "auth-system"
+  speclog status
+  speclog retrospective
+  speclog transcript my-session.md
+
+For full documentation, see the docs/conventions.md in the speclog repo.
+EOF
+}
+
+# Route commands
+case "$1" in
+  init)
+    source "$LIB_DIR/init.sh"
+    spec_init
+    ;;
+  new-stage)
+    if [ -z "$2" ]; then
+      echo "Error: new-stage requires a name argument"
+      echo "Usage: speclog new-stage <name>"
+      exit 1
+    fi
+    source "$LIB_DIR/new-stage.sh"
+    spec_new_stage "$2"
+    ;;
+  retrospective)
+    source "$LIB_DIR/retrospective.sh"
+    spec_retrospective
+    ;;
+  transcript)
+    if [ -z "$2" ]; then
+      echo "Error: transcript requires a file argument"
+      echo "Usage: speclog transcript <file>"
+      exit 1
+    fi
+    source "$LIB_DIR/transcript.sh"
+    spec_transcript "$2"
+    ;;
+  status)
+    source "$LIB_DIR/status.sh"
+    spec_status
+    ;;
+  update)
+    source "$LIB_DIR/update.sh"
+    spec_update
+    ;;
+  help|--help|-h)
+    show_help
+    ;;
+  *)
+    if [ -z "$1" ]; then
+      show_help
+    else
+      echo "Error: Unknown command: $1"
+      echo ""
+      show_help
+      exit 1
+    fi
+    ;;
+esac
