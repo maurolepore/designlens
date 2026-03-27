@@ -23,39 +23,46 @@ are committed to git, and tell the story of the project to future contributors.
 curl -fsSL https://raw.githubusercontent.com/ropensci-review-tools/designlog/main/install.sh | bash
 ```
 
-Then:
+### Setup
+
+After installation, navigate to the git repository where you want to use designlog and run:
+
 ```bash
-speclog init
+designlog init
 ```
 
-### Windows
+This initializes designlog in your project (creates `/specs`, lockfile, and agent instructions).
 
-Run in PowerShell:
+### Windows Setup
+
+Run the installer in PowerShell:
 ```powershell
 irm https://raw.githubusercontent.com/ropensci-review-tools/designlog/main/install.ps1 | iex
 ```
 
-Then:
+Then navigate to your git repository and run:
 ```bash
-speclog init
+designlog init
 ```
 
 ## Quick Start
 
+In your project directory (git repo):
+
 ```bash
-# Initialize a project (run once)
+# Initialize designlog (run once per project)
 designlog init
 
-# Start a new stage (inside your agent, or from terminal)
-designlog new-stage "auth-system"
+# Start a new design stage
+designlog new-stage "feature-name"
 
-# Check project state
+# Check current project state
 designlog status
 
-# Generate design decisions (auto-triggered or manual)
+# Generate design decisions after stage completion
 designlog retrospective
 
-# Check version
+# Check installed version
 designlog version
 ```
 
