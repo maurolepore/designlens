@@ -1,6 +1,6 @@
-# speclog Conventions and Workflow
+# designlog Conventions and Workflow
 
-This document defines the complete speclog workflow, file formats, and instructions for agents.
+This document defines the complete designlog workflow, file formats, and instructions for agents.
 
 ## Table of Contents
 
@@ -15,7 +15,7 @@ This document defines the complete speclog workflow, file formats, and instructi
 
 ## Overview
 
-speclog is a design history tool for open source projects. It captures the progression from rough ideas → formalized plans → task breakdown → implementation → retrospective decisions.
+designlog is a design history tool for open source projects. It captures the progression from rough ideas → formalized plans → task breakdown → implementation → retrospective decisions.
 
 The core value: future contributors can understand *why* the code is the way it is, not just *what* it does.
 
@@ -78,7 +78,7 @@ When one branch merges and another diverges, the history naturally captures the 
 
 ```bash
 git init  # if needed
-speclog init
+designlog init
 ```
 
 This creates `/specs`, lockfile, and AGENTS.md/CLAUDE.md pointer.
@@ -88,7 +88,7 @@ This creates `/specs`, lockfile, and AGENTS.md/CLAUDE.md pointer.
 1. **Agent starts** in the repo
    - Automatically reads AGENTS.md/CLAUDE.md (Claude Code, etc.)
    - Learns that specs exist and reads conventions.md
-   - Runs `speclog status` to determine current state
+   - Runs `designlog status` to determine current state
 
 2. **Developer describes** the work to the agent
    - "I want to build an authentication system"
@@ -134,7 +134,7 @@ This creates `/specs`, lockfile, and AGENTS.md/CLAUDE.md pointer.
 
 When all tasks are complete:
 
-1. **Agent or developer** runs `speclog retrospective`
+1. **Agent or developer** runs `designlog retrospective`
    - Tool outputs a structured prompt
    - Developer/agent pastes it into the coding agent
 
@@ -164,7 +164,7 @@ The stage is complete. All three files are in git.
 
 ### Phase 6: Next Stage
 
-Run `speclog new-stage "next-stage-name"` to begin the cycle again.
+Run `designlog new-stage "next-stage-name"` to begin the cycle again.
 
 The tool will warn if the previous stage lacks design-decisions.md and offer to run retrospective.
 
@@ -338,13 +338,13 @@ Example: "Building on the auth system from 001-auth (see that stage's decisions 
 
 ## Agent Instructions
 
-**If you're an agent starting a session in a project with speclog:**
+**If you're an agent starting a session in a project with designlog:**
 
 ### At Session Start
 
 1. **Check for spec setup:**
    ```bash
-   speclog status
+   designlog status
    ```
 
 2. **Read the current state:**
@@ -356,7 +356,7 @@ Example: "Building on the auth system from 001-auth (see that stage's decisions 
 
 ### During the Session
 
-1. **Follow speclog conventions**
+1. **Follow designlog conventions**
    - When writing plan.md, use the template above
    - When writing tasks.md, use clear checkboxes and acceptance criteria
    - Encourage the human to record important design discussions
@@ -371,7 +371,7 @@ Example: "Building on the auth system from 001-auth (see that stage's decisions 
    - Maintain the task checklist in tasks.md
    - Check off tasks as they're completed
    - Ask for human approval before marking tasks done
-   - Run `speclog status` periodically to show progress
+   - Run `designlog status` periodically to show progress
 
 4. **Record the conversation**
    - If the human asks, or if significant design decisions were made, save a normalized transcript to `.transcript.md`
@@ -380,10 +380,10 @@ Example: "Building on the auth system from 001-auth (see that stage's decisions 
 ### When the Stage Is Complete
 
 1. **Confirm all tasks are done:**
-   - Run `speclog status` — it should say "Stage complete!"
+   - Run `designlog status` — it should say "Stage complete!"
 
 2. **Generate .transcript.md (decision summary):**
-   - Run `speclog retrospective`
+   - Run `designlog retrospective`
    - Follow the detailed prompt it provides
    - **Critical:** Follow anonymization rules strictly
      - No personal names or identifying information
@@ -401,7 +401,7 @@ Example: "Building on the auth system from 001-auth (see that stage's decisions 
 
 4. **Start the next stage:**
    - Ask the human what to work on next
-   - Run `speclog new-stage "next-stage-name"`
+   - Run `designlog new-stage "next-stage-name"`
    - Begin planning again
 
 ### Key Principles
@@ -526,7 +526,7 @@ The session explored a fundamental tradeoff between stateless simplicity and imm
 
 ## FAQ
 
-**Q: Should we commit the .specmeta.json lockfile?**
+**Q: Should we commit the .designmeta.json lockfile?**
 A: Yes, it's useful for future contributors to know what tool was used and where to find docs.
 
 **Q: What if the human and AI disagree on a design?**
@@ -554,23 +554,23 @@ A: As long as it needs. Some stages might be a few hours; others might be weeks.
 ### Command Reference
 
 ```bash
-speclog init                    # Initialize project (once)
-speclog new-stage <name>        # Create new stage
-speclog status                  # Show current state and next action
-speclog retrospective           # Generate design-decisions.md
-speclog transcript <file>       # Normalize a transcript
-speclog update                  # Update to latest version
+designlog init                    # Initialize project (once)
+designlog new-stage <name>        # Create new stage
+designlog status                  # Show current state and next action
+designlog retrospective           # Generate design-decisions.md
+designlog transcript <file>       # Normalize a transcript
+designlog update                  # Update to latest version
 ```
 
 ### IDE Integration
 
-Most IDEs and coding agents (Claude Code, Cursor, etc.) can execute shell commands. Use that to call speclog commands during a session.
+Most IDEs and coding agents (Claude Code, Cursor, etc.) can execute shell commands. Use that to call designlog commands during a session.
 
 ### Git Workflow
 
 ```bash
 # Start a new stage
-speclog new-stage "feature-name"
+designlog new-stage "feature-name"
 git checkout -b specs/feature-name
 
 # Work on the stage
@@ -579,7 +579,7 @@ git add .
 git commit -m "WIP: Feature implementation"
 
 # Complete the stage
-speclog retrospective
+designlog retrospective
 git add specs/feature-name/design-decisions.md
 git commit -m "feature-name: Design decisions"
 

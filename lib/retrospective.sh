@@ -5,7 +5,7 @@
 
 spec_retrospective() {
   if [ ! -d specs ]; then
-    echo "Error: /specs directory not found. Run 'speclog init' first."
+    echo "Error: /specs directory not found. Run 'designlog init' first."
     exit 1
   fi
 

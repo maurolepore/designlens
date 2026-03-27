@@ -143,7 +143,7 @@ EOF
     if [ "$response" = "y" ]; then
       cat >> CLAUDE.md << 'EOF'
 
-## speclog
+## designlog
 
 This project uses **designlog** for design history tracking. Read the specs in `/specs` for the development workflow and design decisions.
 EOF

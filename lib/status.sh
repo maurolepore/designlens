@@ -5,11 +5,11 @@
 
 spec_status() {
   if [ ! -d specs ]; then
-    echo "Error: /specs directory not found. Run 'speclog init' first."
+    echo "Error: /specs directory not found. Run 'designlog init' first."
     exit 1
   fi
 
-  echo "=== speclog status ==="
+  echo "=== designlog status ==="
   echo ""
 
   # Find all stages
@@ -24,7 +24,7 @@ spec_status() {
     echo "No stages found."
     echo ""
     echo "→ Next action: Create the first stage"
-    echo "  speclog new-stage \"stage-name\""
+    echo "  designlog new-stage \"stage-name\""
     return
   fi
 
@@ -81,7 +81,7 @@ spec_status() {
 
   if [ "$decisions_exists" = false ]; then
     echo "→ Next action: Generate design decisions summary"
-    echo "  Run: speclog retrospective"
+    echo "  Run: designlog retrospective"
     return
   fi
 
@@ -89,5 +89,5 @@ spec_status() {
   echo "✓ Stage complete!"
   echo ""
   echo "→ Next action: Start a new stage"
-  echo "  speclog new-stage \"next-stage-name\""
+  echo "  designlog new-stage \"next-stage-name\""
 }
