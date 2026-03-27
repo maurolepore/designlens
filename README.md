@@ -23,29 +23,22 @@ are committed to git, and tell the story of the project to future contributors.
 curl -fsSL https://raw.githubusercontent.com/ropensci-review-tools/designlog/main/install.sh | bash
 ```
 
-This installs a lightweight bash-based tool (~50KB) to `/usr/local/lib/designlog` with a symlink at `/usr/local/bin/designlog`. If `/usr/local` is not writable, it falls back to `~/.local/lib/designlog` automatically (no sudo needed). If using the user-local fallback, you may need to add `~/.local/bin` to your PATH.
+### Windows
 
-### Setup
-
-After installation, navigate to the git repository where you want to use designlog and run:
-
-```bash
-designlog init
-```
-
-This initializes designlog in your project (creates `/specs`, lockfile, and agent instructions).
-
-### Windows Setup
-
-Run the installer in PowerShell:
+Run in PowerShell:
 ```powershell
 irm https://raw.githubusercontent.com/ropensci-review-tools/designlog/main/install.ps1 | iex
 ```
 
-Then navigate to your git repository and run:
+### First Use
+
+After installation, navigate to your git repository and run:
+
 ```bash
 designlog init
 ```
+
+This creates `/specs` folder and initializes designlog in your project.
 
 ## Quick Start
 
@@ -76,19 +69,11 @@ designlog update
 
 ## Uninstalling
 
-To remove designlog:
-
 ```bash
 designlog uninstall
 ```
 
-Or manually:
-```bash
-rm -rf /usr/local/lib/designlog
-rm /usr/local/bin/designlog
-```
-
-This leaves your projects' `/specs` folders and design history intact—only the tool itself is removed.
+Your projects' `/specs` folders and design history remain intact.
 
 ## Documentation
 
