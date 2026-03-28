@@ -5,7 +5,9 @@
 
 spec_init() {
   # Source config helper
-  source "$(dirname "$0")/config.sh"
+  local lib_dir
+  lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  source "$lib_dir/config.sh"
 
   if [ ! -d .git ]; then
     echo "Initializing git repository..."
