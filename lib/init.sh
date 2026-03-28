@@ -9,6 +9,9 @@ spec_init() {
   lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
   source "$lib_dir/colors.sh"
   source "$lib_dir/config.sh"
+  source "$lib_dir/logo.sh"
+
+  show_logo
 
   if [ ! -d .git ]; then
     echo "Initializing git repository..."

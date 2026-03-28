@@ -3,11 +3,14 @@
 # Update designlog to the latest version
 # Re-fetches and reinstalls from GitHub
 
-# Source colors
+# Source colors and logo
 lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$lib_dir/colors.sh"
+source "$lib_dir/logo.sh"
 
 spec_update() {
+  show_logo
+
   info "Checking for updates..."
   echo ""
 

@@ -3,11 +3,14 @@
 # Show current project state
 # Determines what should be done next
 
-# Source colors
+# Source colors and logo
 lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$lib_dir/colors.sh"
+source "$lib_dir/logo.sh"
 
 spec_status() {
+  show_logo
+
   if [ ! -d specs ]; then
     error "/specs directory not found. Run 'designlog init' first."
     exit 1

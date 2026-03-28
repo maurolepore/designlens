@@ -3,9 +3,10 @@
 # Helper for creating semi-anonymized session transcripts
 # Speaker attribution uses git user.name; message content is anonymized
 
-# Source colors
+# Source colors and logo
 lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$lib_dir/colors.sh"
+source "$lib_dir/logo.sh"
 
 spec_transcript() {
   local input_file="$1"
@@ -14,6 +15,8 @@ spec_transcript() {
     error "File not found: $input_file"
     exit 1
   fi
+
+  show_logo
 
   local git_user
   git_user=$(git config user.name 2>/dev/null || echo "unknown")

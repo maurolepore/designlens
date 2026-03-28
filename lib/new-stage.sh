@@ -3,12 +3,15 @@
 # Create a new spec stage
 # Validates that previous stage retrospective is complete
 
-# Source colors
+# Source colors and logo
 lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$lib_dir/colors.sh"
+source "$lib_dir/logo.sh"
 
 spec_new_stage() {
   local stage_name="$1"
+
+  show_logo
 
   if [ ! -d specs ]; then
     error "/specs directory not found. Run 'designlog init' first."

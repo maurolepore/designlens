@@ -2,11 +2,14 @@
 
 # Uninstall designlog from the system
 
-# Source colors
+# Source colors and logo
 lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$lib_dir/colors.sh"
+source "$lib_dir/logo.sh"
 
 spec_uninstall() {
+  show_logo
+
   heading "Uninstalling designlog..."
   echo ""
 

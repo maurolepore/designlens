@@ -3,9 +3,10 @@
 # Configuration management for designlog
 # Project-level configuration stored in .designlog.json
 
-# Source colors
+# Source colors and logo
 lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$lib_dir/colors.sh"
+source "$lib_dir/logo.sh"
 
 # Get project config file path
 get_config_file() {
@@ -83,6 +84,8 @@ show_config_help() {
 
 # Command: Show current config
 spec_config_show() {
+  show_logo
+
   local config_file
 
   config_file=$(get_config_file)
@@ -101,6 +104,8 @@ spec_config_show() {
 
 # Command: Set config value
 spec_config_set() {
+  show_logo
+
   local key="$1"
   local value="$2"
   local config_file
@@ -128,6 +133,8 @@ spec_config_set() {
 
 # Command: Reset config to defaults
 spec_config_reset() {
+  show_logo
+
   local config_file
 
   config_file=$(get_config_file)
@@ -153,6 +160,8 @@ spec_config_reset() {
 
 # Command: Help for config command
 spec_config_help() {
+  show_logo
+
   heading "designlog config - Manage project configuration"
   echo ""
   heading "USAGE:"
