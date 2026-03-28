@@ -30,8 +30,11 @@ spec_init() {
   mkdir -p specs
   success "Created /specs directory"
 
+  rule
+  echo ""
+
   # Read metadata from installed tool
-  METADATA_FILE="${LIB_DIR}/../designlog.json"
+  METADATA_FILE="$lib_dir/../designlog.json"
   if [ -f "$METADATA_FILE" ]; then
     TOOL_VERSION=$(grep -o '"Version": *"[^"]*"' "$METADATA_FILE" | cut -d'"' -f4)
     TOOL_URL=$(grep -o '"URL": *"[^"]*"' "$METADATA_FILE" | cut -d'"' -f4)
@@ -51,9 +54,12 @@ spec_init() {
 EOF
   success "Created .designlog.json"
 
-  # Ask about auto-commit preference (only on first init for this project)
   echo ""
-  echo "Would you like completed tasks to be automatically committed? (y/n)"
+  rule
+  echo ""
+
+  # Ask about auto-commit preference (only on first init for this project)
+  prompt "Would you like completed tasks to be automatically committed? (y/n)"
   read -r response
   if [ "$response" = "y" ]; then
     # Add auto_commit setting to .designlog.json
@@ -66,6 +72,11 @@ EOF
     rm -f .designlog.json.bak
     success "Auto-commit disabled for this project"
   fi
+
+  echo ""
+  rule
+  echo ""
+
   show_config_help
 
   # Create specs README
@@ -199,7 +210,9 @@ EOF
   echo ""
   success "designlog initialized successfully!"
   echo ""
-  echo "Next steps:"
+  rule
+  echo ""
+  heading "━ Next steps ━"
   echo "  1. Commit the changes: git add -A && git commit -m 'Initialize designlog'"
   echo "  2. Start a coding session with your agent (Claude Code, etc.)"
   echo "  3. Run 'designlog new-stage \"name\"' to begin the first design phase"

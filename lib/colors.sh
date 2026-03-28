@@ -59,3 +59,8 @@ prompt() {
 heading() {
   echo -e "${BOLD}$*${NC}"
 }
+
+# Print a horizontal rule
+rule() {
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+}
