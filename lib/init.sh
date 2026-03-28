@@ -4,6 +4,9 @@
 # Creates /specs folder, lockfile, and AGENTS.md pointer
 
 spec_init() {
+  # Source config helper
+  source "$(dirname "$0")/config.sh"
+
   if [ ! -d .git ]; then
     echo "Initializing git repository..."
     git init
@@ -16,6 +19,21 @@ spec_init() {
   fi
 
   echo "Initializing designlog project..."
+
+  # Initialize global config (ask user only on first run)
+  if ! init_global_config; then
+    echo "✓ Created global designlog config"
+    echo ""
+    echo "Would you like completed tasks to be automatically committed? (y/n)"
+    read -r response
+    if [ "$response" = "y" ]; then
+      write_global_config "auto_commit" "true"
+      echo "✓ Auto-commit enabled"
+    else
+      echo "✓ Auto-commit disabled"
+    fi
+    show_config_help
+  fi
 
   # Create /specs directory
   mkdir -p specs

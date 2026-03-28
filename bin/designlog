@@ -23,6 +23,7 @@ COMMANDS:
   retrospective       Generate design decisions file
   transcript <file>   Normalize a transcript to standard format
   status              Show current project state
+  config              Manage designlog configuration
   version             Show installed version
   update              Update designlog to latest version
   uninstall           Uninstall designlog from system
@@ -34,6 +35,8 @@ EXAMPLES:
   designlog status
   designlog retrospective
   designlog transcript my-session.md
+  designlog config show
+  designlog config set auto_commit true
 
 For full documentation, see the docs/conventions.md in the designlog repo.
 EOF
@@ -87,6 +90,28 @@ case "$1" in
   update)
     source "$LIB_DIR/update.sh"
     spec_update
+    ;;
+  config)
+    source "$LIB_DIR/config.sh"
+    case "$2" in
+      show|view|get)
+        spec_config_show
+        ;;
+      set)
+        if [ -z "$3" ] || [ -z "$4" ]; then
+          echo "Usage: designlog config set <key> <value>"
+          echo "Example: designlog config set auto_commit true"
+          exit 1
+        fi
+        spec_config_set "$3" "$4"
+        ;;
+      reset)
+        spec_config_reset
+        ;;
+      *)
+        spec_config_help
+        ;;
+    esac
     ;;
   uninstall)
     source "$LIB_DIR/uninstall.sh"
