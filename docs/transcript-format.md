@@ -67,46 +67,46 @@ All transcripts must adhere to these principles:
 ## Example
 
 ```markdown
-# Transcript Summary: Authentication System
+# Transcript Summary: Data Processing Pipeline
 
 ## Session Overview
-The authentication system design was discussed, exploring tradeoffs between simplicity and security. JWT tokens were selected as the foundation, with a hybrid approach to token revocation for immediate logout capability when needed.
+The data processing pipeline design was discussed, focusing on a core tradeoff between using an external library for data validation versus implementing validation logic in-house. The decision was made to use an external library in order to reduce maintenance burden and leverage battle-tested code, accepting the additional dependency weight.
 
 ## Design Decisions Made
 
-### Decision 1: Token-based authentication (JWT)
-**Chosen:** JWT tokens with bcrypt password hashing
-**Rationale:** Stateless tokens reduce server complexity while scaling to thousands of users. Bcrypt provides strong password security with built-in salt handling.
-**Tradeoffs:** Stateless design means no server-side token revocation without additional infrastructure; mitigated by short token lifetimes and refresh token mechanism.
-**Key constraint:** System must scale to 10,000+ users; GDPR compliance required for EU user base.
+### Decision 1: External library vs in-house implementation for data validation
+**Chosen:** Use the `jsonschema` external library for validation
+**Rationale:** The library provides comprehensive JSON Schema support, reducing development time and maintenance burden. External libraries are better maintained and more performant than custom implementations.
+**Tradeoffs:** Adds a runtime dependency, increases bundle size by ~150KB, and creates an external maintenance dependency. Mitigated by choosing a widely-used library with long-term stability.
+**Key constraint:** Project targets minimal dependencies; bundle size is a concern for embedded use cases.
 
-### Decision 2: Token revocation approach
-**Chosen:** Hybrid approach — short token lifetime (5–15 min) + optional revocation list for urgent logout
-**Rationale:** Short lifetimes provide quick logout for most users without revocation overhead. Revocation list added for admin/security scenarios requiring immediate logout (compromised account, permissions change).
-**Tradeoffs:** Adds operational complexity for revocation; partially mitigated by making it optional for v1.
-**Alternatives considered:** Persistent sessions (higher server cost), long-lived tokens with revocation (all logouts incur cost), short tokens only (can't force immediate logout).
+### Decision 2: Validation schema architecture
+**Chosen:** Centralized schema definitions in a single config file, loaded at startup
+**Rationale:** Simplifies schema updates and testing; avoids scattering validation rules throughout the codebase. Single source of truth for schema evolution.
+**Tradeoffs:** Less flexible for dynamic schema generation; requires application restart for schema changes. Deferred to v2 if dynamic schemas become critical.
+**Alternatives considered:** Inline schemas (harder to maintain), database-backed schemas (adds complexity), environment-based schemas (harder to test).
 
-### Decision 3: User data minimization
-**Chosen:** Collect only email and name; defer additional profile data
-**Rationale:** Minimal data collection simplifies GDPR compliance (data retention, user export, deletion). Extensible if needed later.
-**Tradeoffs:** Limits profile features in v1; planned as separate stage.
+### Decision 3: Error handling for validation failures
+**Chosen:** Validation failures return structured error responses with schema path information
+**Rationale:** Enables client-side debugging and clearer error reporting. Structured errors allow programmatic handling.
+**Tradeoffs:** More verbose responses; requires consistent error format documentation. Minimal performance impact.
 
 ## Issues/Questions Resolved
-- **Token revocation concern:** Raised risk of users being unable to log out immediately after account compromise. Resolved with hybrid approach: most logouts are fast (short lifetime), urgent cases handled by revocation list.
-- **Scaling uncertainty:** Clarified expected user growth (1000 → 10k) and confirmed JWT's suitability at this scale.
+- **Dependency bloat concern:** Raised risk of adding too many dependencies. Resolved by selecting one foundational validation library and deferring specialized tools to v2.
+- **Performance uncertainty:** Clarified that `jsonschema` is comparable in speed to in-house implementations for the expected data volumes.
 
 ## Important Tradeoffs
-The session explored a fundamental tradeoff between stateless simplicity and immediate logout capability. The chosen hybrid approach accepts the complexity of an optional revocation mechanism to enable both statelessness and urgent logout scenarios.
+The core tradeoff explored was developer velocity and correctness (via external library) versus minimal dependencies (in-house implementation). The chosen approach accepts the dependency weight in favor of maintainability and correctness.
 
 ## Deferred Items
-- Revocation list implementation deferred to Phase 2 if urgent logout is needed in production
-- Additional user profile fields deferred to separate stage
-- SSO/federated auth deferred; only basic login in v1
+- Custom validation rules layer deferred to v2
+- Dynamic schema loading deferred pending adoption feedback
+- Performance profiling for large payloads deferred to post-beta
 
 ## Process Notes
-- Initial concern about token lifetime vs logout response was the main design challenge
-- Decision evolved through option exploration to a hybrid approach, avoiding all-or-nothing tradeoff
-- Architecture accommodates future GDPR audit well; minimal data retention burden
+- Initial skepticism about external dependencies was the main discussion point
+- Decision evolved through cost-benefit analysis of maintenance burden
+- Team consensus reached that time saved outweighs the dependency cost
 ```
 
 ---

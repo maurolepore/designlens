@@ -19,8 +19,8 @@ This creates `/specs`, lockfile, and AGENTS.md/CLAUDE.md pointer.
    - Runs `designlog status` to determine current state
 
 2. **Developer describes** the work to the agent
-   - "I want to build an authentication system"
-   - "Let's refactor the data pipeline"
+   - "I want to add data validation to the pipeline"
+   - "Let's refactor the error handling system"
    - etc.
 
 3. **Agent explores** through dialogue
