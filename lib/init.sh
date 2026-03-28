@@ -207,29 +207,11 @@ EOF
 
   echo ""
   success "designlog initialized successfully!"
-
-  # Check if auto-commit is enabled and commit if so
-  local auto_commit=$(get_config "auto_commit")
-  if [ "$auto_commit" = "true" ]; then
-    echo ""
-    info "Auto-committing initialization files..."
-    git add -A
-    git commit -m "Initialize designlog" > /dev/null 2>&1
-    success "Changes committed"
-  fi
-
   echo ""
   rule
   echo ""
-
-  if [ "$auto_commit" = "true" ]; then
-    heading "━ Next steps ━"
-    echo "  1. Start a coding session with your agent (Claude Code, etc.)"
-    echo "  2. Run 'designlog new-stage \"name\"' to begin the first design phase"
-  else
-    heading "━ Next steps ━"
-    echo "  1. Commit the changes: git add -A && git commit -m 'Initialize designlog'"
-    echo "  2. Start a coding session with your agent (Claude Code, etc.)"
-    echo "  3. Run 'designlog new-stage \"name\"' to begin the first design phase"
-  fi
+  heading "━ Next steps ━"
+  echo "  1. Commit the changes: git add -A && git commit -m 'Initialize designlog'"
+  echo "  2. Start a coding session with your agent (Claude Code, etc.)"
+  echo "  3. Run 'designlog new-stage \"name\"' to begin the first design phase"
 }
