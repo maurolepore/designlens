@@ -4,19 +4,20 @@
 # Creates /specs folder, lockfile, and AGENTS.md pointer
 
 spec_init() {
-  # Source config helper
+  # Source helpers
   local lib_dir
   lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  source "$lib_dir/colors.sh"
   source "$lib_dir/config.sh"
 
   if [ ! -d .git ]; then
     echo "Initializing git repository..."
     git init
-    echo "✓ Git repository initialized"
+    success "Git repository initialized"
   fi
 
   if [ -d specs ]; then
-    echo "Error: /specs folder already exists. Project is already initialized."
+    error "/specs folder already exists. Project is already initialized."
     exit 1
   fi
 
@@ -24,7 +25,7 @@ spec_init() {
 
   # Create /specs directory
   mkdir -p specs
-  echo "✓ Created /specs directory"
+  success "Created /specs directory"
 
   # Read metadata from installed tool
   METADATA_FILE="${LIB_DIR}/../designlog.json"
@@ -45,7 +46,7 @@ spec_init() {
   "active": true
 }
 EOF
-  echo "✓ Created .designlog.json"
+  success "Created .designlog.json"
 
   # Ask about auto-commit preference (only on first init for this project)
   echo ""
@@ -55,12 +56,12 @@ EOF
     # Add auto_commit setting to .designlog.json
     sed -i.bak 's/"active": true/"active": true,\n  "auto_commit": true/' .designlog.json
     rm -f .designlog.json.bak
-    echo "✓ Auto-commit enabled for this project"
+    success "Auto-commit enabled for this project"
   else
     # Add auto_commit setting to .designlog.json
     sed -i.bak 's/"active": true/"active": true,\n  "auto_commit": false/' .designlog.json
     rm -f .designlog.json.bak
-    echo "✓ Auto-commit disabled for this project"
+    success "Auto-commit disabled for this project"
   fi
   show_config_help
 
@@ -90,7 +91,7 @@ These files are part of the repository and are committed to git. They serve as d
 
 For instructions on *creating* new specs, see the project's AGENTS.md or CLAUDE.md file.
 EOF
-  echo "✓ Created specs/README.md"
+  success "Created specs/README.md"
 
   # Check for extensive git history and auto-capture if present
   COMMIT_COUNT=$(git rev-list --count HEAD 2>/dev/null || echo 0)
@@ -98,7 +99,7 @@ EOF
 
   if [ "$COMMIT_COUNT" -gt "$HISTORY_THRESHOLD" ]; then
     mkdir -p specs/000-design-history
-    echo "✓ Created specs/000-design-history/ (detected $COMMIT_COUNT commits)"
+    success "Created specs/000-design-history/ (detected $COMMIT_COUNT commits)"
     echo ""
     echo "Generating design history from git analysis..."
     echo ""
@@ -157,7 +158,7 @@ EOF
 
 This project uses **designlog** for design history tracking. Read the specs in `/specs` and `/docs/conventions.md` (if present) for the development workflow and design decisions.
 EOF
-      echo "✓ Appended to AGENTS.md"
+      success "Appended to AGENTS.md"
     fi
   elif [ -f "CLAUDE.md" ]; then
     echo ""
@@ -170,7 +171,7 @@ EOF
 
 This project uses **designlog** for design history tracking. Read the specs in `/specs` for the development workflow and design decisions.
 EOF
-      echo "✓ Appended to CLAUDE.md"
+      success "Appended to CLAUDE.md"
     fi
   else
     # Create AGENTS.md
@@ -189,11 +190,11 @@ When starting a session:
 
 The specs folder contains the full design history and development philosophy. Refer to it when making architectural decisions.
 EOF
-    echo "✓ Created AGENTS.md"
+    success "Created AGENTS.md"
   fi
 
   echo ""
-  echo "✓ designlog initialized successfully!"
+  success "designlog initialized successfully!"
   echo ""
   echo "Next steps:"
   echo "  1. Commit the changes: git add -A && git commit -m 'Initialize designlog'"

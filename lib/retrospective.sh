@@ -3,9 +3,13 @@
 # Generate design-decisions.md from the current stage
 # Uses agent to summarize design decisions from plan and transcript
 
+# Source colors
+lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$lib_dir/colors.sh"
+
 spec_retrospective() {
   if [ ! -d specs ]; then
-    echo "Error: /specs directory not found. Run 'designlog init' first."
+    error "/specs directory not found. Run 'designlog init' first."
     exit 1
   fi
 
@@ -18,14 +22,14 @@ spec_retrospective() {
   done
 
   if [ -z "$latest_stage" ]; then
-    echo "Error: No stages found."
+    error "No stages found."
     exit 1
   fi
 
   # Check if design-decisions.md already exists
   if [ -f "$latest_stage/design-decisions.md" ]; then
-    echo "design-decisions.md already exists for $latest_stage"
-    echo "Overwrite? (y/n)"
+    warning "design-decisions.md already exists for $latest_stage"
+    prompt "Overwrite? (y/n)"
     read -r response
     if [ "$response" != "y" ]; then
       exit 0
@@ -34,20 +38,20 @@ spec_retrospective() {
 
   # Check for required files
   if [ ! -f "$latest_stage/plan.md" ]; then
-    echo "Error: plan.md not found in $latest_stage"
+    error "plan.md not found in $latest_stage"
     exit 1
   fi
 
   if [ ! -f "$latest_stage/tasks.md" ]; then
-    echo "Error: tasks.md not found in $latest_stage"
+    error "tasks.md not found in $latest_stage"
     exit 1
   fi
 
-  echo "Generating design-decisions.md for $latest_stage..."
+  heading "Generating design-decisions.md for $latest_stage..."
   echo ""
-  echo "After implementing all tasks, review with agent to generate design-decisions.md:"
+  info "After implementing all tasks, review with agent to generate design-decisions.md:"
   echo ""
-  echo "============================================"
+  heading "============================================"
   echo ""
   echo "You are reviewing a completed design stage for a project."
   echo ""
@@ -178,10 +182,10 @@ spec_retrospective() {
   echo "and focused on what's NEW, while the full history is reconstructable by reading"
   echo "sequentially from 000-design-history forward."
   echo ""
-  echo "Save the result to: $latest_stage/design-decisions.md"
-  echo "============================================"
+  info "Save the result to: $latest_stage/design-decisions.md"
+  heading "============================================"
   echo ""
-  echo "After generating .transcript.md, commit the changes:"
+  info "After generating .transcript.md, commit the changes:"
   echo "  git add $latest_stage/"
   echo "  git commit -m \"$latest_stage: Add design decisions\""
 }

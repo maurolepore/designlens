@@ -3,6 +3,10 @@
 # Configuration management for designlog
 # Project-level configuration stored in .designlog.json
 
+# Source colors
+lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$lib_dir/colors.sh"
+
 # Get project config file path
 get_config_file() {
   echo ".designlog.json"
@@ -41,7 +45,7 @@ write_config() {
   config_file=$(get_config_file)
 
   if [ ! -f "$config_file" ]; then
-    echo "Error: $config_file not found. Run 'designlog init' first."
+    error "$config_file not found. Run 'designlog init' first."
     return 1
   fi
 
@@ -66,13 +70,13 @@ show_config_help() {
   config_file=$(get_config_file)
 
   echo ""
-  echo "To change settings for this project:"
+  prompt "To change settings for this project:"
   echo "  designlog config set auto_commit true|false"
   echo ""
-  echo "To view current settings:"
+  prompt "To view current settings:"
   echo "  designlog config show"
   echo ""
-  echo "To edit directly:"
+  prompt "To edit directly:"
   echo "  Edit: $config_file"
   echo ""
 }
@@ -83,13 +87,13 @@ spec_config_show() {
 
   config_file=$(get_config_file)
 
-  echo "designlog configuration (.designlog.json)"
+  heading "designlog configuration (.designlog.json)"
   echo ""
 
   if [ -f "$config_file" ]; then
     cat "$config_file"
   else
-    echo "(not configured - run 'designlog init')"
+    info "not configured - run 'designlog init'"
   fi
 
   echo ""
@@ -104,22 +108,22 @@ spec_config_set() {
   config_file=$(get_config_file)
 
   if [ ! -f "$config_file" ]; then
-    echo "Error: $config_file not found. Run 'designlog init' first."
+    error "$config_file not found. Run 'designlog init' first."
     exit 1
   fi
 
   # Validate boolean values
   if [ "$key" = "auto_commit" ]; then
     if [ "$value" != "true" ] && [ "$value" != "false" ]; then
-      echo "Error: auto_commit must be true or false"
+      error "auto_commit must be true or false"
       exit 1
     fi
   fi
 
   write_config "$key" "$value"
-  echo "✓ Updated $config_file"
+  success "Updated $config_file"
   echo ""
-  echo "Current $key: $(get_config "$key")"
+  info "Current $key: $(get_config "$key")"
 }
 
 # Command: Reset config to defaults
@@ -140,31 +144,31 @@ spec_config_reset() {
     # Remove all custom settings, keep only tool metadata
     sed -i.bak '/auto_commit/d' "$config_file"
     rm -f "$config_file.bak"
-    echo "✓ Config reset to defaults"
+    success "Config reset to defaults"
     spec_config_show
   else
-    echo "Cancelled."
+    warning "Cancelled."
   fi
 }
 
 # Command: Help for config command
 spec_config_help() {
-  echo "designlog config - Manage project configuration"
+  heading "designlog config - Manage project configuration"
   echo ""
-  echo "USAGE:"
+  heading "USAGE:"
   echo "  designlog config show                     View current configuration"
   echo "  designlog config set <key> <value>        Set a configuration value"
   echo "  designlog config reset                    Reset config to defaults"
   echo ""
-  echo "AVAILABLE SETTINGS:"
+  heading "AVAILABLE SETTINGS:"
   echo "  auto_commit (true|false)                  Auto-commit after tasks complete"
   echo ""
-  echo "EXAMPLES:"
+  heading "EXAMPLES:"
   echo "  designlog config show"
   echo "  designlog config set auto_commit true"
   echo "  designlog config set auto_commit false"
   echo ""
-  echo "CONFIGURATION FILE:"
+  heading "CONFIGURATION FILE:"
   echo "  .designlog.json (project-level config)"
   echo ""
 }

@@ -3,13 +3,17 @@
 # Show current project state
 # Determines what should be done next
 
+# Source colors
+lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$lib_dir/colors.sh"
+
 spec_status() {
   if [ ! -d specs ]; then
-    echo "Error: /specs directory not found. Run 'designlog init' first."
+    error "/specs directory not found. Run 'designlog init' first."
     exit 1
   fi
 
-  echo "=== designlog status ==="
+  heading "designlog status"
   echo ""
 
   # Find all stages
@@ -21,9 +25,9 @@ spec_status() {
   done
 
   if [ ${#stages[@]} -eq 0 ]; then
-    echo "No stages found."
+    info "No stages found."
     echo ""
-    echo "→ Next action: Create the first stage"
+    prompt "Next action: Create the first stage"
     echo "  designlog new-stage \"stage-name\""
     return
   fi
@@ -62,32 +66,32 @@ spec_status() {
 
   # Determine next action
   if [ "$plan_exists" = false ]; then
-    echo "→ Next action: Write the design plan"
+    prompt "Next action: Write the design plan"
     echo "  Edit: $latest_stage/plan.md"
     return
   fi
 
   if [ "$tasks_exists" = false ]; then
-    echo "→ Next action: Break down tasks"
+    prompt "Next action: Break down tasks"
     echo "  Edit: $latest_stage/tasks.md"
     return
   fi
 
   if [ "$tasks_complete" = false ]; then
-    echo "→ Next action: Execute remaining tasks"
+    prompt "Next action: Execute remaining tasks"
     echo "  (Implement the code changes)"
     return
   fi
 
   if [ "$decisions_exists" = false ]; then
-    echo "→ Next action: Generate design decisions summary"
+    prompt "Next action: Generate design decisions summary"
     echo "  Run: designlog retrospective"
     return
   fi
 
   # All complete
-  echo "✓ Stage complete!"
+  success "Stage complete!"
   echo ""
-  echo "→ Next action: Start a new stage"
+  prompt "Next action: Start a new stage"
   echo "  designlog new-stage \"next-stage-name\""
 }

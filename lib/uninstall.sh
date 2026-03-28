@@ -2,8 +2,12 @@
 
 # Uninstall designlog from the system
 
+# Source colors
+lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$lib_dir/colors.sh"
+
 spec_uninstall() {
-  echo "Uninstalling designlog..."
+  heading "Uninstalling designlog..."
   echo ""
 
   UNINSTALLED=false
@@ -20,10 +24,10 @@ spec_uninstall() {
       SUDO=""
     fi
 
-    echo "Removing symlink: $BIN_LINK"
+    info "Removing symlink: $BIN_LINK"
     $SUDO rm -f "$BIN_LINK"
 
-    echo "Removing installation directory: $INSTALL_DIR"
+    info "Removing installation directory: $INSTALL_DIR"
     $SUDO rm -rf "$INSTALL_DIR"
 
     UNINSTALLED=true
@@ -34,23 +38,23 @@ spec_uninstall() {
     INSTALL_DIR="$HOME/.local/lib/designlog"
     BIN_LINK="$HOME/.local/bin/designlog"
 
-    echo "Removing symlink: $BIN_LINK"
+    info "Removing symlink: $BIN_LINK"
     rm -f "$BIN_LINK"
 
-    echo "Removing installation directory: $INSTALL_DIR"
+    info "Removing installation directory: $INSTALL_DIR"
     rm -rf "$INSTALL_DIR"
 
     UNINSTALLED=true
   fi
 
   if [ "$UNINSTALLED" = false ]; then
-    echo "designlog not found in standard installation locations"
+    error "designlog not found in standard installation locations"
     return 1
   fi
 
   echo ""
-  echo "✓ designlog uninstalled"
+  success "designlog uninstalled"
   echo ""
-  echo "Your project specs in /specs folders remain unchanged."
-  echo "To remove designlog from a project, delete the /specs folder and .designlog.json file."
+  info "Your project specs in /specs folders remain unchanged."
+  info "To remove designlog from a project, delete the /specs folder and .designlog.json file."
 }
