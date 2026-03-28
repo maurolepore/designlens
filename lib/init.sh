@@ -30,9 +30,6 @@ spec_init() {
   mkdir -p specs
   success "Created /specs directory"
 
-  rule
-  echo ""
-
   # Read metadata from installed tool
   METADATA_FILE="$lib_dir/../designlog.json"
   if [ -f "$METADATA_FILE" ]; then
@@ -59,6 +56,7 @@ EOF
   echo ""
 
   # Ask about auto-commit preference (only on first init for this project)
+  echo ""
   prompt "Would you like completed tasks to be automatically committed? (y/n)"
   read -r response
   if [ "$response" = "y" ]; then
