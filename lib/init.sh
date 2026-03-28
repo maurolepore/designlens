@@ -51,8 +51,8 @@ spec_init() {
     TOOL_URL="https://github.com/ropensci/designlog"
   fi
 
-  # Create lockfile
-  cat > .specmeta.json << EOF
+  # Create project config file (metadata + local settings)
+  cat > .designlog.json << EOF
 {
   "tool": "designlog",
   "version": "$TOOL_VERSION",
@@ -60,7 +60,7 @@ spec_init() {
   "active": true
 }
 EOF
-  echo "✓ Created .specmeta.json lockfile"
+  echo "✓ Created .designlog.json (project metadata and local config)"
 
   # Create specs README
   cat > specs/README.md << 'EOF'

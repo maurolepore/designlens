@@ -52,5 +52,5 @@ spec_uninstall() {
   echo "✓ designlog uninstalled"
   echo ""
   echo "Your project specs in /specs folders remain unchanged."
-  echo "To remove designlog from a project, delete the /specs folder and .specmeta.json file."
+  echo "To remove designlog from a project, delete the /specs folder and .designlog.json file."
 }

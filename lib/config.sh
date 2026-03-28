@@ -15,7 +15,7 @@ get_global_config() {
 
 # Get local project config file path
 get_local_config() {
-  echo ".designlog.local.json"
+  echo ".designlog.json"
 }
 
 # Initialize global config with defaults
@@ -132,12 +132,10 @@ show_config_help() {
   echo "  designlog config set auto_commit true|false"
   echo ""
   echo "To override for just this project:"
-  echo "  Create: .designlog.local.json"
-  echo "  Content:"
-  echo "    {"
-  echo "      \"auto_commit\": false"
-  echo "    }"
-  echo "  (local settings override your global preference)"
+  echo "  Edit: .designlog.json"
+  echo "  Add to it:"
+  echo "    \"auto_commit\": false"
+  echo "  (project settings override your global preference)"
   echo ""
   echo "To view all settings:"
   echo "  designlog config show"
@@ -165,10 +163,10 @@ spec_config_show() {
   fi
 
   echo ""
-  echo "Local project override: .designlog.local.json"
+  echo "Project metadata and local config: .designlog.json"
 
-  if [ -f ".designlog.local.json" ]; then
-    cat ".designlog.local.json"
+  if [ -f ".designlog.json" ]; then
+    cat ".designlog.json"
   else
     echo "(not configured for this project)"
   fi
@@ -244,7 +242,7 @@ spec_config_help() {
   echo "  designlog config set auto_commit false"
   echo ""
   echo "CONFIGURATION FILES:"
-  echo "  Global: ~/.designlog/config.json"
-  echo "  Local override: .designlog.local.json (not committed to git)"
+  echo "  Global user default: ~/.designlog/config.json"
+  echo "  Project-specific: .designlog.json (contains metadata + config)"
   echo ""
 }

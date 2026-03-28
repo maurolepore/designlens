@@ -19,4 +19,4 @@ __pycache__/
 *.pyc
 
 # designlog
-.designlog.local.json
+# .designlog.json is committed (project config), not ignored

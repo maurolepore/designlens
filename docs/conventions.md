@@ -34,7 +34,7 @@ your-project/
       design-decisions.md
       .transcript.md
     003-...
-  .specmeta.json
+  .designlog.json
   AGENTS.md (or CLAUDE.md)
   ...
 ```
@@ -44,7 +44,7 @@ your-project/
 - **specs/** is the public design record, committed to git
 - Each stage folder is numbered with a 3-digit prefix (001, 002, etc.)
 - Within each stage: everything is self-contained
-- **.specmeta.json** is a tiny lockfile with tool metadata (optional to commit, but recommended)
+- **.designlog.json** contains tool metadata and project-specific config (recommended to commit)
 - **AGENTS.md/CLAUDE.md** points agents to the specs on session start
 - **Transcripts** (`.transcript.md`) are semi-anonymized session records: speaker labels use git user.name, message content is anonymized. They document *what* was decided and *why*, safe for public repos
 
