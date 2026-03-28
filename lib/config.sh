@@ -1,113 +1,51 @@
 #!/bin/bash
 
 # Configuration management for designlog
-# Handles global user config and local project overrides
+# Project-level configuration stored in .designlog.json
 
-# Get global config directory
-get_config_dir() {
-  echo "${HOME}/.designlog"
-}
-
-# Get global config file path
-get_global_config() {
-  echo "$(get_config_dir)/config.json"
-}
-
-# Get local project config file path
-get_local_config() {
+# Get project config file path
+get_config_file() {
   echo ".designlog.json"
 }
 
-# Initialize global config with defaults
-init_global_config() {
-  local config_dir
-  local config_file
-
-  config_dir=$(get_config_dir)
-  config_file="$config_dir/config.json"
-
-  mkdir -p "$config_dir" 2>/dev/null
-
-  if [ ! -f "$config_file" ]; then
-    cat > "$config_file" << 'EOF'
-{
-  "auto_commit": false,
-  "version": "1"
-}
-EOF
-    return 1  # Config was newly created
-  fi
-  return 0  # Config already existed
-}
-
-# Read a config value from global config
-read_global_config() {
+# Read a config value from project config
+read_config() {
   local key="$1"
   local config_file
 
-  config_file=$(get_global_config)
+  config_file=$(get_config_file)
 
   if [ ! -f "$config_file" ]; then
-    return 1  # Config doesn't exist
+    return 1  # Config file doesn't exist
   fi
 
   # Simple JSON extraction (works for simple values)
   grep -o "\"$key\": *[^,}]*" "$config_file" | cut -d':' -f2 | tr -d ' "' || echo "null"
 }
 
-# Read a config value from local config (if it exists)
-read_local_config() {
-  local key="$1"
-  local config_file
-
-  config_file=$(get_local_config)
-
-  if [ ! -f "$config_file" ]; then
-    return 1  # Local config doesn't exist
-  fi
-
-  # Simple JSON extraction
-  grep -o "\"$key\": *[^,}]*" "$config_file" | cut -d':' -f2 | tr -d ' "' || echo "null"
-}
-
-# Get effective config value (local overrides global)
+# Get config value (returns null if not set)
 get_config() {
   local key="$1"
-  local local_value
-  local global_value
+  local value
 
-  # Try local config first
-  local_value=$(read_local_config "$key" 2>/dev/null)
-  if [ "$local_value" != "null" ] && [ -n "$local_value" ]; then
-    echo "$local_value"
-    return 0
-  fi
-
-  # Fall back to global config
-  global_value=$(read_global_config "$key" 2>/dev/null)
-  if [ "$global_value" != "null" ] && [ -n "$global_value" ]; then
-    echo "$global_value"
-    return 0
-  fi
-
-  echo "null"
-  return 1
+  value=$(read_config "$key" 2>/dev/null)
+  echo "$value"
 }
 
-# Write a config value to global config
-write_global_config() {
+# Write a config value to project config
+write_config() {
   local key="$1"
   local value="$2"
   local config_file
 
-  config_file=$(get_global_config)
+  config_file=$(get_config_file)
 
   if [ ! -f "$config_file" ]; then
-    init_global_config
+    echo "Error: $config_file not found. Run 'designlog init' first."
+    return 1
   fi
 
   # Simple JSON update (works for boolean/string values)
-  # This is a bit hacky but avoids dependency on jq
   local temp_file
   temp_file=$(mktemp)
 
@@ -124,65 +62,51 @@ write_global_config() {
 
 # Show how to change config
 show_config_help() {
-  local config_dir
-  config_dir=$(get_config_dir)
+  local config_file
+  config_file=$(get_config_file)
 
   echo ""
-  echo "To change your global setting (applies to all projects):"
+  echo "To change settings for this project:"
   echo "  designlog config set auto_commit true|false"
   echo ""
-  echo "To override for just this project:"
-  echo "  Edit: .designlog.json"
-  echo "  Add to it:"
-  echo "    \"auto_commit\": false"
-  echo "  (project settings override your global preference)"
-  echo ""
-  echo "To view all settings:"
+  echo "To view current settings:"
   echo "  designlog config show"
+  echo ""
+  echo "To edit directly:"
+  echo "  Edit: $config_file"
   echo ""
 }
 
 # Command: Show current config
 spec_config_show() {
-  local config_dir
   local config_file
-  local global_value
-  local local_value
 
-  config_dir=$(get_config_dir)
-  config_file="$config_dir/config.json"
+  config_file=$(get_config_file)
 
-  echo "designlog configuration"
+  echo "designlog configuration (.designlog.json)"
   echo ""
-  echo "Global config: $config_file"
 
   if [ -f "$config_file" ]; then
     cat "$config_file"
   else
-    echo "(not yet configured)"
+    echo "(not configured - run 'designlog init')"
   fi
 
   echo ""
-  echo "Project metadata and local config: .designlog.json"
-
-  if [ -f ".designlog.json" ]; then
-    cat ".designlog.json"
-  else
-    echo "(not configured for this project)"
-  fi
-
-  echo ""
-  echo "Effective settings:"
-  echo "  auto_commit: $(get_config "auto_commit")"
 }
 
 # Command: Set config value
 spec_config_set() {
   local key="$1"
   local value="$2"
-  local config_dir
+  local config_file
 
-  config_dir=$(get_config_dir)
+  config_file=$(get_config_file)
+
+  if [ ! -f "$config_file" ]; then
+    echo "Error: $config_file not found. Run 'designlog init' first."
+    exit 1
+  fi
 
   # Validate boolean values
   if [ "$key" = "auto_commit" ]; then
@@ -192,31 +116,30 @@ spec_config_set() {
     fi
   fi
 
-  write_global_config "$key" "$value"
-  echo "✓ Updated $config_dir/config.json"
+  write_config "$key" "$value"
+  echo "✓ Updated $config_file"
   echo ""
-  echo "Effective $key: $(get_config "$key")"
+  echo "Current $key: $(get_config "$key")"
 }
 
 # Command: Reset config to defaults
 spec_config_reset() {
-  local config_dir
   local config_file
 
-  config_dir=$(get_config_dir)
-  config_file="$config_dir/config.json"
+  config_file=$(get_config_file)
 
   if [ ! -f "$config_file" ]; then
-    echo "No global config to reset."
+    echo "No project config to reset."
     exit 0
   fi
 
-  echo "Reset global config to defaults? (y/n)"
+  echo "Reset $config_file to defaults? (y/n)"
   read -r response
 
   if [ "$response" = "y" ]; then
-    rm "$config_file"
-    init_global_config
+    # Remove all custom settings, keep only tool metadata
+    sed -i.bak '/auto_commit/d' "$config_file"
+    rm -f "$config_file.bak"
     echo "✓ Config reset to defaults"
     spec_config_show
   else
@@ -226,12 +149,12 @@ spec_config_reset() {
 
 # Command: Help for config command
 spec_config_help() {
-  echo "designlog config - Manage global and project-specific settings"
+  echo "designlog config - Manage project configuration"
   echo ""
   echo "USAGE:"
   echo "  designlog config show                     View current configuration"
   echo "  designlog config set <key> <value>        Set a configuration value"
-  echo "  designlog config reset                    Reset global config to defaults"
+  echo "  designlog config reset                    Reset config to defaults"
   echo ""
   echo "AVAILABLE SETTINGS:"
   echo "  auto_commit (true|false)                  Auto-commit after tasks complete"
@@ -241,8 +164,7 @@ spec_config_help() {
   echo "  designlog config set auto_commit true"
   echo "  designlog config set auto_commit false"
   echo ""
-  echo "CONFIGURATION FILES:"
-  echo "  Global user default: ~/.designlog/config.json"
-  echo "  Project-specific: .designlog.json (contains metadata + config)"
+  echo "CONFIGURATION FILE:"
+  echo "  .designlog.json (project-level config)"
   echo ""
 }

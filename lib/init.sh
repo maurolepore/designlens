@@ -22,9 +22,6 @@ spec_init() {
 
   echo "Initializing designlog project..."
 
-  # Initialize global config (for user defaults)
-  init_global_config > /dev/null
-
   # Create /specs directory
   mkdir -p specs
   echo "✓ Created /specs directory"
