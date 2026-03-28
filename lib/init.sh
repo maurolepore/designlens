@@ -22,20 +22,8 @@ spec_init() {
 
   echo "Initializing designlog project..."
 
-  # Initialize global config (ask user only on first run)
-  if ! init_global_config; then
-    echo "✓ Created global designlog config"
-    echo ""
-    echo "Would you like completed tasks to be automatically committed? (y/n)"
-    read -r response
-    if [ "$response" = "y" ]; then
-      write_global_config "auto_commit" "true"
-      echo "✓ Auto-commit enabled"
-    else
-      echo "✓ Auto-commit disabled"
-    fi
-    show_config_help
-  fi
+  # Initialize global config (for user defaults)
+  init_global_config > /dev/null
 
   # Create /specs directory
   mkdir -p specs
@@ -60,7 +48,24 @@ spec_init() {
   "active": true
 }
 EOF
-  echo "✓ Created .designlog.json (project metadata and local config)"
+  echo "✓ Created .designlog.json"
+
+  # Ask about auto-commit preference (only on first init for this project)
+  echo ""
+  echo "Would you like completed tasks to be automatically committed? (y/n)"
+  read -r response
+  if [ "$response" = "y" ]; then
+    # Add auto_commit setting to .designlog.json
+    sed -i.bak 's/"active": true/"active": true,\n  "auto_commit": true/' .designlog.json
+    rm -f .designlog.json.bak
+    echo "✓ Auto-commit enabled for this project"
+  else
+    # Add auto_commit setting to .designlog.json
+    sed -i.bak 's/"active": true/"active": true,\n  "auto_commit": false/' .designlog.json
+    rm -f .designlog.json.bak
+    echo "✓ Auto-commit disabled for this project"
+  fi
+  show_config_help
 
   # Create specs README
   cat > specs/README.md << 'EOF'
