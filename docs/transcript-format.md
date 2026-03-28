@@ -4,20 +4,20 @@ How to create anonymized transcript summaries for design stages.
 
 ## Purpose
 
-Document key design decisions, rationale, and reasoning from a stage session. Transcripts are *summaries*, not raw recordings — designed to be readable by future contributors and appropriately anonymized.
+Document key design decisions, rationale, and reasoning from a stage session. Transcripts are *summaries*, not raw recordings — designed to be readable by future contributors and appropriately semi-anonymized.
 
-**Why a standard?** Design decision summaries should be readable, maintainable, and devoid of personal identifying information. They focus on the *thinking process* and *decisions made*, not the people involved.
+**Why a standard?** Design decision summaries should be readable, maintainable, and focused on the *thinking process* and *decisions made*, not the people involved. Speaker attribution uses git metadata (user.name), but message content is cleaned of personal expressions and identifying information.
 
-## Anonymization Principles
+## Semi-Anonymization Principles
 
 All transcripts must adhere to these principles:
 
-1. **No personal identifiers** — No names, email addresses, or identifying details
-2. **Role-based only** — Reference contributions by role ("a human contributor", "the AI assistant"), not by individual
-3. **Decision-focused** — Document *what was decided and why*, not *who proposed it*
+1. **Speaker attribution** — Use `git config user.name` (or other git metadata) for speaker labels, not anonymous "human" or "assistant" generics
+2. **No personal identifiers in content** — Remove names, email addresses, anecdotes, and personal preferences from message text
+3. **Decision-focused** — Document *what was decided and why*, not *who proposed it* (focus on decisions, not speakers)
 4. **Depersonalized language** — Use "it was decided" rather than "I decided"; "was proposed" rather than "I proposed"
 5. **Redact sensitive specifics** — Remove business details, user counts, financial info, or other context that might be identifying
-6. **Preserve reasoning** — Keep the *why* behind decisions, just without the personal attribution
+6. **Preserve reasoning** — Keep the *why* behind decisions, just without the personal expressions
 
 ## Format
 

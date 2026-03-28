@@ -20,7 +20,7 @@ A: Add it to tasks.md and update the task count in the checklist. This is part o
 A: Update plan.md and tasks.md to reflect the change. Git will track the changes. Mention the decision in design-decisions.md at retrospective time.
 
 **Q: Can multiple people work on one stage?**
-A: Yes. Use git branches and merging as normal. The transcript summary should depersonalize contributions (no names) and use git metadata (branch author) for attribution if needed.
+A: Yes. Use git branches and merging as normal. Transcript speaker labels use `git config user.name` for each participant; message content should be semi-anonymized (no personal expressions or identifying information). Git metadata (branch author, commit history) provides additional attribution context if needed.
 
 **Q: How long should a stage be?**
 A: As long as it needs. Some stages might be a few hours; others might be weeks. If a stage is getting very long, consider breaking it into multiple stages.

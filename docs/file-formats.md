@@ -139,19 +139,19 @@ Example: "Building on the auth system from 001-auth (see that stage's decisions 
 
 ## .transcript.md
 
-**Purpose:** Record the raw session conversation(s).
+**Purpose:** Record the raw session conversation(s) with semi-anonymized speaker attribution.
 
 **Format:**
 
 ```markdown
 ## Turn 1
-**human:** [The human's message]
+**[git-user-name]:** [The participant's message, with personal expressions removed]
 
 ## Turn 2
 **assistant:** [The assistant's message]
 
 ## Turn 3
-**human:** [The human's message]
+**[git-user-name]:** [The participant's message, with personal expressions removed]
 
 ## Turn 4
 **assistant:** [The assistant's message]
@@ -159,10 +159,11 @@ Example: "Building on the auth system from 001-auth (see that stage's decisions 
 
 **Style:**
 - Simple turn-by-turn format
-- Labeled clearly with `**human:**` and `**assistant:**`
-- Full message text, not paraphrased
+- Speaker labels: `**[git-user-name]:**` (from `git config user.name`) and `**assistant:**`
+- Message content: anonymized — remove personal expressions, anecdotes, or identifying information
+- Full message text (cleaned of personal information and expressions), not paraphrased
 - One transcript per `.transcript.md` file; if multiple sessions, use `.transcript-1.md`, `.transcript-2.md`, etc.
-- Multiple participants: use git branch info and commit metadata to disambiguate; within a single session, the "human" label refers to whoever initiated that session
+- Multiple participants: each uses their own `git config user.name` as the label
 
 ---
 

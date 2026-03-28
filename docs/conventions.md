@@ -46,7 +46,7 @@ your-project/
 - Within each stage: everything is self-contained
 - **.specmeta.json** is a tiny lockfile with tool metadata (optional to commit, but recommended)
 - **AGENTS.md/CLAUDE.md** points agents to the specs on session start
-- **Transcripts** (`.transcript.md`) are depersonalized decision summaries, safe for public repos. They document *what* was decided and *why*, not *who decided it*
+- **Transcripts** (`.transcript.md`) are semi-anonymized session records: speaker labels use git user.name, message content is anonymized. They document *what* was decided and *why*, safe for public repos
 
 ### Handling Parallel Development
 
@@ -64,7 +64,7 @@ When one branch merges and another diverges, the history naturally captures the 
 - **[workflow.md](workflow.md)** — The 6-phase workflow (initialize → plan → implement → retrospective → commit → repeat)
 - **[file-formats.md](file-formats.md)** — Templates and style guides for plan.md, tasks.md, design-decisions.md, and .transcript.md
 - **[agent-instructions.md](agent-instructions.md)** — How agents should work with designlog at each phase
-- **[transcript-format.md](transcript-format.md)** — Detailed specification for transcript summaries, anonymization rules, and examples
+- **[transcript-format.md](transcript-format.md)** — Detailed specification for transcript summaries, semi-anonymization rules, and examples
 - **[faq.md](faq.md)** — Frequently asked questions, tools reference, and Git workflow examples
 
 ---
@@ -87,7 +87,7 @@ When one branch merges and another diverges, the history naturally captures the 
    - Agent reads [workflow.md](workflow.md) to understand phases
    - Agent uses templates from [file-formats.md](file-formats.md) when writing plan.md, tasks.md, design-decisions.md
    - Agent follows [agent-instructions.md](agent-instructions.md) for session behavior
-   - Agent creates anonymized transcripts using [transcript-format.md](transcript-format.md) as a reference
+   - Agent creates semi-anonymized transcripts using [transcript-format.md](transcript-format.md) as a reference
 
 ---
 

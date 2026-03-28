@@ -37,7 +37,8 @@ How to work with designlog during a coding session.
 
 4. **Record the conversation**
    - If the human asks, or if significant design decisions were made, save a normalized transcript to `.transcript.md`
-   - Use the standard format (Turn N, human:/assistant: labels)
+   - Use the standard format: `**[git-user-name]:**` (from `git config user.name`) for the human participant, `**assistant:**` for the AI
+   - Anonymize message content: remove personal expressions, anecdotes, and identifying information, but keep speaker attribution
 
 ## When the Stage Is Complete
 
@@ -47,11 +48,11 @@ How to work with designlog during a coding session.
 2. **Generate design-decisions.md:**
    - Run `designlog retrospective`
    - Follow the detailed prompt it provides
-   - **Critical:** Follow anonymization rules strictly
-     - No personal names or identifying information
-     - No personal anecdotes or preferences
-     - Role-based language only ("a contributor decided", not "Mark decided")
-     - Focus on technical reasoning, not people
+   - **Critical:** Follow semi-anonymization rules
+     - Speaker labels in raw transcripts use `git config user.name`
+     - Message content must be anonymized: no personal names, anecdotes, or preferences
+     - Use role-based language in summaries ("a contributor decided", not names)
+     - Focus on technical reasoning and decisions, not people
    - Create a structured summary of key decisions, rationale, and tradeoffs
    - Typically 300–500 words, scannable format
 
