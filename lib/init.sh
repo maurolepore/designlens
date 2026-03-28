@@ -5,8 +5,9 @@
 
 spec_init() {
   if [ ! -d .git ]; then
-    echo "Error: Not a git repository. Initialize git first with 'git init'"
-    exit 1
+    echo "Initializing git repository..."
+    git init
+    echo "✓ Git repository initialized"
   fi
 
   if [ -d specs ]; then

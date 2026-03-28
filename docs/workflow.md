@@ -5,11 +5,10 @@ The designlog workflow has 6 phases per stage, from initialization through retro
 ## Phase 1: Initialize (Terminal, once per project)
 
 ```bash
-git init  # if needed
 designlog init
 ```
 
-This creates `/specs`, lockfile, and AGENTS.md/CLAUDE.md pointer.
+This initializes git (if needed), creates `/specs`, lockfile, and AGENTS.md/CLAUDE.md pointer.
 
 ## Phase 2: Plan (Agent Session)
 

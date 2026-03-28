@@ -73,9 +73,9 @@ When one branch merges and another diverges, the history naturally captures the 
 
 1. **Terminal (once per project):**
    ```bash
-   git init  # if needed
    designlog init
    ```
+   (initializes git if needed)
 
 2. **In an agent session:**
    ```bash
