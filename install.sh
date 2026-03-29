@@ -21,6 +21,9 @@ case "$OS" in
 
     SCRIPT_DIR="$TMP_DIR"
 
+    source "$SCRIPT_DIR/lib/logo.sh"
+    show_logo
+
     # Try system-wide installation first, fall back to user local
     if [ -w "/usr/local/lib" ]; then
       INSTALL_DIR="/usr/local/lib/designlens"
