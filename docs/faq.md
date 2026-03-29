@@ -28,23 +28,23 @@ A: As long as it needs. Some stages might be a few hours; others might be weeks.
 ## Command Reference
 
 ```bash
-designlog init                    # Initialize project (once)
-designlog new-stage <name>        # Create new stage
-designlog status                  # Show current state and next action
-designlog retrospective           # Generate design-decisions.md
-designlog transcript <file>       # Normalize a transcript
-designlog update                  # Update to latest version
+designlens init                    # Initialize project (once)
+designlens new-stage <name>        # Create new stage
+designlens status                  # Show current state and next action
+designlens retrospective           # Generate design-decisions.md
+designlens transcript <file>       # Normalize a transcript
+designlens update                  # Update to latest version
 ```
 
 ## IDE Integration
 
-Most IDEs and coding agents (Claude Code, Cursor, etc.) can execute shell commands. Use that to call designlog commands during a session.
+Most IDEs and coding agents (Claude Code, Cursor, etc.) can execute shell commands. Use that to call designlens commands during a session.
 
 ## Git Workflow
 
 ```bash
 # Start a new stage
-designlog new-stage "feature-name"
+designlens new-stage "feature-name"
 git checkout -b specs/feature-name
 
 # Work on the stage
@@ -53,7 +53,7 @@ git add .
 git commit -m "WIP: Feature implementation"
 
 # Complete the stage
-designlog retrospective
+designlens retrospective
 git add specs/feature-name/design-decisions.md
 git commit -m "feature-name: Design decisions"
 

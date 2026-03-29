@@ -1,12 +1,12 @@
-# designlog
+# designlens
 
 A design history tool for open source projects. Generates design history
 through staged planning, task decomposition, and retrospective decision
 records.
 
-## What is designlog?
+## What is designlens?
 
-designlog helps maintain a living record of design decisions. Each project
+designlens helps maintain a living record of design decisions. Each project
 "stage" produces a `plan.md` (the design), `tasks.md` (the breakdown), and
 anonymized `design-decisions.md` (the reasoning). Combined with session transcript
 summaries, this creates a comprehensive archaeological record of how and why
@@ -20,14 +20,14 @@ are committed to git, and tell the story of the project to future contributors.
 ### Linux / macOS
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ropensci-review-tools/designlog/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ropensci-review-tools/designlens/main/install.sh | bash
 ```
 
 ### Windows
 
 Run in PowerShell:
 ```powershell
-irm https://raw.githubusercontent.com/ropensci-review-tools/designlog/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/ropensci-review-tools/designlens/main/install.ps1 | iex
 ```
 
 This installs a lightweight CLI tool (~50KB, no dependencies) that you can use from your terminal.
@@ -37,42 +37,42 @@ This installs a lightweight CLI tool (~50KB, no dependencies) that you can use f
 After installation, navigate to your git repository and run:
 
 ```bash
-designlog init
+designlens init
 ```
 
-This creates `/specs` folder and initializes designlog in your project. For existing projects, you'll be asked if you want to capture design history from your git log—this creates a starting point documenting architectural decisions from your project's evolution.
+This creates `/specs` folder and initializes designlens in your project. For existing projects, you'll be asked if you want to capture design history from your git log—this creates a starting point documenting architectural decisions from your project's evolution.
 
 ## Quick Start
 
 In your project directory (git repo):
 
 ```bash
-# Initialize designlog (run once per project)
-designlog init
+# Initialize designlens (run once per project)
+designlens init
 
 # Start a new design stage
-designlog new-stage "feature-name"
+designlens new-stage "feature-name"
 
 # Check current project state
-designlog status
+designlens status
 
 # Generate design decisions after stage completion
-designlog retrospective
+designlens retrospective
 
 # Check installed version
-designlog version
+designlens version
 ```
 
 ## Updating
 
 ```bash
-designlog update
+designlens update
 ```
 
 ## Uninstalling
 
 ```bash
-designlog uninstall
+designlens uninstall
 ```
 
 Your projects' `/specs` folders and design history remain intact.
@@ -84,14 +84,14 @@ See `/docs/conventions.md` for the full specification of the workflow, formats, 
 ## Repository Structure
 
 ```
-designlog/
+designlens/
   README.md
-  designlog.json     (tool metadata and version)
+  designlens.json     (tool metadata and version)
   LICENSE            (MIT license)
   install.sh
   install.ps1
   bin/
-    designlog
+    designlens
   lib/
     init.sh
     new-stage.sh

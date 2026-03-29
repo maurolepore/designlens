@@ -12,11 +12,11 @@ spec_status() {
   show_logo
 
   if [ ! -d specs ]; then
-    error "/specs directory not found. Run 'designlog init' first."
+    error "/specs directory not found. Run 'designlens init' first."
     exit 1
   fi
 
-  heading "designlog status"
+  heading "designlens status"
   echo ""
 
   # Find all stages
@@ -31,7 +31,7 @@ spec_status() {
     info "No stages found."
     echo ""
     prompt "Next action: Create the first stage"
-    echo "  designlog new-stage \"stage-name\""
+    echo "  designlens new-stage \"stage-name\""
     return
   fi
 
@@ -88,7 +88,7 @@ spec_status() {
 
   if [ "$decisions_exists" = false ]; then
     prompt "Next action: Generate design decisions summary"
-    echo "  Run: designlog retrospective"
+    echo "  Run: designlens retrospective"
     return
   fi
 
@@ -96,5 +96,5 @@ spec_status() {
   success "Stage complete!"
   echo ""
   prompt "Next action: Start a new stage"
-  echo "  designlog new-stage \"next-stage-name\""
+  echo "  designlens new-stage \"next-stage-name\""
 }

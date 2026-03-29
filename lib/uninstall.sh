@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Uninstall designlog from the system
+# Uninstall designlens from the system
 
 # Source colors and logo
 lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -10,15 +10,15 @@ source "$lib_dir/logo.sh"
 spec_uninstall() {
   show_logo
 
-  heading "Uninstalling designlog..."
+  heading "Uninstalling designlens..."
   echo ""
 
   UNINSTALLED=false
 
   # Check system-wide installation
-  if [ -d "/usr/local/lib/designlog" ]; then
-    INSTALL_DIR="/usr/local/lib/designlog"
-    BIN_LINK="/usr/local/bin/designlog"
+  if [ -d "/usr/local/lib/designlens" ]; then
+    INSTALL_DIR="/usr/local/lib/designlens"
+    BIN_LINK="/usr/local/bin/designlens"
 
     # Check if we need sudo
     if [ ! -w "/usr/local/lib" ]; then
@@ -37,9 +37,9 @@ spec_uninstall() {
   fi
 
   # Check user local installation
-  if [ -d "$HOME/.local/lib/designlog" ]; then
-    INSTALL_DIR="$HOME/.local/lib/designlog"
-    BIN_LINK="$HOME/.local/bin/designlog"
+  if [ -d "$HOME/.local/lib/designlens" ]; then
+    INSTALL_DIR="$HOME/.local/lib/designlens"
+    BIN_LINK="$HOME/.local/bin/designlens"
 
     info "Removing symlink: $BIN_LINK"
     rm -f "$BIN_LINK"
@@ -51,13 +51,13 @@ spec_uninstall() {
   fi
 
   if [ "$UNINSTALLED" = false ]; then
-    error "designlog not found in standard installation locations"
+    error "designlens not found in standard installation locations"
     return 1
   fi
 
   echo ""
-  success "designlog uninstalled"
+  success "designlens uninstalled"
   echo ""
   info "Your project specs in /specs folders remain unchanged."
-  info "To remove designlog from a project, delete the /specs folder and .designlog.json file."
+  info "To remove designlens from a project, delete the /specs folder and .designlens.json file."
 }

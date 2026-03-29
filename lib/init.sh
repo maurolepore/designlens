@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Initialize a project to use designlog
+# Initialize a project to use designlens
 # Creates /specs folder, lockfile, and AGENTS.md pointer
 
 spec_init() {
@@ -24,32 +24,32 @@ spec_init() {
     exit 1
   fi
 
-  echo "Initializing designlog project..."
+  echo "Initializing designlens project..."
 
   # Create /specs directory
   mkdir -p specs
   success "Created /specs directory"
 
   # Read metadata from installed tool
-  METADATA_FILE="$lib_dir/../designlog.json"
+  METADATA_FILE="$lib_dir/../designlens.json"
   if [ -f "$METADATA_FILE" ]; then
     TOOL_VERSION=$(grep -o '"Version": *"[^"]*"' "$METADATA_FILE" | cut -d'"' -f4)
     TOOL_URL=$(grep -o '"URL": *"[^"]*"' "$METADATA_FILE" | cut -d'"' -f4)
   else
     TOOL_VERSION="unknown"
-    TOOL_URL="https://github.com/ropensci/designlog"
+    TOOL_URL="https://github.com/ropensci/designlens"
   fi
 
   # Create project config file (metadata + local settings)
-  cat > .designlog.json << EOF
+  cat > .designlens.json << EOF
 {
-  "tool": "designlog",
+  "tool": "designlens",
   "version": "$TOOL_VERSION",
   "docs": "$TOOL_URL/blob/main/docs/conventions.md",
   "active": true
 }
 EOF
-  success "Created .designlog.json"
+  success "Created .designlens.json"
 
   echo ""
   rule
@@ -60,14 +60,14 @@ EOF
   prompt "Would you like completed tasks to be automatically committed? (y/n)"
   read -r response
   if [ "$response" = "y" ]; then
-    # Add auto_commit setting to .designlog.json
-    sed -i.bak 's/"active": true/"active": true,\n  "auto_commit": true/' .designlog.json
-    rm -f .designlog.json.bak
+    # Add auto_commit setting to .designlens.json
+    sed -i.bak 's/"active": true/"active": true,\n  "auto_commit": true/' .designlens.json
+    rm -f .designlens.json.bak
     success "Auto-commit enabled for this project"
   else
-    # Add auto_commit setting to .designlog.json
-    sed -i.bak 's/"active": true/"active": true,\n  "auto_commit": false/' .designlog.json
-    rm -f .designlog.json.bak
+    # Add auto_commit setting to .designlens.json
+    sed -i.bak 's/"active": true/"active": true,\n  "auto_commit": false/' .designlens.json
+    rm -f .designlens.json.bak
     success "Auto-commit disabled for this project"
   fi
 
@@ -161,27 +161,27 @@ EOF
   # Detect and create AGENTS.md / CLAUDE.md
   if [ -f "AGENTS.md" ]; then
     echo ""
-    echo "AGENTS.md already exists. Append designlog reference? (y/n)"
+    echo "AGENTS.md already exists. Append designlens reference? (y/n)"
     read -r response
     if [ "$response" = "y" ]; then
       cat >> AGENTS.md << 'EOF'
 
-## designlog
+## designlens
 
-This project uses **designlog** for design history tracking. Read the specs in `/specs` and `/docs/conventions.md` (if present) for the development workflow and design decisions.
+This project uses **designlens** for design history tracking. Read the specs in `/specs` and `/docs/conventions.md` (if present) for the development workflow and design decisions.
 EOF
       success "Appended to AGENTS.md"
     fi
   elif [ -f "CLAUDE.md" ]; then
     echo ""
-    echo "CLAUDE.md already exists. Append designlog reference? (y/n)"
+    echo "CLAUDE.md already exists. Append designlens reference? (y/n)"
     read -r response
     if [ "$response" = "y" ]; then
       cat >> CLAUDE.md << 'EOF'
 
-## designlog
+## designlens
 
-This project uses **designlog** for design history tracking. Read the specs in `/specs` for the development workflow and design decisions.
+This project uses **designlens** for design history tracking. Read the specs in `/specs` for the development workflow and design decisions.
 EOF
       success "Appended to CLAUDE.md"
     fi
@@ -190,14 +190,14 @@ EOF
     cat > AGENTS.md << 'EOF'
 # Agent Instructions
 
-## designlog
+## designlens
 
-This project uses **designlog** for design history tracking.
+This project uses **designlens** for design history tracking.
 
 When starting a session:
 1. Read `/specs/README.md` to understand the current project state
 2. Check the latest numbered stage folder for plan.md, tasks.md, and design-decisions.md
-3. Run `designlog status` to see what's next
+3. Run `designlens status` to see what's next
 4. Follow the guidance in `/docs/conventions.md` for the workflow
 
 The specs folder contains the full design history and development philosophy. Refer to it when making architectural decisions.
@@ -206,13 +206,13 @@ EOF
   fi
 
   echo ""
-  success "designlog initialized successfully!"
+  success "designlens initialized successfully!"
 
   # Check if auto-commit is enabled and commit if so
   local auto_commit=$(get_config "auto_commit")
   if [ "$auto_commit" = "true" ]; then
     git add -A
-    git commit -m "Initialize designlog" > /dev/null 2>&1
+    git commit -m "Initialize designlens" > /dev/null 2>&1
     success "Changes committed"
   fi
 
@@ -223,11 +223,11 @@ EOF
   if [ "$auto_commit" = "true" ]; then
     heading "━ Next steps ━"
     echo "  1. Start a coding session with your agent (Claude Code, etc.)"
-    echo "  2. Run 'designlog new-stage \"name\"' to begin the first design phase"
+    echo "  2. Run 'designlens new-stage \"name\"' to begin the first design phase"
   else
     heading "━ Next steps ━"
-    echo "  1. Commit the changes: git add -A && git commit -m 'Initialize designlog'"
+    echo "  1. Commit the changes: git add -A && git commit -m 'Initialize designlens'"
     echo "  2. Start a coding session with your agent (Claude Code, etc.)"
-    echo "  3. Run 'designlog new-stage \"name\"' to begin the first design phase"
+    echo "  3. Run 'designlens new-stage \"name\"' to begin the first design phase"
   fi
 }

@@ -14,7 +14,7 @@ spec_new_stage() {
   show_logo
 
   if [ ! -d specs ]; then
-    error "/specs directory not found. Run 'designlog init' first."
+    error "/specs directory not found. Run 'designlens init' first."
     exit 1
   fi
 
@@ -35,7 +35,7 @@ spec_new_stage() {
     prev_dir=$(ls -d specs/$prev_num-* 2>/dev/null | head -1)
     if [ -d "$prev_dir" ] && [ ! -f "$prev_dir/design-decisions.md" ]; then
       warning "Previous stage ($prev_dir) has no design-decisions.md"
-      prompt "Run 'designlog retrospective' to generate design decisions first? (y/n)"
+      prompt "Run 'designlens retrospective' to generate design decisions first? (y/n)"
       read -r response
       if [ "$response" = "y" ]; then
         source "$(dirname "$0")/retrospective.sh"
@@ -96,9 +96,9 @@ EOF
   heading "Next steps:"
   echo "  1. Edit $stage_dir/plan.md with the design plan"
   echo "  2. Edit $stage_dir/tasks.md with the task breakdown"
-  echo "  3. Run 'designlog status' to see current state"
+  echo "  3. Run 'designlens status' to see current state"
   echo "  4. Execute the tasks (implement the code changes)"
-  echo "  5. Run 'designlog retrospective' to generate design-decisions.md"
+  echo "  5. Run 'designlens retrospective' to generate design-decisions.md"
   echo ""
   info "Remember to record the session transcript in $stage_dir/.transcript.md"
 }
