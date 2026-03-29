@@ -9,8 +9,8 @@ source "$lib_dir/colors.sh"
 source "$lib_dir/logo.sh"
 
 spec_new_stage() {
-  local stage_name="$1"
-  local stage_description="$2"
+  local stage_description="$1"
+  local stage_name="$2"
 
   show_logo
 
@@ -19,13 +19,22 @@ spec_new_stage() {
     exit 1
   fi
 
-  if [ -z "$stage_name" ] || [ -z "$stage_description" ]; then
-    error "Usage: designlens new-stage <verb-noun> <description>"
+  if [ -z "$stage_description" ]; then
     echo ""
-    echo "  Both arguments are required:"
-    echo "    <verb-noun>    A short slug, e.g. 'add-auth', 'refactor-parser'"
-    echo "    <description>  A description of what this stage will accomplish"
-    exit 1
+    echo "AGENT: No description provided. Ask the user what they want to build in this stage."
+    echo "Keep asking clarifying questions until you have enough detail to write a concrete,"
+    echo "actionable plan. Then call: designlens new-stage \"<full description>\""
+    echo ""
+    exit 0
+  fi
+
+  # Derive a slug from the description if no name was provided
+  if [ -z "$stage_name" ]; then
+    stage_name=$(echo "$stage_description" \
+      | tr '[:upper:]' '[:lower:]' \
+      | tr -cs 'a-z0-9' '-' \
+      | sed 's/-\+/-/g; s/^-//; s/-$//' \
+      | cut -d- -f1-2)
   fi
 
   # Find highest numbered stage
