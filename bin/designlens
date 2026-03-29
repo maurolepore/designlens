@@ -6,7 +6,7 @@
 set -e
 
 # Get the directory where this script is installed
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$( cd "$( dirname "$(readlink -f "${BASH_SOURCE[0]}")" )" && pwd )"
 LIB_DIR="$SCRIPT_DIR/../lib"
 
 # Source colors and logo

@@ -29,31 +29,39 @@ case "$OS" in
       INSTALL_DIR="/usr/local/lib/designlens"
       BIN_DIR="/usr/local/bin"
       SYSTEM_WIDE=true
+      SUDO=""
+    elif command -v sudo &>/dev/null && sudo -v 2>/dev/null; then
+      echo "System-wide installation requires sudo..."
+      INSTALL_DIR="/usr/local/lib/designlens"
+      BIN_DIR="/usr/local/bin"
+      SYSTEM_WIDE=true
+      SUDO="sudo"
     else
       INSTALL_DIR="$HOME/.local/lib/designlens"
       BIN_DIR="$HOME/.local/bin"
       SYSTEM_WIDE=false
+      SUDO=""
       mkdir -p "$BIN_DIR"
     fi
 
     echo "Installation directory: $INSTALL_DIR"
     echo "Creating installation directory..."
-    mkdir -p "$INSTALL_DIR"
+    $SUDO mkdir -p "$INSTALL_DIR"
 
     echo "Copying files..."
-    cp -r "$SCRIPT_DIR"/bin "$INSTALL_DIR/"
-    cp -r "$SCRIPT_DIR"/lib "$INSTALL_DIR/"
-    cp -r "$SCRIPT_DIR"/docs "$INSTALL_DIR/"
-    cp "$SCRIPT_DIR"/README.md "$INSTALL_DIR/"
-    cp "$SCRIPT_DIR"/designlens.json "$INSTALL_DIR/"
-    cp "$SCRIPT_DIR"/LICENSE "$INSTALL_DIR/"
+    $SUDO cp -r "$SCRIPT_DIR"/bin "$INSTALL_DIR/"
+    $SUDO cp -r "$SCRIPT_DIR"/lib "$INSTALL_DIR/"
+    $SUDO cp -r "$SCRIPT_DIR"/docs "$INSTALL_DIR/"
+    $SUDO cp "$SCRIPT_DIR"/README.md "$INSTALL_DIR/"
+    $SUDO cp "$SCRIPT_DIR"/designlens.json "$INSTALL_DIR/"
+    $SUDO cp "$SCRIPT_DIR"/LICENSE "$INSTALL_DIR/"
 
     echo "Making scripts executable..."
-    chmod +x "$INSTALL_DIR"/bin/designlens
-    chmod +x "$INSTALL_DIR"/lib/*.sh
+    $SUDO chmod +x "$INSTALL_DIR"/bin/designlens
+    $SUDO chmod +x "$INSTALL_DIR"/lib/*.sh
 
     echo "Creating symlink..."
-    ln -sf "$INSTALL_DIR/bin/designlens" "$BIN_DIR/designlens"
+    $SUDO ln -sf "$INSTALL_DIR/bin/designlens" "$BIN_DIR/designlens"
 
     echo "✓ designlens installed successfully!"
     echo ""
