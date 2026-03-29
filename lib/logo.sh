@@ -9,6 +9,10 @@ is_dark_background() {
   local bg_color
   local is_dark=0
 
+  # Skip detection when not connected to an interactive terminal
+  # (avoids consuming stdin in pipes, heredocs, or CI environments)
+  [ -t 0 ] || return 1
+
   # Try to query terminal background color using OSC 11
   # This works on most modern terminal emulators (iTerm2, GNOME Terminal, etc.)
   if command -v timeout &> /dev/null; then
