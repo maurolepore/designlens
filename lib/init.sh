@@ -222,7 +222,9 @@ When the user runs `designlens new-stage` (with no arguments), ask questions unt
 Once you have sufficient detail:
 1. Derive a short verb-noun slug from the description (e.g. `add-auth`, `refactor-parser`) — do not ask the user for this
 2. Call: `designlens new-stage "<full description>" "<verb-noun>"`
-3. Then flesh out the generated plan.md and tasks.md with the full design
+3. Tell the user to review and edit the generated plan.md until they are happy with it
+4. When the user is ready, they run `designlens make-tasks` — read plan.md and generate tasks.md from it
+5. Tell the user to review tasks.md, then begin implementation
 
 ### Pending generation tasks
 

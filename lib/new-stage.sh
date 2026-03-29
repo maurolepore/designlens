@@ -73,7 +73,7 @@ spec_new_stage() {
   # Create stage directory
   mkdir -p "$stage_dir"
 
-  # Create placeholder files
+  # Create plan.md
   cat > "$stage_dir/plan.md" << EOF
 # Plan: $stage_name
 
@@ -94,30 +94,9 @@ $stage_description
 (Anything to explore or clarify)
 EOF
 
-  cat > "$stage_dir/tasks.md" << EOF
-# Tasks: $stage_name
-
-## Overview
-(Brief description of work breakdown)
-
-## Tasks
-
-- [ ] Task 1
-- [ ] Task 2
-- [ ] Task 3
-
-## Notes
-(Any additional context)
-EOF
-
-  success "Created new stage: $stage_dir"
+  success "Created $stage_dir/plan.md"
   echo ""
-  heading "Next steps:"
-  echo "  1. Edit $stage_dir/plan.md with the design plan"
-  echo "  2. Edit $stage_dir/tasks.md with the task breakdown"
-  echo "  3. Run 'designlens status' to see current state"
-  echo "  4. Execute the tasks (implement the code changes)"
-  echo "  5. Run 'designlens retrospective' to generate design-decisions.md"
-  echo ""
-  info "Remember to record the session transcript in $stage_dir/.transcript.md"
+  echo "AGENT: plan.md has been created with the description as a starting point."
+  echo "Tell the user to review and edit $stage_dir/plan.md until they are happy with it."
+  echo "Once they are done, they should run: designlens make-tasks"
 }

@@ -25,7 +25,8 @@ USAGE:
 
 COMMANDS:
   init                Initialize a project (run once)
-  new-stage <name>    Create a new spec stage
+  new-stage           Create a new spec stage
+  make-tasks          Generate tasks.md from the current plan.md
   retrospective       Generate design decisions file
   transcript <file>   Normalize a transcript to standard format
   status              Show current project state
@@ -37,7 +38,8 @@ COMMANDS:
 
 EXAMPLES:
   designlens init
-  designlens new-stage "auth-system"
+  designlens new-stage
+  designlens make-tasks
   designlens status
   designlens retrospective
   designlens transcript my-session.md
@@ -55,13 +57,12 @@ case "$1" in
     spec_init
     ;;
   new-stage)
-    if [ -z "$2" ]; then
-      echo "Error: new-stage requires a name argument"
-      echo "Usage: designlens new-stage <name>"
-      exit 1
-    fi
     source "$LIB_DIR/new-stage.sh"
-    spec_new_stage "$2"
+    spec_new_stage "$2" "$3"
+    ;;
+  make-tasks)
+    source "$LIB_DIR/make-tasks.sh"
+    spec_make_tasks
     ;;
   retrospective)
     source "$LIB_DIR/retrospective.sh"
