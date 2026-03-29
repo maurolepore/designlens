@@ -50,7 +50,8 @@ spec_new_stage() {
 
   # Check if previous stage has retrospective
   if [ "$max_num" -gt 0 ]; then
-    printf -v prev_num "%03d" "$max_num"
+    local prev_num
+    prev_num=$(printf "%03d" "$max_num")
     prev_dir=$(ls -d specs/$prev_num-* 2>/dev/null | head -1)
     if [ -d "$prev_dir" ] && [ ! -f "$prev_dir/design-decisions.md" ]; then
       warning "Previous stage ($prev_dir) has no design-decisions.md"
@@ -67,7 +68,8 @@ spec_new_stage() {
 
   # Calculate next number
   local next_num=$((max_num + 1))
-  printf -v padded_num "%03d" "$next_num"
+  local padded_num
+  padded_num=$(printf "%03d" "$next_num")
   local stage_dir="specs/$padded_num-$stage_name"
 
   # Create stage directory

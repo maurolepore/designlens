@@ -30,7 +30,8 @@ spec_make_tasks() {
     exit 1
   fi
 
-  printf -v padded_num "%03d" "$max_num"
+  local padded_num
+  padded_num=$(printf "%03d" "$max_num")
   local stage_dir
   stage_dir=$(ls -d specs/$padded_num-* 2>/dev/null | head -1)
 
