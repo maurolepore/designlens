@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# designlog main entry point
+# designlens main entry point
 # Routes commands to lib scripts
 
 set -e
@@ -18,10 +18,10 @@ show_help() {
   show_logo
 
   cat << 'EOF'
-designlog - Design history and architectural decision tracking
+designlens - Design history and architectural decision tracking
 
 USAGE:
-  designlog <command> [options]
+  designlens <command> [options]
 
 COMMANDS:
   init                Initialize a project (run once)
@@ -29,22 +29,22 @@ COMMANDS:
   retrospective       Generate design decisions file
   transcript <file>   Normalize a transcript to standard format
   status              Show current project state
-  config              Manage designlog configuration
+  config              Manage designlens configuration
   version             Show installed version
-  update              Update designlog to latest version
-  uninstall           Uninstall designlog from system
+  update              Update designlens to latest version
+  uninstall           Uninstall designlens from system
   help                Show this help message
 
 EXAMPLES:
-  designlog init
-  designlog new-stage "auth-system"
-  designlog status
-  designlog retrospective
-  designlog transcript my-session.md
-  designlog config show
-  designlog config set auto_commit true
+  designlens init
+  designlens new-stage "auth-system"
+  designlens status
+  designlens retrospective
+  designlens transcript my-session.md
+  designlens config show
+  designlens config set auto_commit true
 
-For full documentation, see the docs/conventions.md in the designlog repo.
+For full documentation, see the docs/conventions.md in the designlens repo.
 EOF
 }
 
@@ -57,7 +57,7 @@ case "$1" in
   new-stage)
     if [ -z "$2" ]; then
       echo "Error: new-stage requires a name argument"
-      echo "Usage: designlog new-stage <name>"
+      echo "Usage: designlens new-stage <name>"
       exit 1
     fi
     source "$LIB_DIR/new-stage.sh"
@@ -70,7 +70,7 @@ case "$1" in
   transcript)
     if [ -z "$2" ]; then
       echo "Error: transcript requires a file argument"
-      echo "Usage: designlog transcript <file>"
+      echo "Usage: designlens transcript <file>"
       exit 1
     fi
     source "$LIB_DIR/transcript.sh"
@@ -81,16 +81,16 @@ case "$1" in
     spec_status
     ;;
   version|-v|--version)
-    METADATA_FILE="$SCRIPT_DIR/../designlog.json"
+    METADATA_FILE="$SCRIPT_DIR/../designlens.json"
     if [ -f "$METADATA_FILE" ]; then
       VERSION=$(grep -o '"Version": *"[^"]*"' "$METADATA_FILE" | cut -d'"' -f4)
       if [ -n "$VERSION" ]; then
-        echo "designlog $VERSION"
+        echo "designlens $VERSION"
       else
-        echo "designlog (version unknown)"
+        echo "designlens (version unknown)"
       fi
     else
-      echo "designlog (version unknown)"
+      echo "designlens (version unknown)"
     fi
     ;;
   update)
@@ -105,8 +105,8 @@ case "$1" in
         ;;
       set)
         if [ -z "$3" ] || [ -z "$4" ]; then
-          echo "Usage: designlog config set <key> <value>"
-          echo "Example: designlog config set auto_commit true"
+          echo "Usage: designlens config set <key> <value>"
+          echo "Example: designlens config set auto_commit true"
           exit 1
         fi
         spec_config_set "$3" "$4"

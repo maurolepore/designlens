@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Display the designlog logo with colors
+# Display the designlens logo with colors
 # Adapts to light vs. dark terminal backgrounds
 # Sourced by other scripts to show at the start of commands
 
@@ -66,10 +66,10 @@ show_logo() {
     logo_color='\033[0;36m'  # Cyan for light backgrounds (default)
   fi
 
-  echo -e "${logo_color}  _           _            _           ${NC}"
-  echo -e "${logo_color}_| | ___  ___[_] ___  _ _ | | ___  ___ ${NC}"
-  echo -e "${logo_color}/ . |/ ._][_-[| |/ . || ' || |/ . \\/ . |${NC}"
-  echo -e "${logo_color}\\___|\\___./__/|_|\\_. ||_|_||_|\\___/\\_. |${NC}"
-  echo -e "${logo_color}                 [___|             [___|${NC}"
+  echo -e "${logo_color}     _           _            _                ${NC}"
+  echo -e "${logo_color}   _| | ___  ___[_] ___  _ _ | | ___  _ _  ___ ${NC}"
+  echo -e "${logo_color}  / . |/ ._][_-[| |/ . || ' || |/ ._]| ' |[_-[ ${NC}"
+  echo -e "${logo_color}  \___|\___./__/|_|\_. ||_|_||_|\___.|_|_|/__/ ${NC}"
+  echo -e "${logo_color}                   [___|                       ${NC}"
   echo ""
 }

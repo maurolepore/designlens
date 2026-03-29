@@ -1,17 +1,17 @@
 {
-  "Name": "designlog",
+  "Name": "designlens",
   "Title": "Design history and architectural decision tracking",
   "Description": "Embeds design history and architectural decisions directly into codebases, making development intent transparent and accessible alongside implementation",
   "Version": "0.1.0",
   "Author": "rOpenSci",
   "License": "MIT",
   "Language": "en-GB",
-  "URL": "https://github.com/ropensci-review-tools/designlog",
-  "BugReports": "https://github.com/ropensci-review-tools/designlog/issues",
+  "URL": "https://github.com/ropensci-review-tools/designlens",
+  "BugReports": "https://github.com/ropensci-review-tools/designlens/issues",
   "SystemRequirements": "bash (>= 3.2), curl, git",
   "Repository": {
     "type": "git",
-    "url": "https://github.com/ropensci-review-tools/designlog.git"
+    "url": "https://github.com/ropensci-review-tools/designlens.git"
   },
   "Keywords": [
     "design-history",

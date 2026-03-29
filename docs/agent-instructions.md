@@ -1,12 +1,12 @@
 # Agent Instructions
 
-How to work with designlog during a coding session.
+How to work with designlens during a coding session.
 
 ## At Session Start
 
 1. **Check for spec setup:**
    ```bash
-   designlog status
+   designlens status
    ```
 
 2. **Read the current state:**
@@ -18,7 +18,7 @@ How to work with designlog during a coding session.
 
 ## During the Session
 
-1. **Follow designlog conventions**
+1. **Follow designlens conventions**
    - When writing plan.md, use the template in [file-formats.md](file-formats.md)
    - When writing tasks.md, use clear checkboxes and acceptance criteria
    - Encourage the human to record important design discussions
@@ -33,7 +33,7 @@ How to work with designlog during a coding session.
    - Maintain the task checklist in tasks.md
    - Check off tasks as they're completed
    - Ask for human approval before marking tasks done
-   - Run `designlog status` periodically to show progress
+   - Run `designlens status` periodically to show progress
 
 4. **Record the conversation**
    - If the human asks, or if significant design decisions were made, save a normalized transcript to `.transcript.md`
@@ -43,10 +43,10 @@ How to work with designlog during a coding session.
 ## When the Stage Is Complete
 
 1. **Confirm all tasks are done:**
-   - Run `designlog status` — it should say "Stage complete!"
+   - Run `designlens status` — it should say "Stage complete!"
 
 2. **Generate design-decisions.md:**
-   - Run `designlog retrospective`
+   - Run `designlens retrospective`
    - Follow the detailed prompt it provides
    - **Critical:** Follow semi-anonymization rules
      - Speaker labels in raw transcripts use `git config user.name`
@@ -64,7 +64,7 @@ How to work with designlog during a coding session.
 
 4. **Start the next stage:**
    - Ask the human what to work on next
-   - Run `designlog new-stage "next-stage-name"`
+   - Run `designlens new-stage "next-stage-name"`
    - Begin planning again
 
 ## Key Principles

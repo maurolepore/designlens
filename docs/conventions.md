@@ -1,10 +1,10 @@
-# designlog Conventions
+# designlens Conventions
 
-This document defines the complete designlog workflow and file structure. It links to detailed guides for specific topics.
+This document defines the complete designlens workflow and file structure. It links to detailed guides for specific topics.
 
 ## Overview
 
-designlog is a design history tool for open source projects. It captures the progression from rough ideas → formalized plans → task breakdown → implementation → retrospective decisions.
+designlens is a design history tool for open source projects. It captures the progression from rough ideas → formalized plans → task breakdown → implementation → retrospective decisions.
 
 The core value: future contributors can understand *why* the code is the way it is, not just *what* it does.
 
@@ -34,7 +34,7 @@ your-project/
       design-decisions.md
       .transcript.md
     003-...
-  .designlog.json
+  .designlens.json
   AGENTS.md (or CLAUDE.md)
   ...
 ```
@@ -44,7 +44,7 @@ your-project/
 - **specs/** is the public design record, committed to git
 - Each stage folder is numbered with a 3-digit prefix (001, 002, etc.)
 - Within each stage: everything is self-contained
-- **.designlog.json** contains tool metadata and project-specific config (recommended to commit)
+- **.designlens.json** contains tool metadata and project-specific config (recommended to commit)
 - **AGENTS.md/CLAUDE.md** points agents to the specs on session start
 - **Transcripts** (`.transcript.md`) are semi-anonymized session records: speaker labels use git user.name, message content is anonymized. They document *what* was decided and *why*, safe for public repos
 
@@ -63,7 +63,7 @@ When one branch merges and another diverges, the history naturally captures the 
 
 - **[workflow.md](workflow.md)** — The 6-phase workflow (initialize → plan → implement → retrospective → commit → repeat)
 - **[file-formats.md](file-formats.md)** — Templates and style guides for plan.md, tasks.md, design-decisions.md, and .transcript.md
-- **[agent-instructions.md](agent-instructions.md)** — How agents should work with designlog at each phase
+- **[agent-instructions.md](agent-instructions.md)** — How agents should work with designlens at each phase
 - **[transcript-format.md](transcript-format.md)** — Detailed specification for transcript summaries, semi-anonymization rules, and examples
 - **[faq.md](faq.md)** — Frequently asked questions, tools reference, and Git workflow examples
 
@@ -73,13 +73,13 @@ When one branch merges and another diverges, the history naturally captures the 
 
 1. **Terminal (once per project):**
    ```bash
-   designlog init
+   designlens init
    ```
    (initializes git if needed)
 
 2. **In an agent session:**
    ```bash
-   designlog status
+   designlens status
    ```
    The status command tells you what to do next at every stage.
 

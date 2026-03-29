@@ -6,19 +6,19 @@ OS="$(uname -s)"
 
 case "$OS" in
   Darwin|Linux)
-    echo "Installing designlog for $OS..."
+    echo "Installing designlens for $OS..."
 
     # Get the directory where install.sh is located
     SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
     # Try system-wide installation first, fall back to user local
     if [ -w "/usr/local/lib" ]; then
-      INSTALL_DIR="/usr/local/lib/designlog"
+      INSTALL_DIR="/usr/local/lib/designlens"
       BIN_DIR="/usr/local/bin"
       SUDO=""
       SYSTEM_WIDE=true
     else
-      INSTALL_DIR="$HOME/.local/lib/designlog"
+      INSTALL_DIR="$HOME/.local/lib/designlens"
       BIN_DIR="$HOME/.local/bin"
       SUDO=""
       SYSTEM_WIDE=false
@@ -34,17 +34,17 @@ case "$OS" in
     cp -r "$SCRIPT_DIR"/lib "$INSTALL_DIR/"
     cp -r "$SCRIPT_DIR"/docs "$INSTALL_DIR/"
     cp "$SCRIPT_DIR"/README.md "$INSTALL_DIR/"
-    cp "$SCRIPT_DIR"/designlog.json "$INSTALL_DIR/"
+    cp "$SCRIPT_DIR"/designlens.json "$INSTALL_DIR/"
     cp "$SCRIPT_DIR"/LICENSE "$INSTALL_DIR/"
 
     echo "Making scripts executable..."
-    chmod +x "$INSTALL_DIR"/bin/designlog
+    chmod +x "$INSTALL_DIR"/bin/designlens
     chmod +x "$INSTALL_DIR"/lib/*.sh
 
     echo "Creating symlink..."
-    ln -sf "$INSTALL_DIR/bin/designlog" "$BIN_DIR/designlog"
+    ln -sf "$INSTALL_DIR/bin/designlens" "$BIN_DIR/designlens"
 
-    echo "✓ designlog installed successfully!"
+    echo "✓ designlens installed successfully!"
     echo ""
     if [ "$SYSTEM_WIDE" = false ]; then
       # Check if ~/.local/bin is in PATH
@@ -55,13 +55,13 @@ case "$OS" in
         echo ""
       fi
     fi
-    echo "Run 'designlog init' in your project directory to get started."
+    echo "Run 'designlens init' in your project directory to get started."
     ;;
 
   MINGW*|MSYS*|CYGWIN*)
     echo "Detected Windows environment with Git Bash/WSL..."
     echo "Please run install.ps1 in PowerShell instead:"
-    echo "  irm https://raw.githubusercontent.com/ropensci-review-tools/designlog/main/install.ps1 | iex"
+    echo "  irm https://raw.githubusercontent.com/ropensci-review-tools/designlens/main/install.ps1 | iex"
     exit 1
     ;;
 

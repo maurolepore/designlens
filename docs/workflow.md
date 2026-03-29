@@ -1,11 +1,11 @@
-# designlog Workflow
+# designlens Workflow
 
-The designlog workflow has 6 phases per stage, from initialization through retrospective and into the next cycle.
+The designlens workflow has 6 phases per stage, from initialization through retrospective and into the next cycle.
 
 ## Phase 1: Initialize (Terminal, once per project)
 
 ```bash
-designlog init
+designlens init
 ```
 
 This initializes git (if needed), creates `/specs`, lockfile, and AGENTS.md/CLAUDE.md pointer.
@@ -15,7 +15,7 @@ This initializes git (if needed), creates `/specs`, lockfile, and AGENTS.md/CLAU
 1. **Agent starts** in the repo
    - Automatically reads AGENTS.md/CLAUDE.md (Claude Code, etc.)
    - Learns that specs exist and reads conventions.md
-   - Runs `designlog status` to determine current state
+   - Runs `designlens status` to determine current state
 
 2. **Developer describes** the work to the agent
    - "I want to add data validation to the pipeline"
@@ -61,7 +61,7 @@ This initializes git (if needed), creates `/specs`, lockfile, and AGENTS.md/CLAU
 
 When all tasks are complete:
 
-1. **Agent or developer** runs `designlog retrospective`
+1. **Agent or developer** runs `designlens retrospective`
    - Tool outputs a structured prompt
    - Developer/agent pastes it into the coding agent
 
@@ -91,7 +91,7 @@ The stage is complete. All three files are in git.
 
 ## Phase 6: Next Stage
 
-Run `designlog new-stage "next-stage-name"` to begin the cycle again.
+Run `designlens new-stage "next-stage-name"` to begin the cycle again.
 
 The tool will warn if the previous stage lacks design-decisions.md and offer to run retrospective.
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Configuration management for designlog
-# Project-level configuration stored in .designlog.json
+# Configuration management for designlens
+# Project-level configuration stored in .designlens.json
 
 # Source colors and logo
 lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -10,7 +10,7 @@ source "$lib_dir/logo.sh"
 
 # Get project config file path
 get_config_file() {
-  echo ".designlog.json"
+  echo ".designlens.json"
 }
 
 # Read a config value from project config
@@ -46,7 +46,7 @@ write_config() {
   config_file=$(get_config_file)
 
   if [ ! -f "$config_file" ]; then
-    error "$config_file not found. Run 'designlog init' first."
+    error "$config_file not found. Run 'designlens init' first."
     return 1
   fi
 
@@ -72,10 +72,10 @@ show_config_help() {
 
   echo ""
   prompt "To change settings for this project:"
-  echo "  designlog config set auto_commit true|false"
+  echo "  designlens config set auto_commit true|false"
   echo ""
   prompt "To view current settings:"
-  echo "  designlog config show"
+  echo "  designlens config show"
   echo ""
   prompt "To edit directly:"
   echo "  Edit: $config_file"
@@ -90,13 +90,13 @@ spec_config_show() {
 
   config_file=$(get_config_file)
 
-  heading "designlog configuration (.designlog.json)"
+  heading "designlens configuration (.designlens.json)"
   echo ""
 
   if [ -f "$config_file" ]; then
     cat "$config_file"
   else
-    info "not configured - run 'designlog init'"
+    info "not configured - run 'designlens init'"
   fi
 
   echo ""
@@ -113,7 +113,7 @@ spec_config_set() {
   config_file=$(get_config_file)
 
   if [ ! -f "$config_file" ]; then
-    error "$config_file not found. Run 'designlog init' first."
+    error "$config_file not found. Run 'designlens init' first."
     exit 1
   fi
 
@@ -162,22 +162,22 @@ spec_config_reset() {
 spec_config_help() {
   show_logo
 
-  heading "designlog config - Manage project configuration"
+  heading "designlens config - Manage project configuration"
   echo ""
   heading "USAGE:"
-  echo "  designlog config show                     View current configuration"
-  echo "  designlog config set <key> <value>        Set a configuration value"
-  echo "  designlog config reset                    Reset config to defaults"
+  echo "  designlens config show                     View current configuration"
+  echo "  designlens config set <key> <value>        Set a configuration value"
+  echo "  designlens config reset                    Reset config to defaults"
   echo ""
   heading "AVAILABLE SETTINGS:"
   echo "  auto_commit (true|false)                  Auto-commit after tasks complete"
   echo ""
   heading "EXAMPLES:"
-  echo "  designlog config show"
-  echo "  designlog config set auto_commit true"
-  echo "  designlog config set auto_commit false"
+  echo "  designlens config show"
+  echo "  designlens config set auto_commit true"
+  echo "  designlens config set auto_commit false"
   echo ""
   heading "CONFIGURATION FILE:"
-  echo "  .designlog.json (project-level config)"
+  echo "  .designlens.json (project-level config)"
   echo ""
 }

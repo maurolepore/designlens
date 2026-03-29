@@ -12,7 +12,7 @@ spec_retrospective() {
   show_logo
 
   if [ ! -d specs ]; then
-    error "/specs directory not found. Run 'designlog init' first."
+    error "/specs directory not found. Run 'designlens init' first."
     exit 1
   fi
 

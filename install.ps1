@@ -1,10 +1,10 @@
-# designlog Windows Installer
+# designlens Windows Installer
 
 param(
-    [string]$InstallDir = "$env:LOCALAPPDATA\designlog"
+    [string]$InstallDir = "$env:LOCALAPPDATA\designlens"
 )
 
-Write-Host "Installing designlog for Windows..."
+Write-Host "Installing designlens for Windows..."
 
 # Get script directory
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -21,7 +21,7 @@ Copy-Item -Path "$ScriptDir\bin" -Destination "$InstallDir\" -Recurse -Force
 Copy-Item -Path "$ScriptDir\lib" -Destination "$InstallDir\" -Recurse -Force
 Copy-Item -Path "$ScriptDir\docs" -Destination "$InstallDir\" -Recurse -Force
 Copy-Item -Path "$ScriptDir\README.md" -Destination "$InstallDir\" -Force
-Copy-Item -Path "$ScriptDir\designlog.json" -Destination "$InstallDir\" -Force
+Copy-Item -Path "$ScriptDir\designlens.json" -Destination "$InstallDir\" -Force
 Copy-Item -Path "$ScriptDir\LICENSE" -Destination "$InstallDir\" -Force
 
 # Make scripts executable (Git Bash requirement)
@@ -41,12 +41,12 @@ if ($path -notlike "*$InstallDir*") {
 }
 
 Write-Host ""
-Write-Host "✓ designlog installed successfully!"
+Write-Host "✓ designlens installed successfully!"
 Write-Host "Installation directory: $InstallDir"
 Write-Host ""
-Write-Host "IMPORTANT: designlog requires Git Bash (comes with Git for Windows)."
+Write-Host "IMPORTANT: designlens requires Git Bash (comes with Git for Windows)."
 Write-Host "Run commands in Git Bash or WSL, not in cmd.exe or PowerShell."
 Write-Host ""
 Write-Host "To get started:"
 Write-Host "  1. Open Git Bash in your project directory"
-Write-Host "  2. Run: designlog init"
+Write-Host "  2. Run: designlens init"
