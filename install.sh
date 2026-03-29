@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+REPO="ropensci-review-tools/designlens"
+BRANCH="main"
+ARCHIVE_URL="https://github.com/$REPO/archive/refs/heads/$BRANCH.tar.gz"
+
 # Detect OS
 OS="$(uname -s)"
 
@@ -8,19 +12,23 @@ case "$OS" in
   Darwin|Linux)
     echo "Installing designlens for $OS..."
 
-    # Get the directory where install.sh is located
-    SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    # Download archive to a temp directory
+    TMP_DIR="$(mktemp -d)"
+    trap 'rm -rf "$TMP_DIR"' EXIT
+
+    echo "Downloading designlens..."
+    curl -fsSL "$ARCHIVE_URL" | tar -xz -C "$TMP_DIR" --strip-components=1
+
+    SCRIPT_DIR="$TMP_DIR"
 
     # Try system-wide installation first, fall back to user local
     if [ -w "/usr/local/lib" ]; then
       INSTALL_DIR="/usr/local/lib/designlens"
       BIN_DIR="/usr/local/bin"
-      SUDO=""
       SYSTEM_WIDE=true
     else
       INSTALL_DIR="$HOME/.local/lib/designlens"
       BIN_DIR="$HOME/.local/bin"
-      SUDO=""
       SYSTEM_WIDE=false
       mkdir -p "$BIN_DIR"
     fi

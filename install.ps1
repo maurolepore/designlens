@@ -4,10 +4,23 @@ param(
     [string]$InstallDir = "$env:LOCALAPPDATA\designlens"
 )
 
+$Repo   = "ropensci-review-tools/designlens"
+$Branch = "main"
+$ArchiveUrl = "https://github.com/$Repo/archive/refs/heads/$Branch.zip"
+
 Write-Host "Installing designlens for Windows..."
 
-# Get script directory
-$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+# Download archive to a temp directory
+Write-Host "Downloading designlens..."
+$TmpDir = Join-Path $env:TEMP ("designlens-install-" + [System.IO.Path]::GetRandomFileName())
+New-Item -ItemType Directory -Path $TmpDir -Force | Out-Null
+
+$ZipPath = Join-Path $TmpDir "designlens.zip"
+Invoke-WebRequest -Uri $ArchiveUrl -OutFile $ZipPath
+Expand-Archive -Path $ZipPath -DestinationPath $TmpDir
+
+# GitHub zip extracts to a subfolder named <repo>-<branch>
+$ScriptDir = Join-Path $TmpDir ("designlens-" + $Branch)
 
 # Create installation directory
 if (-not (Test-Path $InstallDir)) {
@@ -39,6 +52,9 @@ if ($path -notlike "*$InstallDir*") {
     [Environment]::SetEnvironmentVariable("Path", $newPath, [EnvironmentVariableTarget]::User)
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 }
+
+# Clean up temp directory
+Remove-Item -Recurse -Force $TmpDir
 
 Write-Host ""
 Write-Host "✓ designlens installed successfully!"
