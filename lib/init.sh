@@ -215,6 +215,15 @@ When starting a session:
 
 The specs folder contains the full design history and development philosophy. Refer to it when making architectural decisions.
 
+### Starting a new stage
+
+The user describes what they want to build. **Do not call `designlens new-stage` until you have enough information to write a concrete, actionable plan.** If the description is vague, missing scope, or lacks clear goals, ask clarifying questions before proceeding.
+
+Once you have sufficient detail:
+1. Derive a short verb-noun name from the description (e.g. `add-auth`, `refactor-parser`, `migrate-storage`) — do not ask the user for this
+2. Call: `designlens new-stage "<name>" "<full description>"`
+3. Then flesh out the generated plan.md and tasks.md with the full design
+
 ### Pending generation tasks
 
 On session start, run:
@@ -264,5 +273,7 @@ EOF
     echo "     If it doesn't, tell it: \"Follow the pending instructions in $agent_file\""
     step=$((step + 1))
   fi
-  echo "  $step. Run 'designlens new-stage \"name\"' to begin the first design phase"
+  echo "  $step. Tell your agent what you want to build — it will ask clarifying questions,"
+  step=$((step + 1))
+  echo "     generate a name, and call 'designlens new-stage' when it has enough detail."
 }

@@ -10,11 +10,21 @@ source "$lib_dir/logo.sh"
 
 spec_new_stage() {
   local stage_name="$1"
+  local stage_description="$2"
 
   show_logo
 
   if [ ! -d specs ]; then
     error "/specs directory not found. Run 'designlens init' first."
+    exit 1
+  fi
+
+  if [ -z "$stage_name" ] || [ -z "$stage_description" ]; then
+    error "Usage: designlens new-stage <verb-noun> <description>"
+    echo ""
+    echo "  Both arguments are required:"
+    echo "    <verb-noun>    A short slug, e.g. 'add-auth', 'refactor-parser'"
+    echo "    <description>  A description of what this stage will accomplish"
     exit 1
   fi
 
@@ -55,11 +65,11 @@ spec_new_stage() {
   mkdir -p "$stage_dir"
 
   # Create placeholder files
-  cat > "$stage_dir/plan.md" << 'EOF'
-# Plan: [Stage Title]
+  cat > "$stage_dir/plan.md" << EOF
+# Plan: $stage_name
 
 ## Overview
-(To be filled in)
+$stage_description
 
 ## Context
 (Previous decisions and constraints)
@@ -75,8 +85,8 @@ spec_new_stage() {
 (Anything to explore or clarify)
 EOF
 
-  cat > "$stage_dir/tasks.md" << 'EOF'
-# Tasks: [Stage Title]
+  cat > "$stage_dir/tasks.md" << EOF
+# Tasks: $stage_name
 
 ## Overview
 (Brief description of work breakdown)
