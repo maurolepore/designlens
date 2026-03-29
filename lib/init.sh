@@ -208,10 +208,15 @@ EOF
   echo ""
   success "designlens initialized successfully!"
 
-  # Check if auto-commit is enabled and commit if so
+  # Stage all newly-created files
+  git add .designlens.json specs/
+  [ -f AGENTS.md ] && git add AGENTS.md
+  [ -f CLAUDE.md ] && git add CLAUDE.md
+  success "Staged new files"
+
+  # Commit if auto-commit is enabled
   local auto_commit=$(get_config "auto_commit")
   if [ "$auto_commit" = "true" ]; then
-    git add -A
     git commit -m "Initialize designlens" > /dev/null 2>&1
     success "Changes committed"
   fi
@@ -226,7 +231,7 @@ EOF
     echo "  2. Run 'designlens new-stage \"name\"' to begin the first design phase"
   else
     heading "━ Next steps ━"
-    echo "  1. Commit the changes: git add -A && git commit -m 'Initialize designlens'"
+    echo "  1. Commit the changes: git commit -m 'Initialize designlens'"
     echo "  2. Start a coding session with your agent (Claude Code, etc.)"
     echo "  3. Run 'designlens new-stage \"name\"' to begin the first design phase"
   fi
