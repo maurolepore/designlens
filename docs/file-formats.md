@@ -104,6 +104,7 @@ Each `design-decisions.md` focuses on **what's new in this stage** while cross-r
 **Chosen:** [The option selected]
 **Rationale:** [Why this was chosen over alternatives]
 **Tradeoffs:** [What was given up]
+**Proposed by:** [git-user | agent | joint] — who originated the idea; use git user.name for the human participant, 'human' only as a fallback
 **Relates to:** [Brief cross-reference if building on prior work]
 
 ### Decision 2: [What was decided]
@@ -131,6 +132,7 @@ Example: "Building on the auth system from 001-auth (see that stage's decisions 
 - Use cross-references freely: "See NNN-stage/design-decisions.md for..." is preferred over repeating prior reasoning
 - Focus on the *why*, not the *what* (the what is in the code already)
 - Each stage's doc should be readable on its own, but complete history is reconstructed by reading from 000-design-history forward
+- **Role attribution:** when it matters who drove a decision, use `git config user.name` for the human participant (e.g. `alice`), `agent` for the AI assistant, or `joint` if both contributed equally. Use `human` only if git user.name is unavailable. Omit the **Proposed by** field entirely if attribution adds no value.
 
 **Cross-referencing guidance:**
 - When a decision builds on previous work, reference the earlier stage explicitly
@@ -160,11 +162,12 @@ Example: "Building on the auth system from 001-auth (see that stage's decisions 
 
 **Style:**
 - Simple turn-by-turn format
-- Speaker labels: `**[git-user-name]:**` (from `git config user.name`) and `**assistant:**`
+- Speaker labels: `**[git-user-name]:**` (from `git config user.name`) and `**assistant:**` — never anonymous "human" or "user"
 - Message content: anonymized — remove personal expressions, anecdotes, or identifying information
 - Full message text (cleaned of personal information and expressions), not paraphrased
 - One transcript per `.transcript.md` file; if multiple sessions, use `.transcript-1.md`, `.transcript-2.md`, etc.
 - Multiple participants: each uses their own `git config user.name` as the label
+- For decision summaries derived from transcripts, every decision must carry a `**Proposed by:**` attribution: `git config user.name` (e.g. `alice`), `agent`, or `joint`; use `human` only as a last-resort fallback when git user.name is unavailable
 
 ---
 

@@ -1,16 +1,20 @@
 # designlens Workflow
 
-The designlens workflow has 6 phases per stage, from initialization through retrospective and into the next cycle.
+The designlens workflow has 5 phases per stage, from initialization through retrospective and into the next cycle.
 
-## Phase 1: Initialize (Terminal, once per project)
+## Phase 1: Initialize the stage
 
 ```bash
 designlens init
 ```
 
-This initializes git (if needed), creates `/specs`, lockfile, and AGENTS.md/CLAUDE.md pointer.
+Run once per project. Initializes git (if needed), creates `/specs`, lockfile, and AGENTS.md/CLAUDE.md pointer. Commit behavior is configured here and stored in `.designlens.json`.
 
-## Phase 2: Plan (Agent Session)
+## Phase 2: Plan the stage
+
+```bash
+designlens new-stage "stage description"
+```
 
 1. **Agent starts** in the repo
    - Automatically reads AGENTS.md/CLAUDE.md (Claude Code, etc.)
@@ -33,14 +37,28 @@ This initializes git (if needed), creates `/specs`, lockfile, and AGENTS.md/CLAU
    - Documents the reasoning
    - Lists open questions or deferred decisions
 
-5. **Agent writes** tasks.md
+**Output:** `/specs/NNN-stage-name/plan.md`
+
+## Phase 3: Convert plan into tasks
+
+```bash
+designlens make-tasks
+```
+
+1. **Developer reviews** plan.md and triggers task generation
+2. **Agent reads** plan.md and writes tasks.md
    - Breaks the plan into actionable tasks
-   - Each task has a checkbox (unchecked)
-   - Clear acceptance criteria
+   - Each task has a checkbox (unchecked) and a unique ID (e.g. `T001-1`, `T001-2`)
+   - Clear acceptance criteria per task
+3. **Developer reviews** tasks.md before implementation begins
 
-**Output:** `/specs/NNN-stage-name/plan.md` and `tasks.md`
+**Output:** `/specs/NNN-stage-name/tasks.md`
 
-## Phase 3: Implement (Agent Session, continues)
+## Phase 4: Implement tasks
+
+```bash
+designlens implement
+```
 
 1. **Agent executes** the tasks
    - Runs code, writes tests, creates docs
@@ -53,26 +71,24 @@ This initializes git (if needed), creates `/specs`, lockfile, and AGENTS.md/CLAU
    - Agent adapts
 
 3. **Agent ensures** all tasks are complete
-   - When all tasks marked done, moves to Phase 4
+   - When all tasks marked done, moves to Phase 5
 
 **Output:** Code changes, committed to the stage branch
 
-## Phase 4: Retrospective (Agent Session)
+## Phase 5: Create retrospective
 
-When all tasks are complete:
+```bash
+designlens retrospective
+```
 
-1. **Agent or developer** runs `designlens retrospective`
-   - Tool outputs a structured prompt
-   - Developer/agent pastes it into the coding agent
-
-2. **Agent analyzes** the stage and project history
+1. **Agent analyzes** the stage and project history
    - Reads plan.md, tasks.md, and the session transcript (if available)
    - Reviews design-decisions.md from all previous stages (000-design-history, 001, 002, etc.)
    - Summarizes key design decisions made **in this stage**
    - Shows how this stage builds on or extends prior architectural decisions
    - Identifies tradeoffs specific to this stage
 
-3. **Agent writes** design-decisions.md
+2. **Agent writes** design-decisions.md
    - Documents **what's new in this stage** (200–400 words typically)
    - Cross-references prior decisions to show integration (e.g., "See 001-auth for the foundational decision on token storage")
    - Clear sections: Summary, New Design Decisions, Integration with Prior Work, Deferred Items
@@ -80,20 +96,9 @@ When all tasks are complete:
 
 **Output:** `/specs/NNN-stage-name/design-decisions.md`
 
-## Phase 5: Commit
+---
 
-```bash
-git add specs/NNN-stage-name/
-git commit -m "NNN-stage-name: Design decisions and implementation"
-```
-
-The stage is complete. All three files are in git.
-
-## Phase 6: Next Stage
-
-Run `designlens new-stage "next-stage-name"` to begin the cycle again.
-
-The tool will warn if the previous stage lacks design-decisions.md and offer to run retrospective.
+The stage is complete. Run `designlens new-stage "next-stage-name"` to begin the next cycle. The tool will warn if the previous stage lacks design-decisions.md and offer to run retrospective.
 
 ---
 

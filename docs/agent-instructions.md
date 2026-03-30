@@ -56,11 +56,14 @@ How to work with designlens during a coding session.
    - Create a structured summary of key decisions, rationale, and tradeoffs
    - Typically 300–500 words, scannable format
 
-3. **Guide the human to commit:**
-   ```bash
-   git add specs/NNN-stage-name/
-   git commit -m "NNN-stage-name: Design decisions and implementation"
-   ```
+3. **Commit the stage specs:**
+   - Check `auto_commit` in `.designlens.json`
+   - If `"auto_commit": true`: automatically run:
+     ```bash
+     git add specs/NNN-stage-name/
+     git commit -m "NNN-stage-name: Design decisions and implementation"
+     ```
+   - If `"auto_commit": false`: guide the human to run those commands manually
 
 4. **Start the next stage:**
    - Ask the human what to work on next

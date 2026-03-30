@@ -51,6 +51,9 @@ spec_retrospective() {
     exit 1
   fi
 
+  local git_user
+  git_user=$(git config user.name 2>/dev/null || echo "human")
+
   heading "Retrospective for $latest_stage"
   echo ""
 
@@ -140,11 +143,19 @@ spec_retrospective() {
   echo ""
   echo "### ANONYMIZATION REQUIREMENTS (non-negotiable):"
   echo "- NO personal names, email addresses, or identifying information"
-  echo "- NO references to individuals (use 'a contributor' or 'the human' if needed, not 'Mark' or 'John')"
+  echo "- NO references to individuals by name (not 'Mark' or 'John')"
   echo "- NO personal details, preferences, or anecdotes"
   echo "- Use PASSIVE VOICE or ROLE-BASED language (e.g., 'was decided', 'was proposed')"
   echo "- Remove business/user info that could identify the company (e.g., user counts, revenue)"
   echo "- Focus on TECHNICAL AND REASONING aspects, not the people"
+  echo ""
+  echo "### ROLE ATTRIBUTION (when attribution matters):"
+  echo "- Use git user.name ($git_user) to identify the human participant"
+  echo "- Use 'human' only as a fallback if git user.name is unavailable"
+  echo "- Use 'agent' to refer to the AI assistant"
+  echo "- Use 'joint' when both contributed equally to a decision"
+  echo "- Record this in the 'Proposed by:' field of each decision: [$git_user | agent | joint]"
+  echo "- Omit 'Proposed by' entirely if the origin of a decision is irrelevant or unclear"
   echo ""
   echo "### FORMAT (from conventions.md):"
   echo "# Design Decisions: [Stage Title]"
@@ -157,6 +168,7 @@ spec_retrospective() {
   echo "**Chosen:** [The option selected]"
   echo "**Rationale:** [Why; focus on technical/business reasons]"
   echo "**Tradeoffs:** [What was sacrificed]"
+  echo "**Proposed by:** [$git_user | agent | joint] (omit if not relevant)"
   echo "**Relates to:** [Brief cross-ref if building on prior work, e.g., 'See 001-foo for foundation']"
   echo ""
   echo "### Decision 2: [What was decided]"
