@@ -42,9 +42,10 @@ spec_implement() {
 
   echo ""
   echo "AGENT: Implement all tasks listed in $stage_dir/tasks.md, in order, one by one."
+  echo "Tasks are identified by IDs of the form T${padded_num}-N (e.g. T${padded_num}-1, T${padded_num}-2, ...)."
   echo ""
   echo "Rules:"
-  echo "  1. Work through tasks sequentially — do not skip or reorder."
+  echo "  1. Work through tasks sequentially by ID — do not skip or reorder."
   echo "  2. Implementation is not complete until every task is checked off."
   echo "  3. If any uncertainty arises — including potential conflicts between tasks,"
   echo "     ambiguous requirements, or unexpected obstacles — stop and ask the user"

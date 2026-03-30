@@ -58,11 +58,11 @@ Templates and style guides for the four key files in each design stage.
 
 ## Task Checklist
 
-- [ ] Task 1: [Specific outcome]
-- [ ] Task 2: [Specific outcome]
-- [ ] Task 3: [Specific outcome]
+- [ ] TNNN-1: [Specific outcome]
+- [ ] TNNN-2: [Specific outcome]
+- [ ] TNNN-3: [Specific outcome]
 
-### Task 1: [Specific outcome]
+### TNNN-1: [Specific outcome]
 
 **Acceptance Criteria:**
 - Criterion A
@@ -78,6 +78,7 @@ Templates and style guides for the four key files in each design stage.
 ```
 
 **Style:**
+- Each task ID uses the 3-digit stage number followed by a sequential task index: `TNNN-1`, `TNNN-2`, etc. For example, the second task of stage `003` is `T003-2`.
 - Each task should be completable in a single session (or clearly marked as multi-session)
 - Tasks should be roughly equal in scope
 - Acceptance criteria are testable
