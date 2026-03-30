@@ -7,6 +7,7 @@
 lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$lib_dir/colors.sh"
 source "$lib_dir/logo.sh"
+source "$lib_dir/config.sh"
 source "$lib_dir/transcript.sh"
 
 spec_retrospective() {
@@ -58,7 +59,7 @@ spec_retrospective() {
   echo ""
 
   # STEP 1: Transcript sub-task (create if missing, review if exists)
-  echo "## STEP 1 OF 2: Session transcript"
+  echo "## STEP 1 OF 3: Session transcript"
   echo ""
   spec_transcript "$latest_stage/.transcript.md"
   echo ""
@@ -68,7 +69,7 @@ spec_retrospective() {
   fi
 
   # STEP 2: Design decisions
-  echo "## STEP 2 OF 2: Generate design-decisions.md"
+  echo "## STEP 2 OF 3: Generate design-decisions.md"
   echo ""
   info "After the transcript is saved, generate design-decisions.md for $latest_stage:"
   echo ""
@@ -205,9 +206,84 @@ spec_retrospective() {
   info "Save the result to: $latest_stage/design-decisions.md"
   heading "============================================"
   echo ""
-  info "After completing both steps, commit the changes:"
-  echo "  git add $latest_stage/"
-  echo "  git commit -m \"$latest_stage: Add design decisions\""
+
+  # STEP 3: Update root design summary
+  echo "## STEP 3 OF 3: Update specs/design-decisions.md"
   echo ""
-  info "Once the retrospective is committed, run: designlens new-stage"
+  info "After saving the stage design-decisions.md, update the project-level design summary."
+  echo ""
+  heading "============================================"
+  echo ""
+  echo "Read the design-decisions.md from every stage, in order:"
+  echo ""
+
+  if [ -f "specs/000-design-history/design-decisions.md" ]; then
+    echo "  specs/000-design-history/design-decisions.md"
+  fi
+  for dir in specs/[0-9][0-9][0-9]-*; do
+    if [ -d "$dir" ] && [ -f "$dir/design-decisions.md" ]; then
+      echo "  $dir/design-decisions.md"
+    fi
+  done
+  # Also reference the just-created stage doc (may not exist on disk yet)
+  if [ ! -f "$latest_stage/design-decisions.md" ]; then
+    echo "  $latest_stage/design-decisions.md  (just written in STEP 2)"
+  fi
+
+  echo ""
+  echo "Also read $latest_stage/plan.md to understand the project's current form."
+  echo ""
+  echo "Then write or update specs/design-decisions.md as a coherent project-level summary."
+  echo ""
+  echo "This document must:"
+  echo "1. Describe the project's CURRENT architecture and form (derived from the latest plan.md)"
+  echo "2. Trace the key decisions that led to this current form, synthesised across all stages"
+  echo "3. Highlight important roads not taken at any stage, and why they were rejected"
+  echo "4. Remain readable as a standalone narrative — a reader should not need to open"
+  echo "   individual stage docs to understand how and why the project reached its current state"
+  echo "5. Grow naturally with the project; there is no size limit, but keep it coherent"
+  echo "   and prune superseded detail rather than accumulating stale history"
+  echo ""
+  echo "### FORMAT:"
+  echo "# Design Decisions: [Project Name]"
+  echo ""
+  echo "## Current Architecture"
+  echo "[Description of the present form, synthesised from the latest plan.md]"
+  echo ""
+  echo "## Key Decisions"
+  echo ""
+  echo "### [Decision title]"
+  echo "**Outcome:** [What was decided and remains true today]"
+  echo "**Rationale:** [Why, synthesised across the stages that shaped it]"
+  echo "**Roads not taken:** [Alternatives that were considered and rejected, with reasons]"
+  echo "**Stages:** [Which stage(s) made or refined this decision]"
+  echo ""
+  echo "## Architectural Evolution"
+  echo "[Narrative of how the design evolved — what changed across stages and why]"
+  echo ""
+  echo "## Important Roads Not Taken"
+  echo "[Significant alternatives rejected at any stage, grouped by theme, with rationale]"
+  echo ""
+  echo "### ANONYMIZATION REQUIREMENTS (same as all other docs):"
+  echo "- NO personal names, email addresses, or identifying information"
+  echo "- Use passive voice or role-based language throughout"
+  echo "- Focus on technical and architectural reasoning, not people"
+  echo ""
+  info "Save the result to: specs/design-decisions.md"
+  heading "============================================"
+  echo ""
+  local auto_commit
+  auto_commit=$(get_config "auto_commit" 2>/dev/null)
+
+  info "After completing all three steps, stage the changes:"
+  echo "  git add $latest_stage/ specs/design-decisions.md"
+  echo ""
+  if [ "$auto_commit" = "true" ]; then
+    echo "Then commit:"
+    echo "  git commit -m \"$latest_stage: Add design decisions\""
+  else
+    info "auto_commit is not enabled — do NOT commit. Stage the files only and leave the commit to the user."
+  fi
+  echo ""
+  info "Run 'designlens new-stage' when you're ready to start the next stage of development, or 'designlens help' at any time."
 }

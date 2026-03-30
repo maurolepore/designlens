@@ -81,20 +81,26 @@ designlens implement
 designlens retrospective
 ```
 
-1. **Agent analyzes** the stage and project history
-   - Reads plan.md, tasks.md, and the session transcript (if available)
-   - Reviews design-decisions.md from all previous stages (000-design-history, 001, 002, etc.)
-   - Summarizes key design decisions made **in this stage**
-   - Shows how this stage builds on or extends prior architectural decisions
-   - Identifies tradeoffs specific to this stage
+1. **Agent creates the session transcript** (`.transcript.md`)
+   - Semi-anonymized summary of what was discussed and decided
+   - Speaker attribution uses `git config user.name`; content is depersonalized
 
-2. **Agent writes** design-decisions.md
+2. **Agent writes the stage design-decisions.md**
+   - Reads plan.md, tasks.md, and the session transcript
+   - Reviews design-decisions.md from all previous stages for context
    - Documents **what's new in this stage** (200–400 words typically)
-   - Cross-references prior decisions to show integration (e.g., "See 001-auth for the foundational decision on token storage")
+   - Cross-references prior decisions to show integration
    - Clear sections: Summary, New Design Decisions, Integration with Prior Work, Deferred Items
-   - Markdown format
 
-**Output:** `/specs/NNN-stage-name/design-decisions.md`
+3. **Agent updates the root design summary** (`specs/design-decisions.md`)
+   - Reads all stage design-decisions.md files, in order
+   - Rewrites `specs/design-decisions.md` as a coherent project-level narrative
+   - Describes the **current architecture** (derived from the latest plan.md)
+   - Traces the key decisions that led to the present form across all stages
+   - Highlights important roads not taken and why they were rejected
+   - No size limit; grows with the project but prunes superseded detail
+
+**Output:** `/specs/NNN-stage-name/design-decisions.md` and `/specs/design-decisions.md`
 
 ---
 
