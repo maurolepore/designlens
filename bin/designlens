@@ -81,6 +81,7 @@ case "$1" in
       exit 1
     fi
     source "$LIB_DIR/transcript.sh"
+    show_logo
     spec_transcript "$2"
     ;;
   status)

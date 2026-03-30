@@ -7,6 +7,7 @@
 lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$lib_dir/colors.sh"
 source "$lib_dir/logo.sh"
+source "$lib_dir/transcript.sh"
 
 spec_retrospective() {
   show_logo
@@ -50,17 +51,27 @@ spec_retrospective() {
     exit 1
   fi
 
-  heading "Generating design-decisions.md for $latest_stage..."
+  heading "Retrospective for $latest_stage"
   echo ""
-  info "After implementing all tasks, review with agent to generate design-decisions.md:"
+
+  # STEP 1: Transcript sub-task (create if missing, review if exists)
+  echo "## STEP 1 OF 2: Session transcript"
+  echo ""
+  spec_transcript "$latest_stage/.transcript.md"
+  echo ""
+  if [ ! -f "$latest_stage/.transcript.md" ]; then
+    info "Complete STEP 1 before proceeding: create $latest_stage/.transcript.md, then continue."
+    echo ""
+  fi
+
+  # STEP 2: Design decisions
+  echo "## STEP 2 OF 2: Generate design-decisions.md"
+  echo ""
+  info "After the transcript is saved, generate design-decisions.md for $latest_stage:"
   echo ""
   heading "============================================"
   echo ""
   echo "You are reviewing a completed design stage for a project."
-  echo ""
-  echo "Generate a SUMMARY TRANSCRIPT (not raw conversation) that documents key design"
-  echo "decisions and reasoning. This will be committed to the repo and read by future"
-  echo "contributors, so DEPERSONALIZATION IS CRITICAL."
   echo ""
   echo "Read the following documents:"
   echo ""
@@ -70,16 +81,10 @@ spec_retrospective() {
   echo ""
   cat "$latest_stage/tasks.md"
   echo ""
-
-  # Include existing transcript if it exists
-  if [ -f "$latest_stage/.transcript.md" ]; then
-    echo "---"
-    echo ""
-    echo "Session transcript summary (for reference):"
-    echo ""
-    cat "$latest_stage/.transcript.md"
-    echo ""
-  fi
+  echo "---"
+  echo ""
+  echo "Session transcript (read from file: $latest_stage/.transcript.md):"
+  echo ""
 
   # Include previous design decisions for context
   echo "---"
@@ -188,7 +193,7 @@ spec_retrospective() {
   info "Save the result to: $latest_stage/design-decisions.md"
   heading "============================================"
   echo ""
-  info "After generating .transcript.md, commit the changes:"
+  info "After completing both steps, commit the changes:"
   echo "  git add $latest_stage/"
   echo "  git commit -m \"$latest_stage: Add design decisions\""
   echo ""

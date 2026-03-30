@@ -11,30 +11,55 @@ source "$lib_dir/logo.sh"
 spec_transcript() {
   local input_file="$1"
 
-  if [ ! -f "$input_file" ]; then
-    error "File not found: $input_file"
-    exit 1
-  fi
-
-  show_logo
-
   local git_user
   git_user=$(git config user.name 2>/dev/null || echo "unknown")
 
-  heading "Transcript semi-anonymization helper"
+  if [ ! -f "$input_file" ]; then
+    # CREATE MODE: instruct agent to create the transcript from scratch
+    heading "============================================"
+    echo ""
+    echo "## SUB-TASK: Create session transcript"
+    echo ""
+    echo "Create a semi-anonymized summary transcript of this design session."
+    echo "Save it to: $input_file"
+    echo ""
+    echo "### Format:"
+    echo ""
+    echo "# Session Transcript: [Stage Title]"
+    echo ""
+    echo "## Session Overview"
+    echo "[1-2 sentences summarizing what was discussed and decided]"
+    echo ""
+    echo "## Key Decisions"
+    echo "- [Decision 1]: [Brief rationale]"
+    echo "- [Decision 2]: [Brief rationale]"
+    echo ""
+    echo "## Tradeoffs Considered"
+    echo "- [Option A vs Option B]: [Why the chosen option won]"
+    echo ""
+    echo "## Open Questions"
+    echo "- [Any unresolved questions or deferred items]"
+    echo ""
+    echo "### ANONYMIZATION REQUIREMENTS (non-negotiable):"
+    echo "- Speaker labels: use git user.name ($git_user), not 'human', 'user', or real names"
+    echo "- NO personal expressions, anecdotes, or preferences in first person"
+    echo "- NO email addresses or identifying information"
+    echo "- NO user counts, revenue, or business-specific details"
+    echo "- Focus on technical reasoning and decisions, not speakers"
+    echo ""
+    echo "### Length: 150–300 words. Concise and scannable."
+    echo ""
+    heading "============================================"
+    return
+  fi
+
+  heading "Transcript semi-anonymization review"
   echo ""
   info "Note: designlens transcripts are SUMMARIES of design decisions, not raw conversation."
   info "They must be semi-anonymized before being committed to a project repo:"
   echo ""
   echo "  Speaker labels : use git user.name ($git_user)"
   echo "  Message content: anonymized — remove personal expressions and identifying info"
-  echo ""
-  info "If you have raw session notes and want to convert them to a designlens transcript:"
-  echo ""
-  echo "1. Run 'designlens retrospective' to get a structured prompt for your agent"
-  echo "2. The agent will generate a properly semi-anonymized summary transcript"
-  echo ""
-  info "To review an existing transcript for identifying information in message content:"
   echo ""
   heading "Checklist:"
   echo "  ☐ Speaker labels use git user.name (not 'human' or 'user')"
