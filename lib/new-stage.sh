@@ -42,8 +42,8 @@ spec_new_stage() {
   for dir in specs/[0-9][0-9][0-9]-*; do
     if [ -d "$dir" ]; then
       num=$(basename "$dir" | cut -d- -f1)
-      if [ "$num" -gt "$max_num" ]; then
-        max_num=$num
+      if [ $((10#$num)) -gt "$max_num" ]; then
+        max_num=$((10#$num))
       fi
     fi
   done
@@ -67,7 +67,7 @@ spec_new_stage() {
   fi
 
   # Calculate next number
-  local next_num=$((max_num + 1))
+  local next_num=$(( max_num + 1 ))
   local padded_num
   padded_num=$(printf "%03d" "$next_num")
   local stage_dir="specs/$padded_num-$stage_name"
