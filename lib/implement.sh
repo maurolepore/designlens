@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Generate tasks.md from the current stage's plan.md
+# Begin implementation of the current stage's tasks.md
 
 lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$lib_dir/colors.sh"
 source "$lib_dir/logo.sh"
 
-spec_make_tasks() {
+spec_implement() {
   show_logo
 
   if [ ! -d specs ]; then
@@ -35,23 +35,18 @@ spec_make_tasks() {
   local stage_dir
   stage_dir=$(ls -d specs/$padded_num-* 2>/dev/null | head -1)
 
-  if [ ! -f "$stage_dir/plan.md" ]; then
-    error "No plan.md found in $stage_dir. Run 'designlens new-stage' first."
+  if [ ! -f "$stage_dir/tasks.md" ]; then
+    error "No tasks.md found in $stage_dir. Run 'designlens make-tasks' first."
     exit 1
   fi
 
-  if [ -f "$stage_dir/tasks.md" ]; then
-    warning "tasks.md already exists in $stage_dir."
-    prompt "Overwrite? (y/n)"
-    read -r response
-    if [ "$response" != "y" ]; then
-      echo "Aborted."
-      exit 0
-    fi
-  fi
-
   echo ""
-  echo "AGENT: Read $stage_dir/plan.md and generate $stage_dir/tasks.md from it."
-  echo "Break the plan into concrete, actionable tasks with checkboxes."
-  echo "Once written, tell the user to review $stage_dir/tasks.md, then run 'designlens implement' to begin implementation."
+  echo "AGENT: Implement all tasks listed in $stage_dir/tasks.md, in order, one by one."
+  echo ""
+  echo "Rules:"
+  echo "  1. Work through tasks sequentially — do not skip or reorder."
+  echo "  2. Implementation is not complete until every task is checked off."
+  echo "  3. If any uncertainty arises — including potential conflicts between tasks,"
+  echo "     ambiguous requirements, or unexpected obstacles — stop and ask the user"
+  echo "     for clarification before proceeding."
 }

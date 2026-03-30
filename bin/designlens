@@ -27,6 +27,7 @@ COMMANDS:
   init                Initialize a project (run once)
   new-stage           Create a new spec stage
   make-tasks          Generate tasks.md from the current plan.md
+  implement           Implement all tasks in the current tasks.md
   retrospective       Generate design decisions file
   transcript <file>   Normalize a transcript to standard format
   status              Show current project state
@@ -40,6 +41,7 @@ EXAMPLES:
   designlens init
   designlens new-stage
   designlens make-tasks
+  designlens implement
   designlens status
   designlens retrospective
   designlens transcript my-session.md
@@ -63,6 +65,10 @@ case "$1" in
   make-tasks)
     source "$LIB_DIR/make-tasks.sh"
     spec_make_tasks
+    ;;
+  implement)
+    source "$LIB_DIR/implement.sh"
+    spec_implement
     ;;
   retrospective)
     source "$LIB_DIR/retrospective.sh"
