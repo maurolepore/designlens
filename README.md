@@ -106,7 +106,7 @@ When all tasks are checked off:
 
 The agent generates `design-decisions.md`: a concise, anonymized summary of what
 was decided and why, cross-referencing prior stages to show how the design
-evolves. This is the document future contributors will read.
+evolves. These are the documents future contributors will read.
 
 ### 6. Check where you are at any point
 
@@ -139,7 +139,7 @@ templates, and agent instructions.
 The forward design workflow borrows heavily from
 [spec-kit](https://github.com/github/spec-kit), which pioneered the plan → tasks →
 implement cycle for agent-driven development. designlens extends that model
-with the backward-facing retrospective step and the accumulated `specs/` history.
+with the backward-facing retrospective step.
 
 ## License
 
