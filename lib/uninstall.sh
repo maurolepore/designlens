@@ -15,12 +15,18 @@ spec_uninstall() {
 
   UNINSTALLED=false
 
+  # Resolve the real user's home when running under sudo
+  if [ -n "$SUDO_USER" ]; then
+    REAL_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+  else
+    REAL_HOME="$HOME"
+  fi
+
   # Check system-wide installation
   if [ -d "/usr/local/lib/designlens" ]; then
     INSTALL_DIR="/usr/local/lib/designlens"
     BIN_LINK="/usr/local/bin/designlens"
 
-    # Check if we need sudo
     if [ ! -w "/usr/local/lib" ]; then
       SUDO="sudo"
     else
@@ -36,10 +42,10 @@ spec_uninstall() {
     UNINSTALLED=true
   fi
 
-  # Check user local installation
-  if [ -d "$HOME/.local/lib/designlens" ]; then
-    INSTALL_DIR="$HOME/.local/lib/designlens"
-    BIN_LINK="$HOME/.local/bin/designlens"
+  # Check user local installation (real user's home, works under sudo)
+  if [ -d "$REAL_HOME/.local/lib/designlens" ]; then
+    INSTALL_DIR="$REAL_HOME/.local/lib/designlens"
+    BIN_LINK="$REAL_HOME/.local/bin/designlens"
 
     info "Removing symlink: $BIN_LINK"
     rm -f "$BIN_LINK"
