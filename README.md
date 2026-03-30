@@ -1,10 +1,28 @@
 # designlens
 
-A design history tool for open source projects. Captures the reasoning behind
-code as it's written—so future contributors understand not just *what* the code
-does, but *why* it evolved the way it did.
+A spec-driven design tool with a long memory. designlens works in two directions:
+**forward**, to guide what you're building next, and **backward**, to record why
+you built it the way you did.
 
-## What it does
+## Two directions
+
+### Forward: spec-driven design
+
+Like other spec-driven tools, designlens starts with intent. Before any code is
+written, you produce a plan that captures goals, approach, and open questions.
+That plan drives task breakdown and implementation—keeping your agent focused on
+what was actually decided, not just what's easiest.
+
+### Backward: design history
+
+Unlike most spec tools, designlens also looks backward. After each stage, it
+generates a `design-decisions.md` that records what was decided, what was
+traded off, and how the decision connects to prior stages. These documents
+accumulate in `specs/` as a permanent, human-readable archaeological record of
+your project's evolution—so future contributors understand not just *what* the
+code does, but *why* it is the way it is.
+
+## What it produces
 
 Each feature or change is developed as a numbered *stage*. A stage produces three
 artifacts, committed to your repo under `specs/`:
@@ -13,8 +31,8 @@ artifacts, committed to your repo under `specs/`:
 - **tasks.md** — the execution breakdown: concrete, checkboxed steps
 - **design-decisions.md** — the reasoning record: what was decided, what was traded off, how it connects to prior stages
 
-Over time, `specs/` becomes an archaeological record of your project's evolution,
-readable by contributors who weren't there when the decisions were made.
+Over time, `specs/` becomes a navigable record of your project's decisions,
+readable by contributors who weren't there when the choices were made.
 
 ## Installation
 
@@ -115,6 +133,13 @@ designlens uninstall  # remove the tool (your specs/ folders are untouched)
 
 See `docs/conventions.md` for the full workflow specification, file format
 templates, and agent instructions.
+
+## Prior art
+
+The forward design workflow borrows heavily from
+[spec-kit](https://github.com/github/spec-kit), which pioneered the plan → tasks →
+implement cycle for agent-driven development. designlens extends that model
+with the backward-facing retrospective step and the accumulated `specs/` history.
 
 ## License
 
