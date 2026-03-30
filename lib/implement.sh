@@ -19,8 +19,8 @@ spec_implement() {
   for dir in specs/[0-9][0-9][0-9]-*; do
     if [ -d "$dir" ]; then
       num=$(basename "$dir" | cut -d- -f1)
-      if [ "$num" -gt "$max_num" ]; then
-        max_num=$num
+      if [ $((10#$num)) -gt "$max_num" ]; then
+        max_num=$((10#$num))
       fi
     fi
   done
@@ -49,4 +49,5 @@ spec_implement() {
   echo "  3. If any uncertainty arises — including potential conflicts between tasks,"
   echo "     ambiguous requirements, or unexpected obstacles — stop and ask the user"
   echo "     for clarification before proceeding."
+  echo "  4. Once all tasks are complete, tell the user to run: designlens retrospective"
 }

@@ -191,4 +191,6 @@ spec_retrospective() {
   info "After generating .transcript.md, commit the changes:"
   echo "  git add $latest_stage/"
   echo "  git commit -m \"$latest_stage: Add design decisions\""
+  echo ""
+  info "Once the retrospective is committed, run: designlens new-stage"
 }
