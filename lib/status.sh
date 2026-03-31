@@ -30,8 +30,7 @@ spec_status() {
   if [ ${#stages[@]} -eq 0 ]; then
     info "No stages found."
     echo ""
-    prompt "Next action: Create the first stage"
-    echo "  designlens new-stage \"stage-name\""
+    prompt "Next action: run /designlens.new-stage to plan and create the first stage"
     return
   fi
 
@@ -69,32 +68,27 @@ spec_status() {
 
   # Determine next action
   if [ "$plan_exists" = false ]; then
-    prompt "Next action: Write the design plan"
-    echo "  Edit: $latest_stage/plan.md"
+    prompt "Next action: run /designlens.new-stage — plan.md is missing from $latest_stage"
     return
   fi
 
   if [ "$tasks_exists" = false ]; then
-    prompt "Next action: Break down tasks"
-    echo "  Edit: $latest_stage/tasks.md"
+    prompt "Next action: run /designlens.make-tasks to generate tasks.md from plan.md"
     return
   fi
 
   if [ "$tasks_complete" = false ]; then
-    prompt "Next action: Execute remaining tasks"
-    echo "  (Implement the code changes)"
+    prompt "Next action: run /designlens.implement to execute remaining tasks"
     return
   fi
 
   if [ "$decisions_exists" = false ]; then
-    prompt "Next action: Generate design decisions summary"
-    echo "  Run: designlens retrospective"
+    prompt "Next action: run /designlens.retrospective to generate design decisions"
     return
   fi
 
   # All complete
   success "Stage complete!"
   echo ""
-  prompt "Next action: Start a new stage"
-  echo "  designlens new-stage \"next-stage-name\""
+  prompt "Next action: run /designlens.new-stage to begin the next stage"
 }
