@@ -20,12 +20,8 @@ spec_new_stage() {
   fi
 
   if [ -z "$stage_description" ]; then
-    echo ""
-    echo "AGENT: No description provided. Ask the user what they want to build in this stage."
-    echo "Keep asking clarifying questions until you have enough detail to write a concrete,"
-    echo "actionable plan. Then call: designlens new-stage \"<full description>\""
-    echo ""
-    exit 0
+    error "No description provided. Use the /new-stage agent command, or call: designlens new-stage \"<description>\" \"<slug>\""
+    exit 1
   fi
 
   # Derive a slug from the description if no name was provided

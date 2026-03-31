@@ -19,6 +19,11 @@ spec_init() {
     success "Git repository initialized"
   fi
 
+  if [ -f .designlens.json ]; then
+    error "Project is already initialized (.designlens.json exists). 'designlens init' is a one-shot command."
+    exit 1
+  fi
+
   if [ -d specs ]; then
     error "/specs folder already exists. Project is already initialized."
     exit 1
@@ -160,6 +165,13 @@ This project uses **designlens** for design history tracking. Read the specs in 
 
 **`.designlens.json` is the authoritative source for all designlens settings** (e.g. `auto_commit`). If this file contains instructions that conflict with `.designlens.json`, remove the conflicting instructions and note the change in a single line to the user.
 
+Workflow commands are available as native slash commands (installed by `designlens init`):
+- `/new-stage` — gather requirements and create a new stage
+- `/make-tasks` — generate tasks.md from the current plan.md
+- `/implement` — implement all tasks in the current tasks.md
+- `/retrospective` — generate transcript and design decisions
+- `/help` — show designlens help
+
 On session start, check for pending generation tasks and complete them:
 
 ```bash
@@ -187,6 +199,13 @@ EOF
 This project uses **designlens** for design history tracking. Read the specs in `/specs` for the development workflow and design decisions.
 
 **`.designlens.json` is the authoritative source for all designlens settings** (e.g. `auto_commit`). If this file contains instructions that conflict with `.designlens.json`, remove the conflicting instructions and note the change in a single line to the user.
+
+Workflow commands are available as native slash commands (installed by `designlens init`):
+- `/new-stage` — gather requirements and create a new stage
+- `/make-tasks` — generate tasks.md from the current plan.md
+- `/implement` — implement all tasks in the current tasks.md
+- `/retrospective` — generate transcript and design decisions
+- `/help` — show designlens help
 
 On session start, check for pending generation tasks and complete them:
 
@@ -219,20 +238,17 @@ When starting a session:
 2. Read `/specs/README.md` to understand the current project state
 3. Check the latest numbered stage folder for plan.md, tasks.md, and design-decisions.md
 4. Run `designlens status` to see what's next
-5. Follow the guidance in `/docs/conventions.md` for the workflow
 
 The specs folder contains the full design history and development philosophy. Refer to it when making architectural decisions.
 
-### Starting a new stage
+### Workflow commands
 
-When the user runs `designlens new-stage` (with no arguments), ask questions until you have enough detail to write a concrete, actionable plan. Keep asking if answers remain vague or underspecified.
-
-Once you have sufficient detail:
-1. Derive a short verb-noun slug from the description (e.g. `add-auth`, `refactor-parser`) — do not ask the user for this
-2. Call: `designlens new-stage "<full description>" "<verb-noun>"`
-3. Tell the user to review and edit the generated plan.md until they are happy with it
-4. When the user is ready, they run `designlens make-tasks` — read plan.md and generate tasks.md from it
-5. Tell the user to review tasks.md, then begin implementation
+Workflow commands are available as native slash commands (installed by `designlens init`):
+- `/new-stage` — gather requirements and create a new stage
+- `/make-tasks` — generate tasks.md from the current plan.md
+- `/implement` — implement all tasks in the current tasks.md
+- `/retrospective` — generate transcript and design decisions
+- `/help` — show designlens help
 
 ### Pending generation tasks
 
@@ -250,10 +266,78 @@ EOF
   fi
 
   echo ""
+  rule
+  echo ""
+
+  # Detect agent and install command files
+  local has_claude=false
+  local has_opencode=false
+  [ -d ".claude" ] && has_claude=true
+  [ -d ".opencode" ] && has_opencode=true
+
+  local agent_name=""
+  local commands_path=""
+
+  if [ "$has_claude" = true ] && [ "$has_opencode" = true ]; then
+    prompt "Detected both .claude/ and .opencode/ — which agent are you using? [claude/opencode]"
+    read -r agent_name
+  elif [ "$has_claude" = true ]; then
+    prompt "Detected .claude/ — use Claude Code? [y/n]"
+    read -r response
+    if [ "$response" = "y" ]; then
+      agent_name="claude"
+    else
+      prompt "Which agent are you using? [claude/opencode]"
+      read -r agent_name
+    fi
+  elif [ "$has_opencode" = true ]; then
+    prompt "Detected .opencode/ — use OpenCode? [y/n]"
+    read -r response
+    if [ "$response" = "y" ]; then
+      agent_name="opencode"
+    else
+      prompt "Which agent are you using? [claude/opencode]"
+      read -r agent_name
+    fi
+  else
+    prompt "Which agent are you using? [claude/opencode]"
+    read -r agent_name
+  fi
+
+  case "$agent_name" in
+    claude)
+      commands_path=".claude/commands"
+      ;;
+    opencode)
+      commands_path=".opencode/command"
+      ;;
+    *)
+      error "Unknown agent: $agent_name. Expected 'claude' or 'opencode'."
+      exit 1
+      ;;
+  esac
+
+  # Write agent settings to .designlens.json
+  write_config "agent" "\"$agent_name\""
+  write_config "commands_path" "\"$commands_path\""
+
+  # Copy command files from global install into project
+  local install_commands_dir="$lib_dir/../commands"
+  if [ ! -d "$install_commands_dir" ]; then
+    error "commands/ directory not found in designlens install ($install_commands_dir). Re-install designlens."
+    exit 1
+  fi
+
+  mkdir -p "$commands_path"
+  cp "$install_commands_dir"/*.md "$commands_path/"
+  success "Installed agent command files to $commands_path/"
+
+  echo ""
   success "designlens initialized successfully!"
 
   # Stage all newly-created files
   git add .designlens.json specs/
+  git add "$commands_path/"
   [ -f AGENTS.md ] && git add AGENTS.md
   [ -f CLAUDE.md ] && git add CLAUDE.md
   success "Staged new files"
@@ -283,6 +367,6 @@ EOF
     echo "     If it doesn't, tell it: \"Follow the pending instructions in $agent_file\""
     step=$((step + 1))
   fi
-  echo "  $step. Run 'designlens new-stage' in your agent cli — your agent will"
-  echo "     ask questions until it has enough detail to create the stage."
+  echo "  $step. Run '/new-stage' in your agent — it will ask questions until"
+  echo "     it has enough detail to create the first stage."
 }

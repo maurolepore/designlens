@@ -25,11 +25,7 @@ USAGE:
 
 COMMANDS:
   init                Initialize a project (run once)
-  new-stage           Create a new spec stage
-  make-tasks          Generate tasks.md from the current plan.md
-  implement           Implement all tasks in the current tasks.md
-  retrospective       Generate design decisions file
-  transcript <file>   Normalize a transcript to standard format
+  new-stage           Create the next spec stage directory and plan.md
   status              Show current project state
   config              Manage designlens configuration
   version             Show installed version
@@ -37,14 +33,17 @@ COMMANDS:
   uninstall           Uninstall designlens from system
   help                Show this help message
 
+WORKFLOW COMMANDS (native agent slash commands, installed by 'init'):
+  /new-stage          Gather requirements and create a new stage
+  /make-tasks         Generate tasks.md from the current plan.md
+  /implement          Implement all tasks in the current tasks.md
+  /retrospective      Generate transcript and design decisions
+  /help               Show designlens help inside the agent
+
 EXAMPLES:
   designlens init
-  designlens new-stage
-  designlens make-tasks
-  designlens implement
+  designlens new-stage "add validation" "add-validation"
   designlens status
-  designlens retrospective
-  designlens transcript my-session.md
   designlens config show
   designlens config set auto_commit true
 
@@ -61,28 +60,6 @@ case "$1" in
   new-stage)
     source "$LIB_DIR/new-stage.sh"
     spec_new_stage "$2" "$3"
-    ;;
-  make-tasks)
-    source "$LIB_DIR/make-tasks.sh"
-    spec_make_tasks
-    ;;
-  implement)
-    source "$LIB_DIR/implement.sh"
-    spec_implement
-    ;;
-  retrospective)
-    source "$LIB_DIR/retrospective.sh"
-    spec_retrospective
-    ;;
-  transcript)
-    if [ -z "$2" ]; then
-      echo "Error: transcript requires a file argument"
-      echo "Usage: designlens transcript <file>"
-      exit 1
-    fi
-    source "$LIB_DIR/transcript.sh"
-    show_logo
-    spec_transcript "$2"
     ;;
   status)
     source "$LIB_DIR/status.sh"

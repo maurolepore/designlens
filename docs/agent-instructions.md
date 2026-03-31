@@ -10,11 +10,11 @@ How to work with designlens during a coding session.
    ```
 
 2. **Read the current state:**
-   - If no stages exist, work with the human to start the first stage
+   - If no stages exist, invoke `/new-stage` to start the first stage
    - If a stage has no plan.md, help the human develop the design
-   - If a stage has no tasks.md, break the plan into tasks
-   - If tasks are incomplete, help execute them
-   - If all tasks are done but no design-decisions.md exists, run the retrospective
+   - If a stage has no tasks.md, invoke `/make-tasks`
+   - If tasks are incomplete, invoke `/implement`
+   - If all tasks are done but no design-decisions.md exists, invoke `/retrospective`
 
 ## During the Session
 
@@ -35,19 +35,14 @@ How to work with designlens during a coding session.
    - Ask for human approval before marking tasks done
    - Run `designlens status` periodically to show progress
 
-4. **Record the conversation**
-   - If the human asks, or if significant design decisions were made, save a normalized transcript to `.transcript.md`
-   - Use the standard format: `**[git-user-name]:**` (from `git config user.name`) for the human participant, `**assistant:**` for the AI
-   - Anonymize message content: remove personal expressions, anecdotes, and identifying information, but keep speaker attribution
-
 ## When the Stage Is Complete
 
 1. **Confirm all tasks are done:**
    - Run `designlens status` — it should say "Stage complete!"
 
 2. **Generate design-decisions.md:**
-   - Run `designlens retrospective`
-   - Follow the detailed prompt it provides
+   - Invoke `/retrospective` (or `/help` if you need a reminder of available commands)
+   - Follow the detailed instructions it provides
    - **Critical:** Follow semi-anonymization rules
      - Speaker labels in raw transcripts use `git config user.name`
      - Message content must be anonymized: no personal names, anecdotes, or preferences
@@ -67,7 +62,7 @@ How to work with designlens during a coding session.
 
 4. **Start the next stage:**
    - Ask the human what to work on next
-   - Run `designlens new-stage "next-stage-name"`
+   - Invoke `/new-stage`
    - Begin planning again
 
 ## Key Principles

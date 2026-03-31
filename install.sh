@@ -52,6 +52,7 @@ case "$OS" in
     $SUDO cp -r "$SCRIPT_DIR"/bin "$INSTALL_DIR/"
     $SUDO cp -r "$SCRIPT_DIR"/lib "$INSTALL_DIR/"
     $SUDO cp -r "$SCRIPT_DIR"/docs "$INSTALL_DIR/"
+    $SUDO cp -r "$SCRIPT_DIR"/commands "$INSTALL_DIR/"
     $SUDO cp "$SCRIPT_DIR"/README.md "$INSTALL_DIR/"
     $SUDO cp "$SCRIPT_DIR"/designlens.json "$INSTALL_DIR/"
     $SUDO cp "$SCRIPT_DIR"/LICENSE "$INSTALL_DIR/"

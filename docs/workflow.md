@@ -8,44 +8,34 @@ The designlens workflow has 5 phases per stage, from initialization through retr
 designlens init
 ```
 
-Run once per project. Initializes git (if needed), creates `/specs`, lockfile, and AGENTS.md/CLAUDE.md pointer. Commit behavior is configured here and stored in `.designlens.json`.
+Run once per project. Initializes git (if needed), creates `/specs`, lockfile, and AGENTS.md/CLAUDE.md pointer. Detects or prompts for your agent (Claude Code or OpenCode) and installs the workflow command files into the agent's commands directory. Commit behavior is configured here and stored in `.designlens.json`.
 
 ## Phase 2: Plan the stage
 
-```bash
-designlens new-stage "stage description"
-```
+Agent command: `/new-stage` (installed by `init`)
 
 1. **Agent starts** in the repo
    - Automatically reads AGENTS.md/CLAUDE.md (Claude Code, etc.)
    - Learns that specs exist and reads conventions.md
    - Runs `designlens status` to determine current state
 
-2. **Developer describes** the work to the agent
-   - "I want to add data validation to the pipeline"
-   - "Let's refactor the error handling system"
-   - etc.
-
-3. **Agent explores** through dialogue
-   - Asks clarifying questions
+2. **Developer invokes `/new-stage`**
+   - Agent asks clarifying questions
    - Documents constraints
    - Proposes approaches
    - Iterates on the design
 
-4. **Agent writes** plan.md
-   - Captures the agreed-upon design
-   - Documents the reasoning
-   - Lists open questions or deferred decisions
+3. **Agent calls** `designlens new-stage "<description>" "<slug>"` to create the stage directory and `plan.md` template, then populates every section.
+
+4. **Developer reviews** `plan.md` and confirms.
 
 **Output:** `/specs/NNN-stage-name/plan.md`
 
 ## Phase 3: Convert plan into tasks
 
-```bash
-designlens make-tasks
-```
+Agent command: `/make-tasks` (installed by `init`)
 
-1. **Developer reviews** plan.md and triggers task generation
+1. **Developer invokes `/make-tasks`**
 2. **Agent reads** plan.md and writes tasks.md
    - Breaks the plan into actionable tasks
    - Each task has a checkbox (unchecked) and a unique ID (e.g. `T001-1`, `T001-2`)
@@ -56,55 +46,47 @@ designlens make-tasks
 
 ## Phase 4: Implement tasks
 
-```bash
-designlens implement
-```
+Agent command: `/implement` (installed by `init`)
 
-1. **Agent executes** the tasks
+1. **Developer invokes `/implement`**
+2. **Agent executes** the tasks
    - Runs code, writes tests, creates docs
    - Checks off completed tasks in tasks.md
-   - Commits progress to git
 
-2. **Developer provides** feedback
+3. **Developer provides** feedback
    - Pushes back on design choices
    - Suggests improvements
    - Agent adapts
 
-3. **Agent ensures** all tasks are complete
+4. **Agent ensures** all tasks are complete
    - When all tasks marked done, moves to Phase 5
 
 **Output:** Code changes, committed to the stage branch
 
 ## Phase 5: Create retrospective
 
-```bash
-designlens retrospective
-```
+Agent command: `/retrospective` (installed by `init`)
 
-1. **Agent creates the session transcript** (`.transcript.md`)
+1. **Developer invokes `/retrospective`**
+2. **Agent creates the session transcript** (`.transcript.md`)
    - Semi-anonymized summary of what was discussed and decided
    - Speaker attribution uses `git config user.name`; content is depersonalized
 
-2. **Agent writes the stage design-decisions.md**
+3. **Agent writes the stage design-decisions.md**
    - Reads plan.md, tasks.md, and the session transcript
    - Reviews design-decisions.md from all previous stages for context
    - Documents **what's new in this stage** (200–400 words typically)
    - Cross-references prior decisions to show integration
-   - Clear sections: Summary, New Design Decisions, Integration with Prior Work, Deferred Items
 
-3. **Agent updates the root design summary** (`specs/design-decisions.md`)
+4. **Agent updates the root design summary** (`specs/design-decisions.md`)
    - Reads all stage design-decisions.md files, in order
    - Rewrites `specs/design-decisions.md` as a coherent project-level narrative
-   - Describes the **current architecture** (derived from the latest plan.md)
-   - Traces the key decisions that led to the present form across all stages
-   - Highlights important roads not taken and why they were rejected
-   - No size limit; grows with the project but prunes superseded detail
 
 **Output:** `/specs/NNN-stage-name/design-decisions.md` and `/specs/design-decisions.md`
 
 ---
 
-The stage is complete. Run `designlens new-stage "next-stage-name"` to begin the next cycle. The tool will warn if the previous stage lacks design-decisions.md and offer to run retrospective.
+The stage is complete. Run `/new-stage` to begin the next cycle. The tool will warn if the previous stage lacks design-decisions.md and offer to run `/retrospective`.
 
 ---
 

@@ -33,6 +33,7 @@ Write-Host "Copying files..."
 Copy-Item -Path "$ScriptDir\bin" -Destination "$InstallDir\" -Recurse -Force
 Copy-Item -Path "$ScriptDir\lib" -Destination "$InstallDir\" -Recurse -Force
 Copy-Item -Path "$ScriptDir\docs" -Destination "$InstallDir\" -Recurse -Force
+Copy-Item -Path "$ScriptDir\commands" -Destination "$InstallDir\" -Recurse -Force
 Copy-Item -Path "$ScriptDir\README.md" -Destination "$InstallDir\" -Force
 Copy-Item -Path "$ScriptDir\designlens.json" -Destination "$InstallDir\" -Force
 Copy-Item -Path "$ScriptDir\LICENSE" -Destination "$InstallDir\" -Force
