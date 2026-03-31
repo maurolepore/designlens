@@ -1,5 +1,5 @@
 ---
-description: Implement all tasks in the current stage's tasks.md
+description: "3. Implement all tasks in the current stage's tasks.md"
 ---
 
 Find the highest-numbered stage directory under `specs/`. Verify that both `plan.md` and `tasks.md` exist in it. If `plan.md` does not exist, stop and tell the user to run `/designlens.new-stage` first. If `plan.md` exists but `tasks.md` does not, stop and tell the user to run `/designlens.make-tasks` first.

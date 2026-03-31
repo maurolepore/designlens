@@ -1,5 +1,5 @@
 ---
-description: Gather requirements and create a new design stage
+description: "1. Gather requirements and create a new design stage"
 ---
 
 Ask the user what they want to build in this stage. Keep asking clarifying questions until you have enough detail to write a concrete, actionable plan — covering goals, constraints, proposed approach, and open questions. Do not proceed until answers are specific enough to fill every section of plan.md with real content.

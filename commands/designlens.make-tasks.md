@@ -1,5 +1,5 @@
 ---
-description: Generate tasks.md from the current stage's plan.md
+description: "2. Generate tasks.md from the current stage's plan.md"
 ---
 
 Find the highest-numbered stage directory under `specs/` (e.g. `specs/003-foo/`). Verify that `plan.md` exists in it. If it does not, stop and tell the user to run `/designlens.new-stage` first.

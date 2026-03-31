@@ -1,5 +1,5 @@
 ---
-description: Generate transcript and design decisions for the current stage
+description: "4. Generate transcript and design decisions for the current stage"
 ---
 
 Find the latest (highest-numbered) stage directory under `specs/`. Verify that `plan.md` and `tasks.md` exist in it. If either is missing, stop and tell the user what is needed.
