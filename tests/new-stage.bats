@@ -27,11 +27,10 @@ teardown() {
   [ "$status" -ne 0 ]
 }
 
-@test "exits 0 with agent message when no description provided" {
+@test "fails when no description provided" {
   mkdir specs
   run spec_new_stage
-  [ "$status" -eq 0 ]
-  [[ "$output" == *"AGENT"* ]]
+  [ "$status" -ne 0 ]
 }
 
 # --- slug derivation ---
@@ -106,25 +105,24 @@ teardown() {
   grep -q "## Proposed Approach" specs/001-add-caching/plan.md
 }
 
-@test "prints agent instructions after creating plan.md" {
-  mkdir specs
-  run spec_new_stage "add caching"
-  [[ "$output" == *"AGENT"* ]]
-  [[ "$output" == *"plan.md"* ]]
-}
-
 # --- previous stage retrospective check ---
 
 @test "warns when previous stage has no design-decisions.md" {
   mkdir -p specs/001-initial
-  run spec_new_stage "add caching" <<< $'n\n'
+  run spec_new_stage "add caching" <<< $'y\n'
   [[ "$output" == *"design-decisions.md"* ]]
 }
 
-@test "continues when user declines retrospective" {
+@test "continues when user confirms skip of retrospective" {
   mkdir -p specs/001-initial
-  spec_new_stage "add caching" <<< $'n\n'
+  spec_new_stage "add caching" <<< $'y\n'
   [ -d specs/002-add-caching ]
+}
+
+@test "aborts when user declines skip of retrospective" {
+  mkdir -p specs/001-initial
+  run spec_new_stage "add caching" <<< $'n\n'
+  [ "$status" -ne 0 ]
 }
 
 @test "skips retrospective check when previous stage is complete" {
