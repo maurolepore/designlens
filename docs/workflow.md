@@ -8,7 +8,9 @@ The designlens workflow has 5 phases per stage, from initialization through retr
 designlens init
 ```
 
-Run once per project. Initializes git (if needed), creates `/specs`, lockfile, and AGENTS.md/CLAUDE.md pointer. Detects or prompts for your agent (Claude Code or OpenCode) and installs the workflow command files into the agent's commands directory. Commit behavior is configured here and stored in `.designlens.json`.
+Run once per project. Initializes git (if needed), creates `/specs`, lockfile, and AGENTS.md/CLAUDE.md pointer. Detects or prompts for your agent (Claude Code, OpenCode, or other) and installs the workflow command files into the agent's commands directory. Commit behavior is configured here and stored in `.designlens.json`.
+
+For agents other than Claude Code and OpenCode, select `other` at the prompt. Proforma command files will be created in `.opencode/command/` — copy them to your agent's commands directory and modify as needed. To request native support for additional agents, open an issue at https://github.com/ropensci-review-tools/designlens/issues.
 
 ## Phase 2: Plan the stage
 

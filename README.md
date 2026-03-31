@@ -67,11 +67,19 @@ irm https://raw.githubusercontent.com/ropensci-review-tools/designlens/main/inst
 
 {designlens} is built for agent CLI environments like
 [opencode](https://opencode.ai) or [Claude
-Code](https://claude.com/product/claude-code). Most commands are instructions
-you give your agent, not things you type in a shell yourself. When an agent
-runs a {designlens} command, it receives instructions telling it exactly what
-to do next—read this file, populate these fields, generate that document. The
-agent does the work; {designlens} keeps it on track.
+Code](https://claude.com/product/claude-code), and can also be used with any
+other agent that supports Markdown-based slash or prompt commands. Most
+commands are instructions you give your agent, not things you type in a shell
+yourself. When an agent runs a {designlens} command, it receives instructions
+telling it exactly what to do next—read this file, populate these fields,
+generate that document. The agent does the work; {designlens} keeps it on
+track.
+
+For agents other than Claude Code and OpenCode, `init` will create proforma
+command files in `.opencode/command/`. Copy these to your agent's commands
+directory (e.g. `.github/agents/`, `.cursor/rules/`) and modify them to match
+your agent's format if needed. To request native support for additional agents, please
+[open an issue](https://github.com/ropensci-review-tools/designlens/issues).
 
 The exception is setup: `init` is a one-time step you run yourself before handing
 off to an agent.

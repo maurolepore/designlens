@@ -4,6 +4,9 @@ Frequently asked questions, command reference, and Git workflows.
 
 ## FAQ
 
+**Q: Can I use designlens with agents other than Claude Code and OpenCode?**
+A: Yes, with a manual step. During `designlens init`, select `other` at the agent prompt. Proforma command files will be created in `.opencode/command/` as a starting point. Copy them to your agent's commands directory (e.g. `.github/agents/`, `.cursor/rules/`) and modify them to match your agent's slash command or prompt format. The underlying workflow is agent-agnostic; only the slash command files need adapting. To request native support for additional agents, open an issue at https://github.com/ropensci-review-tools/designlens/issues.
+
 **Q: Should we commit the .designmeta.json lockfile?**
 A: Yes, it's useful for future contributors to know what tool was used and where to find docs.
 

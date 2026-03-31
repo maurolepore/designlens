@@ -275,7 +275,7 @@ EOF
     local input
     input=$(echo "$1" | tr '[:upper:]' '[:lower:]')
     local matches=()
-    for option in claude opencode; do
+    for option in claude opencode other; do
       [[ "$option" == "$input"* ]] && matches+=("$option")
     done
     [ ${#matches[@]} -eq 1 ] && echo "${matches[0]}" || echo ""
@@ -300,7 +300,7 @@ EOF
     fi
 
     while true; do
-      prompt "Which agent are you using? [claude/opencode]" >&2
+      prompt "Which agent are you using? [claude/opencode/other]" >&2
       read -r raw
       resolved=$(resolve_agent "$raw")
       if [ -n "$resolved" ]; then
@@ -321,13 +321,13 @@ EOF
   local commands_path=""
 
   if [ "$has_claude" = true ] && [ "$has_opencode" = true ]; then
-    agent_name=$(prompt_agent "Detected both .claude/ and .opencode/ — which agent are you using? [claude/opencode]")
+    agent_name=$(prompt_agent "Detected both .claude/ and .opencode/ — which agent are you using? [claude/opencode/other]")
   elif [ "$has_claude" = true ]; then
     agent_name=$(prompt_agent "Detected .claude/ — use Claude Code?" "claude")
   elif [ "$has_opencode" = true ]; then
     agent_name=$(prompt_agent "Detected .opencode/ — use OpenCode?" "opencode")
   else
-    agent_name=$(prompt_agent "Which agent are you using? [claude/opencode]")
+    agent_name=$(prompt_agent "Which agent are you using? [claude/opencode/other]")
   fi
 
   case "$agent_name" in
@@ -337,8 +337,17 @@ EOF
     opencode)
       commands_path=".opencode/command"
       ;;
+    other)
+      commands_path=".opencode/command"
+      echo ""
+      warning "Native support for agents other than Claude Code and OpenCode is not yet implemented."
+      info "Proforma command files will be created in .opencode/command/ as a starting point."
+      info "After init, copy them to your agent's commands directory (e.g. .github/agents/, .cursor/rules/)"
+      info "and modify them to match your agent's slash command format if needed."
+      echo ""
+      ;;
     *)
-      error "Unknown agent: $agent_name. Expected 'claude' or 'opencode'."
+      error "Unknown agent: $agent_name. Expected 'claude', 'opencode', or 'other'."
       exit 1
       ;;
   esac
@@ -357,6 +366,12 @@ EOF
   mkdir -p "$commands_path"
   cp "$install_commands_dir"/*.md "$commands_path/"
   success "Installed agent command files to $commands_path/"
+
+  if [ "$agent_name" = "other" ]; then
+    echo ""
+    info "Next step: copy the files from $commands_path/ to your agent's commands directory"
+    info "and modify them to match your agent's command format if needed."
+  fi
 
   echo ""
   success "designlens initialized successfully!"
