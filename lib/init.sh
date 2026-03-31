@@ -269,6 +269,48 @@ EOF
   rule
   echo ""
 
+  # Resolve a partial/mixed-case agent name to a canonical option.
+  # Echoes the matched option, or empty string if ambiguous or unrecognised.
+  resolve_agent() {
+    local input
+    input=$(echo "$1" | tr '[:upper:]' '[:lower:]')
+    local matches=()
+    for option in claude opencode; do
+      [[ "$option" == "$input"* ]] && matches+=("$option")
+    done
+    [ ${#matches[@]} -eq 1 ] && echo "${matches[0]}" || echo ""
+  }
+
+  # Prompt for agent choice, looping until an unambiguous match is given.
+  # $1 = prompt text; $2 (optional) = pre-confirmed candidate to accept with y/n first.
+  # Echoes the resolved name on stdout; all user-facing output goes to stderr.
+  prompt_agent() {
+    local msg="$1"
+    local candidate="$2"
+    local raw resolved
+
+    if [ -n "$candidate" ]; then
+      prompt "$msg [y/n]" >&2
+      read -r raw
+      raw=$(echo "$raw" | tr '[:upper:]' '[:lower:]')
+      if [[ "yes" == "$raw"* ]]; then
+        echo "$candidate"
+        return
+      fi
+    fi
+
+    while true; do
+      prompt "Which agent are you using? [claude/opencode]" >&2
+      read -r raw
+      resolved=$(resolve_agent "$raw")
+      if [ -n "$resolved" ]; then
+        echo "$resolved"
+        return
+      fi
+      warning "Unrecognised input '$raw' — please type enough of agent name to be unambiguous." >&2
+    done
+  }
+
   # Detect agent and install command files
   local has_claude=false
   local has_opencode=false
@@ -279,29 +321,13 @@ EOF
   local commands_path=""
 
   if [ "$has_claude" = true ] && [ "$has_opencode" = true ]; then
-    prompt "Detected both .claude/ and .opencode/ — which agent are you using? [claude/opencode]"
-    read -r agent_name
+    agent_name=$(prompt_agent "Detected both .claude/ and .opencode/ — which agent are you using? [claude/opencode]")
   elif [ "$has_claude" = true ]; then
-    prompt "Detected .claude/ — use Claude Code? [y/n]"
-    read -r response
-    if [ "$response" = "y" ]; then
-      agent_name="claude"
-    else
-      prompt "Which agent are you using? [claude/opencode]"
-      read -r agent_name
-    fi
+    agent_name=$(prompt_agent "Detected .claude/ — use Claude Code?" "claude")
   elif [ "$has_opencode" = true ]; then
-    prompt "Detected .opencode/ — use OpenCode? [y/n]"
-    read -r response
-    if [ "$response" = "y" ]; then
-      agent_name="opencode"
-    else
-      prompt "Which agent are you using? [claude/opencode]"
-      read -r agent_name
-    fi
+    agent_name=$(prompt_agent "Detected .opencode/ — use OpenCode?" "opencode")
   else
-    prompt "Which agent are you using? [claude/opencode]"
-    read -r agent_name
+    agent_name=$(prompt_agent "Which agent are you using? [claude/opencode]")
   fi
 
   case "$agent_name" in
