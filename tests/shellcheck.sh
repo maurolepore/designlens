@@ -28,6 +28,7 @@ echo ""
 echo -e "${TITLE}shellcheck${RESET}"
 
 for file in "${files[@]}"; do
+  [ -f "$file" ] || continue
   if output=$(shellcheck "$file" 2>&1); then
     echo -e " ${GREEN}✓${RESET} $file"
     (( passed++ )) || true

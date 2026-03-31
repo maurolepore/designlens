@@ -1,5 +1,7 @@
 # designlens
 
+[![Tests](https://github.com/ropensci-review-tools/designlens/actions/workflows/tests.yml/badge.svg)](https://github.com/ropensci-review-tools/designlens/actions/workflows/tests.yml)
+
 A planning tool with a long memory for AI-assisted projects. {designlens}
 works in two directions: **forward**, to guide what you're building next, and
 **backward**, to record why you built it the way you did.
