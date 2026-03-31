@@ -1,4 +1,8 @@
-Find the highest-numbered stage directory under `specs/`. Verify that both `plan.md` and `tasks.md` exist in it. If `plan.md` does not exist, stop and tell the user to run `/new-stage` first. If `plan.md` exists but `tasks.md` does not, stop and tell user to run `/make-tasks` first.
+---
+description: Implement all tasks in the current stage's tasks.md
+---
+
+Find the highest-numbered stage directory under `specs/`. Verify that both `plan.md` and `tasks.md` exist in it. If `plan.md` does not exist, stop and tell the user to run `/designlens.new-stage` first. If `plan.md` exists but `tasks.md` does not, stop and tell the user to run `/designlens.make-tasks` first.
 
 Read `.designlens.json` to get the `auto_commit` setting.
 
@@ -19,7 +23,7 @@ git add <stage_dir>/plan.md <stage_dir>/tasks.md
 
 Then, based on `auto_commit`:
 
-- If `auto_commit` is `true`: ask the user "Generate retrospective before committing stage specs? (y/n)".
-  - If y: run `/retrospective`, then commit everything: `git add <stage_dir>/` && `git commit -m "<NNN>: Add specs and design decisions"`.
-  - If n: ask "Run retrospective anyway without committing? (y/n)". If y: run `/retrospective` and stop. If n: stop.
-- If `auto_commit` is `false`: tell the user to run `/retrospective`.
+- If `true`: ask the user "Generate retrospective before committing stage specs? (y/n)".
+  - If y: run `/designlens.retrospective`, then commit everything: `git add <stage_dir>/` && `git commit -m "<NNN>: Add specs and design decisions"`.
+  - If n: ask "Run retrospective anyway without committing? (y/n)". If y: run `/designlens.retrospective` and stop. If n: stop.
+- If `false`: tell the user to run `/designlens.retrospective`.

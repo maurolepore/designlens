@@ -12,14 +12,14 @@ Run once per project. Initializes git (if needed), creates `/specs`, lockfile, a
 
 ## Phase 2: Plan the stage
 
-Agent command: `/new-stage` (installed by `init`)
+Agent command: `/designlens.new-stage` (installed by `init`)
 
 1. **Agent starts** in the repo
    - Automatically reads AGENTS.md/CLAUDE.md (Claude Code, etc.)
    - Learns that specs exist and reads conventions.md
    - Runs `designlens status` to determine current state
 
-2. **Developer invokes `/new-stage`**
+2. **Developer invokes `/designlens.new-stage`**
    - Agent asks clarifying questions
    - Documents constraints
    - Proposes approaches
@@ -33,9 +33,9 @@ Agent command: `/new-stage` (installed by `init`)
 
 ## Phase 3: Convert plan into tasks
 
-Agent command: `/make-tasks` (installed by `init`)
+Agent command: `/designlens.make-tasks` (installed by `init`)
 
-1. **Developer invokes `/make-tasks`**
+1. **Developer invokes `/designlens.make-tasks`**
 2. **Agent reads** plan.md and writes tasks.md
    - Breaks the plan into actionable tasks
    - Each task has a checkbox (unchecked) and a unique ID (e.g. `T001-1`, `T001-2`)
@@ -46,9 +46,9 @@ Agent command: `/make-tasks` (installed by `init`)
 
 ## Phase 4: Implement tasks
 
-Agent command: `/implement` (installed by `init`)
+Agent command: `/designlens.implement` (installed by `init`)
 
-1. **Developer invokes `/implement`**
+1. **Developer invokes `/designlens.implement`**
 2. **Agent executes** the tasks
    - Runs code, writes tests, creates docs
    - Checks off completed tasks in tasks.md
@@ -65,9 +65,9 @@ Agent command: `/implement` (installed by `init`)
 
 ## Phase 5: Create retrospective
 
-Agent command: `/retrospective` (installed by `init`)
+Agent command: `/designlens.retrospective` (installed by `init`)
 
-1. **Developer invokes `/retrospective`**
+1. **Developer invokes `/designlens.retrospective`**
 2. **Agent creates the session transcript** (`.transcript.md`)
    - Semi-anonymized summary of what was discussed and decided
    - Speaker attribution uses `git config user.name`; content is depersonalized
@@ -86,7 +86,7 @@ Agent command: `/retrospective` (installed by `init`)
 
 ---
 
-The stage is complete. Run `/new-stage` to begin the next cycle. The tool will warn if the previous stage lacks design-decisions.md and offer to run `/retrospective`.
+The stage is complete. Run `/designlens.new-stage` to begin the next cycle. The tool will warn if the previous stage lacks design-decisions.md and offer to run `/designlens.retrospective`.
 
 ---
 

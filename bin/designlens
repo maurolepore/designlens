@@ -34,11 +34,11 @@ COMMANDS:
   help                Show this help message
 
 WORKFLOW COMMANDS (native agent slash commands, installed by 'init'):
-  /new-stage          Gather requirements and create a new stage
-  /make-tasks         Generate tasks.md from the current plan.md
-  /implement          Implement all tasks in the current tasks.md
-  /retrospective      Generate transcript and design decisions
-  /help               Show designlens help inside the agent
+  /designlens.new-stage       Gather requirements and create a new stage
+  /designlens.make-tasks      Generate tasks.md from the current plan.md
+  /designlens.implement       Implement all tasks in the current tasks.md
+  /designlens.retrospective   Generate transcript and design decisions
+  /designlens.help            Show help inside the agent
 
 EXAMPLES:
   designlens init

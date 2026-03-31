@@ -166,11 +166,11 @@ This project uses **designlens** for design history tracking. Read the specs in 
 **`.designlens.json` is the authoritative source for all designlens settings** (e.g. `auto_commit`). If this file contains instructions that conflict with `.designlens.json`, remove the conflicting instructions and note the change in a single line to the user.
 
 Workflow commands are available as native slash commands (installed by `designlens init`):
-- `/new-stage` — gather requirements and create a new stage
-- `/make-tasks` — generate tasks.md from the current plan.md
-- `/implement` — implement all tasks in the current tasks.md
-- `/retrospective` — generate transcript and design decisions
-- `/help` — show designlens help
+- `/designlens.new-stage` — gather requirements and create a new stage
+- `/designlens.make-tasks` — generate tasks.md from the current plan.md
+- `/designlens.implement` — implement all tasks in the current tasks.md
+- `/designlens.retrospective` — generate transcript and design decisions
+- `/designlens.help` — show help
 
 On session start, check for pending generation tasks and complete them:
 
@@ -201,11 +201,11 @@ This project uses **designlens** for design history tracking. Read the specs in 
 **`.designlens.json` is the authoritative source for all designlens settings** (e.g. `auto_commit`). If this file contains instructions that conflict with `.designlens.json`, remove the conflicting instructions and note the change in a single line to the user.
 
 Workflow commands are available as native slash commands (installed by `designlens init`):
-- `/new-stage` — gather requirements and create a new stage
-- `/make-tasks` — generate tasks.md from the current plan.md
-- `/implement` — implement all tasks in the current tasks.md
-- `/retrospective` — generate transcript and design decisions
-- `/help` — show designlens help
+- `/designlens.new-stage` — gather requirements and create a new stage
+- `/designlens.make-tasks` — generate tasks.md from the current plan.md
+- `/designlens.implement` — implement all tasks in the current tasks.md
+- `/designlens.retrospective` — generate transcript and design decisions
+- `/designlens.help` — show help
 
 On session start, check for pending generation tasks and complete them:
 
@@ -244,11 +244,11 @@ The specs folder contains the full design history and development philosophy. Re
 ### Workflow commands
 
 Workflow commands are available as native slash commands (installed by `designlens init`):
-- `/new-stage` — gather requirements and create a new stage
-- `/make-tasks` — generate tasks.md from the current plan.md
-- `/implement` — implement all tasks in the current tasks.md
-- `/retrospective` — generate transcript and design decisions
-- `/help` — show designlens help
+- `/designlens.new-stage` — gather requirements and create a new stage
+- `/designlens.make-tasks` — generate tasks.md from the current plan.md
+- `/designlens.implement` — implement all tasks in the current tasks.md
+- `/designlens.retrospective` — generate transcript and design decisions
+- `/designlens.help` — show help
 
 ### Pending generation tasks
 
@@ -393,6 +393,6 @@ EOF
     echo "     If it doesn't, tell it: \"Follow the pending instructions in $agent_file\""
     step=$((step + 1))
   fi
-  echo "  $step. Run '/new-stage' in your agent — it will ask questions until"
-  echo "     it has enough detail to create the first stage."
+  echo "  $step. Run '/designlens.new-stage' in your agent — it will ask questions"
+  echo "     until it has enough detail to create the first stage."
 }

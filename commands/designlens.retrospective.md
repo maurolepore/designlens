@@ -1,12 +1,12 @@
+---
+description: Generate transcript and design decisions for the current stage
+---
+
 Find the latest (highest-numbered) stage directory under `specs/`. Verify that `plan.md` and `tasks.md` exist in it. If either is missing, stop and tell the user what is needed.
 
 If `design-decisions.md` already exists in that directory, ask before overwriting.
 
-Read `.designlens.json` to get `auto_commit` and the git user:
-
-```bash
-git config user.name
-```
+Read `.designlens.json` to get `auto_commit` and run `git config user.name` to get the git user.
 
 ---
 
@@ -53,9 +53,6 @@ Create a semi-anonymized summary transcript of this design session and save it t
 - Use `agent` for the AI assistant
 - Use `joint` when both contributed equally
 
-### Self-contained requirement
-Transcripts must be fully self-contained. If context from a plan, prior design decision, or other document shaped decisions in this session, include a brief de-personalized summary of that context inline.
-
 **Length:** 150–400 words. Concise and scannable.
 
 ---
@@ -98,13 +95,7 @@ Generate `<stage_dir>/design-decisions.md` documenting what is **new in this sta
 - [Blockers encountered]
 ```
 
-### Anonymization requirements (same as transcript)
-- No personal names, email addresses, or identifying information
-- Use passive voice or role-based language
-- Focus on technical and architectural reasoning, not people
-
-### Length
-200–400 words. Avoid repeating decisions from prior stages; cross-reference them instead.
+Anonymization: no personal names, email addresses, or identifying information. Use passive voice or role-based language. 200–400 words; cross-reference prior stages rather than repeating them.
 
 ---
 
@@ -135,26 +126,17 @@ Write or update `specs/design-decisions.md` as a coherent project-level narrativ
 [Significant alternatives rejected at any stage, grouped by theme, with rationale]
 ```
 
-### Requirements
-- Describes the project's **current** architecture and form
-- Traces key decisions that led to the current form, synthesised across all stages
-- Highlights important roads not taken at any stage, and why they were rejected
-- Readable as a standalone narrative — a reader should not need to open individual stage docs
-- No personal names, email addresses, or identifying information
+No personal names, email addresses, or identifying information throughout.
 
 ---
 
 ## After completing all three steps
 
-Stage the changes:
-
 ```bash
 git add <stage_dir>/ specs/design-decisions.md
 ```
 
-Based on `auto_commit` in `.designlens.json`:
+- If `auto_commit` is `true`: commit with `git commit -m "<NNN>: Add design decisions"`
+- If `auto_commit` is `false`: do NOT commit — stage only, leave the commit to the user.
 
-- If `true`: commit with `git commit -m "<NNN>: Add design decisions"`
-- If `false`: do NOT commit — stage only, leave the commit to the user.
-
-Tell the user to run `/new-stage` when ready to start the next stage.
+Tell the user to run `/designlens.new-stage` when ready to start the next stage.

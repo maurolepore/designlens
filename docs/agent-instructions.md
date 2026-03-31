@@ -10,11 +10,11 @@ How to work with designlens during a coding session.
    ```
 
 2. **Read the current state:**
-   - If no stages exist, invoke `/new-stage` to start the first stage
+   - If no stages exist, invoke `/designlens.new-stage` to start the first stage
    - If a stage has no plan.md, help the human develop the design
-   - If a stage has no tasks.md, invoke `/make-tasks`
-   - If tasks are incomplete, invoke `/implement`
-   - If all tasks are done but no design-decisions.md exists, invoke `/retrospective`
+   - If a stage has no tasks.md, invoke `/designlens.make-tasks`
+   - If tasks are incomplete, invoke `/designlens.implement`
+   - If all tasks are done but no design-decisions.md exists, invoke `/designlens.retrospective`
 
 ## During the Session
 
@@ -41,7 +41,7 @@ How to work with designlens during a coding session.
    - Run `designlens status` — it should say "Stage complete!"
 
 2. **Generate design-decisions.md:**
-   - Invoke `/retrospective` (or `/help` if you need a reminder of available commands)
+   - Invoke `/designlens.retrospective` (or `/help` if you need a reminder of available commands)
    - Follow the detailed instructions it provides
    - **Critical:** Follow semi-anonymization rules
      - Speaker labels in raw transcripts use `git config user.name`
@@ -62,7 +62,7 @@ How to work with designlens during a coding session.
 
 4. **Start the next stage:**
    - Ask the human what to work on next
-   - Invoke `/new-stage`
+   - Invoke `/designlens.new-stage`
    - Begin planning again
 
 ## Key Principles
