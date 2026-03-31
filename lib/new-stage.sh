@@ -71,6 +71,11 @@ spec_new_stage() {
 
   # Create plan.md
   cat > "$stage_dir/plan.md" << EOF
+---
+created:
+agent:
+---
+
 # Plan: $stage_name
 
 ## Overview

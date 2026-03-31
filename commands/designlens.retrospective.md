@@ -17,6 +17,11 @@ Create a semi-anonymized summary transcript of this design session and save it t
 ### Format
 
 ```markdown
+---
+created: <current UTC timestamp in ISO 8601, e.g. 2026-03-31T14:05:00Z>
+agent: <your model identifier, e.g. claude-sonnet-4-6>
+---
+
 # Session Transcript: [Stage Title]
 
 ## Session Overview
@@ -64,6 +69,11 @@ Read `plan.md`, `tasks.md`, and `.transcript.md` from the current stage. Also re
 Generate `<stage_dir>/design-decisions.md` documenting what is **new in this stage**:
 
 ```markdown
+---
+created: <current UTC timestamp in ISO 8601, e.g. 2026-03-31T14:05:00Z>
+agent: <your model identifier, e.g. claude-sonnet-4-6>
+---
+
 # Design Decisions: [Stage Title]
 
 ## Summary
@@ -106,6 +116,11 @@ Read the `design-decisions.md` from every stage in order (including the one just
 Write or update `specs/design-decisions.md` as a coherent project-level narrative:
 
 ```markdown
+---
+created: <current UTC timestamp in ISO 8601, e.g. 2026-03-31T14:05:00Z>
+agent: <your model identifier, e.g. claude-sonnet-4-6>
+---
+
 # Design Decisions: [Project Name]
 
 ## Current Architecture

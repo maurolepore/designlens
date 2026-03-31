@@ -6,7 +6,16 @@ Find the highest-numbered stage directory under `specs/` (e.g. `specs/003-foo/`)
 
 If `tasks.md` already exists in that directory, ask the user before overwriting.
 
-Read `plan.md` and generate `tasks.md` in the same directory. Break the plan into concrete, actionable tasks with checkboxes. Each task must:
+Read `plan.md` and generate `tasks.md` in the same directory. The file must begin with a YAML front-matter block:
+
+```markdown
+---
+created: <current UTC timestamp in ISO 8601, e.g. 2026-03-31T14:05:00Z>
+agent: <your model identifier, e.g. claude-sonnet-4-6>
+---
+```
+
+Then break the plan into concrete, actionable tasks with checkboxes. Each task must:
 
 - Have a unique ID of the form `T<stage>-N`, where `<stage>` is the zero-padded stage number and `N` is the sequential task number within this stage starting at 1 (e.g. `T003-1`, `T003-2`).
 - Use that ID as the task heading and in the checkbox line:

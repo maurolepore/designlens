@@ -105,6 +105,28 @@ teardown() {
   grep -q "## Proposed Approach" specs/001-add-caching/plan.md
 }
 
+# --- front-matter ---
+
+@test "plan.md begins with YAML front-matter delimiter" {
+  mkdir specs
+  spec_new_stage "add authentication"
+  head -1 specs/001-add-authentication/plan.md | grep -q "^---$"
+}
+
+@test "plan.md front-matter contains created field" {
+  mkdir specs
+  spec_new_stage "add authentication"
+  awk '/^---$/{found++; next} found==1 && /^---$/{exit} found==1' \
+    specs/001-add-authentication/plan.md | grep -q "^created:"
+}
+
+@test "plan.md front-matter contains agent field" {
+  mkdir specs
+  spec_new_stage "add authentication"
+  awk '/^---$/{found++; next} found==1 && /^---$/{exit} found==1' \
+    specs/001-add-authentication/plan.md | grep -q "^agent:"
+}
+
 # --- previous stage retrospective check ---
 
 @test "warns when previous stage has no design-decisions.md" {

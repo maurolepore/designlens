@@ -142,6 +142,16 @@ EOF
 >
 > Focus on: initial architecture, major refactors, significant feature pivots, technology choices.
 > Skip: individual bug fixes, minor improvements, implementation details.
+>
+> The generated file must begin with a YAML front-matter block before the `# Design History` heading:
+>
+> ```yaml
+> ---
+> created: <current UTC timestamp in ISO 8601, e.g. 2026-03-31T14:05:00Z>
+> agent: <your model identifier, e.g. claude-sonnet-4-6>
+> ---
+> ```
+>
 > Remove this block and the PENDING comment when done.
 EOF
 

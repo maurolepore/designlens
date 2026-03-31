@@ -54,6 +54,7 @@ Once you have sufficient detail:
 1. Derive a short verb-noun slug from the description (e.g. `add-auth`, `refactor-parser`). Do not ask the user for this.
 2. Run: `designlens new-stage "<full description>" "<slug>"`
 3. Read the generated `specs/NNN-<slug>/plan.md` and replace every placeholder section with real content drawn from the design discussion:
+   - **YAML front-matter** — fill `created` with the current UTC timestamp in ISO 8601 format (e.g. `2026-03-31T14:05:00Z`) and `agent` with your model identifier (e.g. `claude-sonnet-4-6`)
    - **Context** — relevant prior decisions and constraints from previous stage design-decisions.md files (if any exist in `specs/`)
    - **Design Goals** — concrete goals, not generic bullets
    - **Proposed Approach** — the high-level design decisions agreed in the conversation
