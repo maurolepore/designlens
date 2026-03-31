@@ -56,10 +56,10 @@ write_config() {
 
   if grep -q "\"$key\":" "$config_file"; then
     # Key exists, replace it
-    sed "s/\"$key\": *[^,}]*/\"$key\": $value/" "$config_file" > "$temp_file"
+    sed "s|\"$key\": *[^,}]*|\"$key\": $value|" "$config_file" > "$temp_file"
   else
     # Key doesn't exist, add it before the closing brace
-    sed "s/}/,\n  \"$key\": $value\n}/" "$config_file" > "$temp_file"
+    sed "s|}|,\n  \"$key\": $value\n}|" "$config_file" > "$temp_file"
   fi
 
   mv "$temp_file" "$config_file"
