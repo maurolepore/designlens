@@ -51,13 +51,11 @@ spec_new_stage() {
     prev_dir=$(ls -d specs/$prev_num-* 2>/dev/null | head -1)
     if [ -d "$prev_dir" ] && [ ! -f "$prev_dir/design-decisions.md" ]; then
       warning "Previous stage ($prev_dir) has no design-decisions.md"
-      prompt "Run 'designlens retrospective' to generate design decisions first? (y/n)"
+      prompt "Continue without running /designlens.retrospective first? (y/n)"
       read -r response
-      if [ "$response" = "y" ]; then
-        source "$(dirname "$0")/retrospective.sh"
-        spec_retrospective
-      else
-        warning "Continuing without retrospective..."
+      if [ "$response" != "y" ]; then
+        error "Aborted. Run /designlens.retrospective then try again."
+        exit 1
       fi
     fi
   fi
@@ -93,15 +91,4 @@ $stage_description
 EOF
 
   success "Created $stage_dir/plan.md"
-  echo ""
-  echo "AGENT: plan.md has been created with the description as a starting point."
-  echo "You must now edit $stage_dir/plan.md and fully populate every section:"
-  echo "  - Replace ALL placeholder and proforma values with real content."
-  echo "  - Do not leave any field with its template default (e.g. 'Goal 1', 'Goal 2',"
-  echo "    '(Previous decisions and constraints)', '(High-level design decisions)', etc.)."
-  echo "  - Draw on the stage description and any available project context to fill in"
-  echo "    Design Goals, Proposed Approach, Context, and Open Questions concretely."
-  echo "  - If any section cannot be filled without input from the user, ask before proceeding."
-  echo "Once every field is populated with real content, show the user $stage_dir/plan.md"
-  echo "and ask them to review it. Once they are happy with it, they should run: designlens make-tasks"
 }
