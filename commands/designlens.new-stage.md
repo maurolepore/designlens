@@ -26,6 +26,13 @@ Then ask: **"Complete the design history now before proceeding? (strongly recomm
 
 ---
 
+If the user's request did not already clarify where the work should be implemented, ask:
+
+> **Should this be built within the current directory, or inside a subdirectory?**
+> The current directory is recommended — designlens is designed to be embedded directly in a project's main working directory.
+
+Accept their answer before proceeding. If they choose a subdirectory, ask for its name and note it in the plan.
+
 Ask the user what they want to build in this stage. Keep asking clarifying questions until you have enough detail to write a concrete, actionable plan — covering goals, constraints, proposed approach, and open questions. Do not proceed until answers are specific enough to fill every section of plan.md with real content.
 
 Once you have sufficient detail:
