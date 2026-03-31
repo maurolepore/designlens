@@ -9,7 +9,8 @@
 source "$(dirname "$0")/check-bats.sh"
 check_bats
 
-bash "$(dirname "$0")/shellcheck.sh"
+shellcheck_exit=0
+bash "$(dirname "$0")/shellcheck.sh" || shellcheck_exit=$?
 
 if [ "$1" = "--no-parallel" ]; then
   shift
@@ -17,3 +18,5 @@ if [ "$1" = "--no-parallel" ]; then
 else
   bats --jobs "$(nproc 2>/dev/null || sysctl -n hw.logicalcpu 2>/dev/null || echo 4)" "${@:-tests/}"
 fi
+
+exit $((shellcheck_exit + $?))
