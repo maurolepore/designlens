@@ -384,7 +384,8 @@ EOF
   success "Staged new files"
 
   # Commit if auto-commit is enabled
-  local auto_commit=$(get_config "auto_commit")
+  local auto_commit
+  auto_commit=$(get_config "auto_commit")
   if [ "$auto_commit" = "true" ]; then
     git commit -m "Initialize designlens" > /dev/null 2>&1
     success "Changes committed"

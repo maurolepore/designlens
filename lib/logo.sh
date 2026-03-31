@@ -17,9 +17,11 @@ is_dark_background() {
   # This works on most modern terminal emulators (iTerm2, GNOME Terminal, etc.)
   if command -v timeout &> /dev/null; then
     # Use timeout to avoid hanging if terminal doesn't respond
+    # shellcheck disable=SC1003,SC2016
     bg_color=$(timeout 0.1 bash -c 'read -rs -d \\ -p $'"'"'\e]11;?\e\\'"'"' BG 2>/dev/null; echo "$BG"' 2>/dev/null)
   else
     # Fallback without timeout (might hang on some terminals)
+    # shellcheck disable=SC1003
     bg_color=$(bash -c 'read -rs -d \\ -p $'"'"'\e]11;?\e\\'"'"' BG 2>/dev/null; echo "$BG"' 2>/dev/null)
   fi
 

@@ -36,7 +36,8 @@ spec_status() {
 
   # Get the latest stage
   local latest_stage="${stages[-1]}"
-  local stage_name=$(basename "$latest_stage")
+  local stage_name
+  stage_name=$(basename "$latest_stage")
 
   echo "Current stage: $stage_name"
   echo ""
@@ -53,8 +54,9 @@ spec_status() {
 
   # Check task completion
   if [ "$tasks_exists" = true ]; then
-    local total_tasks=$(grep -c "^\- \[" "$latest_stage/tasks.md" 2>/dev/null || echo 0)
-    local completed_tasks=$(grep -c "^\- \[x\]" "$latest_stage/tasks.md" 2>/dev/null || echo 0)
+    local total_tasks completed_tasks
+    total_tasks=$(grep -c "^\- \[" "$latest_stage/tasks.md" 2>/dev/null || echo 0)
+    completed_tasks=$(grep -c "^\- \[x\]" "$latest_stage/tasks.md" 2>/dev/null || echo 0)
 
     if [ "$total_tasks" -gt 0 ]; then
       echo "Tasks: $completed_tasks/$total_tasks complete"

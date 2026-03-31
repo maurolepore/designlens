@@ -48,7 +48,7 @@ spec_new_stage() {
   if [ "$max_num" -gt 0 ]; then
     local prev_num
     prev_num=$(printf "%03d" "$max_num")
-    prev_dir=$(ls -d specs/$prev_num-* 2>/dev/null | head -1)
+    prev_dir=$(find specs -maxdepth 1 -type d -name "${prev_num}-*" | sort | head -1)
     if [ -d "$prev_dir" ] && [ ! -f "$prev_dir/design-decisions.md" ]; then
       warning "Previous stage ($prev_dir) has no design-decisions.md"
       prompt "Continue without running /designlens.retrospective first? (y/n)"

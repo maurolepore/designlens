@@ -1,0 +1,2 @@
+# SC1091: dynamic source paths (e.g. source "$lib_dir/foo.sh") cannot be followed by shellcheck
+disable=SC1091
