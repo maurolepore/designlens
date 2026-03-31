@@ -3,7 +3,7 @@
 all: help
 
 tests: ## Run all tests
-	bats tests/
+	bash tests/run.sh
 
 test:
 	make tests
