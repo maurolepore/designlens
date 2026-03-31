@@ -1,40 +1,55 @@
 # designlens
 
-A spec-driven design tool with a long memory. designlens works in two directions:
-**forward**, to guide what you're building next, and **backward**, to record why
-you built it the way you did.
+A planning tool with a long memory for AI-assisted projects. {designlens}
+works in two directions: **forward**, to guide what you're building next, and
+**backward**, to record why you built it the way you did.
+
+Generative AI coding tools implement whatever seems reasonable in the moment.
+Without structure, they drift, forget what was decided, repeat questions, or
+confidently solve the wrong problems. {designlens} gives agents a spine. You
+write down what you want to build and why; {designlens} turns that into concrete
+tasks and keeps a record of every decision along the way.
+
+Although {designlens} is especially suited to software projects, it works for any
+project where an AI agent helps produce deliverables—documentation, data
+pipelines, research workflows, and more.
 
 ## Two directions
 
-### Forward: spec-driven design
+### Forward: intent-first development
 
-Like other spec-driven tools, designlens starts with intent. Before any code is
-written, you produce a plan that captures goals, approach, and open questions.
-That plan drives task breakdown and implementation—keeping your agent focused on
-what was actually decided, not just what's easiest.
+{designlens} starts with intent. Before the agent writes anything, you produce a
+plan that captures goals, approach, and open questions. That plan drives task
+breakdown and implementation—keeping the agent focused on what was actually
+decided, not just what's easiest.
 
 ### Backward: design history
 
-Unlike most spec tools, designlens also looks backward. After each stage, it
-generates a `design-decisions.md` that records what was decided, what was
+Unlike most planning tools, {designlens} also looks backward. After each stage,
+it generates a `design-decisions.md` that records what was decided, what was
 traded off, and how the decision connects to prior stages. These documents
 accumulate in `specs/` as a permanent, human-readable archaeological record of
-your project's evolution—so future contributors understand not just *what* the
-code does, but *why* it is the way it is.
+your project's evolution—so future contributors understand not just *what* was
+built, but *why* it is the way it is.
 
 ## What it produces
 
 Each feature or change is developed as a numbered *stage*. A stage produces three
 artifacts, committed to your repo under `specs/`:
 
-- **plan.md** — the design vision: what you're building and why
-- **tasks.md** — the execution breakdown: concrete, checkboxed steps
-- **design-decisions.md** — the reasoning record: what was decided, what was traded off, how it connects to prior stages
+- [**plan.md**](https://github.com/ropensci-review-tools/designlens/blob/main/docs/workflow.md#phase-2-plan-the-stage) — the design vision: what you're building and why
+- [**tasks.md**](https://github.com/ropensci-review-tools/designlens/blob/main/docs/workflow.md#phase-3-convert-plan-into-tasks) — the execution breakdown: concrete, checkboxed steps
+- [**design-decisions.md**](https://github.com/ropensci-review-tools/designlens/blob/main/docs/workflow.md#phase-5-create-retrospective) — the reasoning record: what was decided, what was traded off, how it connects to prior stages
 
 Over time, `specs/` becomes a navigable record of your project's decisions,
-readable by contributors who weren't there when the choices were made.
+readable by contributors who might not have been there when the choices were
+made.
 
 ## Installation
+
+These installation steps install a small handful of system-level scripts which
+tell {designlens} what to do. You can run `designlens uninstall` at any time to
+remove them.
 
 ### Linux / macOS
 
@@ -50,11 +65,13 @@ irm https://raw.githubusercontent.com/ropensci-review-tools/designlens/main/inst
 
 ## How to use designlens
 
-designlens is built for agent CLI environments like Claude Code. Most commands
-are instructions you give your agent, not things you type in a shell yourself.
-When an agent runs a designlens command, it receives instructions telling it
-exactly what to do next—read this file, populate these fields, generate that
-document. The agent does the work; designlens keeps it on track.
+{designlens} is built for agent CLI environments like
+[opencode](https://opencode.ai) or [Claude
+Code](https://claude.com/product/claude-code). Most commands are instructions
+you give your agent, not things you type in a shell yourself. When an agent
+runs a {designlens} command, it receives instructions telling it exactly what
+to do next—read this file, populate these fields, generate that document. The
+agent does the work; {designlens} keeps it on track.
 
 The exception is setup: `init` is a one-time step you run yourself before handing
 off to an agent.
@@ -72,7 +89,7 @@ your `AGENTS.md` (or `CLAUDE.md`) so agents know to read the specs on session
 start. For established projects, it can generate a `000-design-history` stub from
 your git log as a starting point.
 
-### 2. Start a stage (ask your agent)
+### 2. Start a stage
 
 Tell your agent:
 
@@ -83,7 +100,7 @@ fills it out—goals, approach, open questions—based on your description and t
 project context. Once the plan is written, it shows you the result and asks you
 to review it.
 
-### 3. Break down tasks (ask your agent)
+### 3. Break down tasks
 
 Tell your agent:
 
@@ -95,10 +112,10 @@ implementation steps, each prefixed with a stage-scoped ID (`T001-1`, `T001-2`, 
 ### 4. Implement
 
 Work through the tasks with your agent. Each task is checked off as it's completed.
-designlens doesn't prescribe how this works—it just tracks progress via the
+{designlens} doesn't prescribe how this works—it just tracks progress via the
 checkboxes in `tasks.md`.
 
-### 5. Wrap up the stage (ask your agent)
+### 5. Wrap up the stage
 
 When all tasks are checked off:
 
@@ -131,15 +148,17 @@ designlens uninstall  # remove the tool (your specs/ folders are untouched)
 
 ## Documentation
 
-See `docs/conventions.md` for the full workflow specification, file format
-templates, and agent instructions.
+See
+[`docs/conventions.md`](https://github.com/ropensci-review-tools/designlens/blob/main/docs/conventions.md)
+for the full workflow specification, file format templates, and agent
+instructions.
 
 ## Prior art
 
 The forward design workflow borrows heavily from
-[spec-kit](https://github.com/github/spec-kit), which pioneered the plan → tasks →
-implement cycle for agent-driven development. designlens extends that model
-with the backward-facing retrospective step.
+[spec-kit](https://github.com/github/spec-kit), and is in many ways a
+streamlined version of similar ideas. {designlens} extends that model with the
+backward-facing retrospective step.
 
 ## License
 
