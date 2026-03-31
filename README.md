@@ -91,39 +91,28 @@ your git log as a starting point.
 
 ### 2. Start a stage
 
-Tell your agent:
-
-> Run `designlens new-stage "what you want to build"`
-
-The agent creates `specs/001-stage-name/plan.md` with a structured template, then
-fills it out—goals, approach, open questions—based on your description and the
-project context. Once the plan is written, it shows you the result and asks you
-to review it.
+Run `/designlens.new-stage` in your agent. It will ask questions until it has
+enough detail to write a concrete plan, then call `designlens new-stage` to create
+the stage directory and populate `specs/001-stage-name/plan.md`. Once the plan is
+written, it shows you the result and asks you to review it.
 
 ### 3. Break down tasks
 
-Tell your agent:
-
-> Run `designlens make-tasks`
-
-The agent reads `plan.md` and produces `tasks.md`: a list of concrete, checkboxed
-implementation steps, each prefixed with a stage-scoped ID (`T001-1`, `T001-2`, …).
+Run `/designlens.make-tasks`. The agent reads `plan.md` and produces `tasks.md`:
+a list of concrete, checkboxed implementation steps, each prefixed with a
+stage-scoped ID (`T001-1`, `T001-2`, …).
 
 ### 4. Implement
 
-Work through the tasks with your agent. Each task is checked off as it's completed.
-{designlens} doesn't prescribe how this works—it just tracks progress via the
-checkboxes in `tasks.md`.
+Run `/designlens.implement`. The agent works through `tasks.md` sequentially,
+checking off each task as it is completed.
 
 ### 5. Wrap up the stage
 
-When all tasks are checked off:
-
-> Run `designlens retrospective`
-
-The agent generates `design-decisions.md`: a concise, anonymized summary of what
-was decided and why, cross-referencing prior stages to show how the design
-evolves. These are the documents future contributors will read.
+When all tasks are checked off, run `/designlens.retrospective`. The agent
+generates `design-decisions.md`: a concise, anonymized summary of what was
+decided and why, cross-referencing prior stages to show how the design evolves.
+These are the documents future contributors will read.
 
 ### 6. Check where you are at any point
 
@@ -137,7 +126,7 @@ your agent to run it.
 
 ### 7. Repeat
 
-Once a stage is complete, ask your agent to run `designlens new-stage` again.
+Once a stage is complete, run `/designlens.new-stage` again.
 
 ## Maintenance
 

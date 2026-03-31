@@ -27,34 +27,47 @@ A: As long as it needs. Some stages might be a few hours; others might be weeks.
 
 ## Command Reference
 
+### Shell commands
+
 ```bash
-designlens init                    # Initialize project (once)
-designlens new-stage <name>        # Create new stage
-designlens status                  # Show current state and next action
-designlens retrospective           # Generate design-decisions.md
-designlens transcript <file>       # Normalize a transcript
-designlens update                  # Update to latest version
+designlens init                          # Initialize project (once)
+designlens new-stage "<desc>" "<slug>"   # Create next stage directory and plan.md
+designlens status                        # Show current state and next action
+designlens config show                   # View current configuration
+designlens config set <key> <value>      # Set a configuration value
+designlens update                        # Update to latest version
+designlens uninstall                     # Uninstall from system
+```
+
+### Agent slash commands (installed by `init`)
+
+```
+/designlens.new-stage       # 1. Gather requirements and create a new stage
+/designlens.make-tasks      # 2. Generate tasks.md from the current plan.md
+/designlens.implement       # 3. Implement all tasks in the current tasks.md
+/designlens.retrospective   # 4. Generate transcript and design decisions
+/designlens.help            # Show help
 ```
 
 ## IDE Integration
 
-Most IDEs and coding agents (Claude Code, Cursor, etc.) can execute shell commands. Use that to call designlens commands during a session.
+Workflow commands run natively inside your agent via slash commands (installed by `designlens init`). Shell commands like `designlens status` can be run directly in the terminal or via your agent's shell tool.
 
 ## Git Workflow
 
 ```bash
-# Start a new stage
-designlens new-stage "feature-name"
+# Start a new stage (agent handles the planning)
+# /designlens.new-stage → calls designlens new-stage internally
 git checkout -b specs/feature-name
 
 # Work on the stage
-[edit plan.md, write code, check off tasks]
+# /designlens.implement → checks off tasks as they complete
 git add .
 git commit -m "WIP: Feature implementation"
 
 # Complete the stage
-designlens retrospective
-git add specs/feature-name/design-decisions.md
+# /designlens.retrospective → generates design-decisions.md
+git add specs/feature-name/
 git commit -m "feature-name: Design decisions"
 
 # Merge
