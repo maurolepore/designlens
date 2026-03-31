@@ -9,6 +9,8 @@
 source "$(dirname "$0")/check-bats.sh"
 check_bats
 
+bash "$(dirname "$0")/shellcheck.sh"
+
 if [ "$1" = "--no-parallel" ]; then
   shift
   bats "${@:-tests/}"

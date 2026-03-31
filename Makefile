@@ -1,4 +1,4 @@
-.PHONY: tests test-nopar
+.PHONY: tests tests-nopar test test-nopar
 
 all: help
 
@@ -11,6 +11,7 @@ tests-nopar: ## Run all tests (single-threaded)
 test: tests
 
 test-nopar: tests-nopar
+
 
 help: ## Show this help
 	@printf "Usage:\033[36m make [target]\033[0m\n"
