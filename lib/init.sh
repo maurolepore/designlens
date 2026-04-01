@@ -115,15 +115,14 @@ For instructions on *creating* new specs, see the project's AGENTS.md or CLAUDE.
 EOF
   success "Created specs/README.md"
 
-  # Check for extensive git history and auto-capture if present
-  COMMIT_COUNT=$(git rev-list --count HEAD 2>/dev/null || echo 0)
-  HISTORY_THRESHOLD=50
+  # Check if project has real content and auto-capture design history if so
+  source "$lib_dir/is-empty.sh"
 
   local pending_history=false
-  if [ "$COMMIT_COUNT" -gt "$HISTORY_THRESHOLD" ]; then
+  if ! is_project_empty; then
     pending_history=true
     mkdir -p specs/000-design-history
-    success "Created specs/000-design-history/ (detected $COMMIT_COUNT commits)"
+    success "Created specs/000-design-history/ (detected existing project content)"
 
     # Write a stub with embedded generation instructions for the agent
     cat > specs/000-design-history/design-decisions.md << 'EOF'
