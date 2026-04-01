@@ -24,56 +24,38 @@ case "$OS" in
     source "$SCRIPT_DIR/lib/logo.sh"
     show_logo
 
-    # Try system-wide installation first, fall back to user local
-    if [ -w "/usr/local/lib" ]; then
-      INSTALL_DIR="/usr/local/lib/designlens"
-      BIN_DIR="/usr/local/bin"
-      SYSTEM_WIDE=true
-      SUDO=""
-    elif command -v sudo &>/dev/null && sudo -v 2>/dev/null; then
-      echo "System-wide installation requires sudo..."
-      INSTALL_DIR="/usr/local/lib/designlens"
-      BIN_DIR="/usr/local/bin"
-      SYSTEM_WIDE=true
-      SUDO="sudo"
-    else
-      INSTALL_DIR="$HOME/.local/lib/designlens"
-      BIN_DIR="$HOME/.local/bin"
-      SYSTEM_WIDE=false
-      SUDO=""
-      mkdir -p "$BIN_DIR"
-    fi
+    INSTALL_DIR="$HOME/.local/share/designlens"
+    BIN_DIR="$HOME/.local/bin"
+    mkdir -p "$BIN_DIR"
 
     echo "Installation directory: $INSTALL_DIR"
     echo "Creating installation directory..."
-    $SUDO mkdir -p "$INSTALL_DIR"
+    mkdir -p "$INSTALL_DIR"
 
     echo "Copying files..."
-    $SUDO cp -r "$SCRIPT_DIR"/bin "$INSTALL_DIR/"
-    $SUDO cp -r "$SCRIPT_DIR"/lib "$INSTALL_DIR/"
-    $SUDO cp -r "$SCRIPT_DIR"/docs "$INSTALL_DIR/"
-    $SUDO cp -r "$SCRIPT_DIR"/commands "$INSTALL_DIR/"
-    $SUDO cp "$SCRIPT_DIR"/README.md "$INSTALL_DIR/"
-    $SUDO cp "$SCRIPT_DIR"/designlens.json "$INSTALL_DIR/"
-    $SUDO cp "$SCRIPT_DIR"/LICENSE "$INSTALL_DIR/"
+    cp -r "$SCRIPT_DIR"/bin "$INSTALL_DIR/"
+    cp -r "$SCRIPT_DIR"/lib "$INSTALL_DIR/"
+    cp -r "$SCRIPT_DIR"/docs "$INSTALL_DIR/"
+    cp -r "$SCRIPT_DIR"/commands "$INSTALL_DIR/"
+    cp "$SCRIPT_DIR"/README.md "$INSTALL_DIR/"
+    cp "$SCRIPT_DIR"/designlens.json "$INSTALL_DIR/"
+    cp "$SCRIPT_DIR"/LICENSE "$INSTALL_DIR/"
 
     echo "Making scripts executable..."
-    $SUDO chmod +x "$INSTALL_DIR"/bin/designlens
-    $SUDO find "$INSTALL_DIR/lib" -name "*.sh" -exec $SUDO chmod +x {} \;
+    chmod +x "$INSTALL_DIR"/bin/designlens
+    find "$INSTALL_DIR/lib" -name "*.sh" -exec chmod +x {} \;
 
     echo "Creating symlink..."
-    $SUDO ln -sf "$INSTALL_DIR/bin/designlens" "$BIN_DIR/designlens"
+    ln -sf "$INSTALL_DIR/bin/designlens" "$BIN_DIR/designlens"
 
     echo "✓ designlens installed successfully!"
     echo ""
-    if [ "$SYSTEM_WIDE" = false ]; then
-      # Check if ~/.local/bin is in PATH
-      if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-        echo "⚠️  $HOME/.local/bin is not in your PATH"
-        echo "Add this line to ~/.bashrc, ~/.zshrc, or equivalent:"
-        echo "  export PATH=\"\$HOME/.local/bin:\$PATH\""
-        echo ""
-      fi
+    # Check if ~/.local/bin is in PATH
+    if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+      echo "⚠️  $HOME/.local/bin is not in your PATH"
+      echo "Add this line to ~/.bashrc, ~/.zshrc, or equivalent:"
+      echo "  export PATH=\"\$HOME/.local/bin:\$PATH\""
+      echo ""
     fi
     echo "Run 'designlens init' in your project directory to get started."
     ;;
