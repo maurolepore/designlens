@@ -36,12 +36,13 @@ built, but *why* it is the way it is.
 
 ## What it produces
 
-Each feature or change is developed as a numbered *stage*. A stage produces three
+Each feature or change is developed as a numbered *stage*. A stage produces four
 artifacts, committed to your repo under `specs/`:
 
 - [**plan.md**](https://github.com/ropensci-review-tools/designlens/blob/main/docs/workflow.md#phase-2-plan-the-stage) — the design vision: what you're building and why
 - [**tasks.md**](https://github.com/ropensci-review-tools/designlens/blob/main/docs/workflow.md#phase-3-convert-plan-into-tasks) — the execution breakdown: concrete, checkboxed steps
 - [**design-decisions.md**](https://github.com/ropensci-review-tools/designlens/blob/main/docs/workflow.md#phase-5-create-retrospective) — the reasoning record: what was decided, what was traded off, how it connects to prior stages
+- **.metadata.json** — session stats accumulated across every session that touched the stage: token usage, lines written, files changed, and which agent(s) did the work
 
 Over time, `specs/` becomes a navigable record of your project's decisions,
 readable by contributors who might not have been there when the choices were
@@ -122,7 +123,9 @@ checking off each task as it is completed.
 When all tasks are checked off, run `/designlens.retrospective`. The agent
 generates `design-decisions.md`: a concise, anonymized summary of what was
 decided and why, cross-referencing prior stages to show how the design evolves.
-These are the documents future contributors will read.
+It also writes `.metadata.json` with token usage, lines written, and files
+changed for the stage — accumulated across all sessions, so the record stays
+complete even when a stage spans multiple working sessions.
 
 ### 6. Check where you are at any point
 
