@@ -16,6 +16,7 @@ Display the following:
 | `/designlens.make-tasks` | Generate tasks.md from the current plan.md |
 | `/designlens.implement` | Implement all tasks in the current tasks.md |
 | `/designlens.retrospective` | Generate transcript and design decisions |
+| `/designlens.status` | Show current project status and next action |
 | `/designlens.help` | Show this help |
 
 ### Shell commands
