@@ -57,6 +57,10 @@ case "$1" in
     source "$LIB_DIR/init.sh"
     spec_init
     ;;
+  add-agent)
+    source "$LIB_DIR/add-agent.sh"
+    spec_add_agent
+    ;;
   new-stage)
     source "$LIB_DIR/new-stage.sh"
     spec_new_stage "$2" "$3"
