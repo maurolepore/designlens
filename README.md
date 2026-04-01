@@ -78,27 +78,33 @@ telling it exactly what to do next—read this file, populate these fields,
 generate that document. The agent does the work; {designlens} keeps it on
 track.
 
-For agents other than Claude Code and OpenCode, `init` will create proforma
-command files in `.opencode/command/`. Copy these to your agent's commands
-directory (e.g. `.github/agents/`, `.cursor/rules/`) and modify them to match
-your agent's format if needed. To request native support for additional agents, please
-[open an issue](https://github.com/ropensci-review-tools/designlens/issues).
-
-The exception is setup: `init` is a one-time step you run yourself before handing
-off to an agent.
-
 ### 1. Initialize (you do this, once per project)
 
-In your project directory:
+In a command-line shell in your project directory, run:
 
 ```bash
 designlens init
 ```
 
-This creates the `specs/` folder, a `.designlens.json` config file, and updates
-your `AGENTS.md` (or `CLAUDE.md`) so agents know to read the specs on session
-start. For established projects, it can generate a `000-design-history` stub from
-your git log as a starting point.
+This will create a `specs/` folder, a `.designlens.json` config file, and will
+update (or create) your `AGENTS.md` (or `CLAUDE.md`) so agents know to read the
+specs on session start. You'll also be asked to specify which agent you'll be
+using, and `init` will populate the appropriate directory with agent-specific
+command files. For agents other than Claude Code and OpenCode, `init` will
+create proforma command files in `.opencode/command/`. Copy these to your
+agent's commands directory (e.g. `.github/agents/`, `.cursor/rules/`) and
+modify them to match your agent's format if needed. To request native support
+for additional agents, please [open an
+issue](https://github.com/ropensci-review-tools/designlens/issues). Note that
+metadata aggregation is currently only possible for opencode and Claude Code.
+
+For established projects, `init` will also generate a `000-design-history` stub
+from your git log as a starting point. You should then run
+`/designlens.retrospective` as the _first_ stage to generate the design history
+until that point. This is used as the basis to inform further evolution of
+design history.
+
+From that point on, all commands are always run in your agent-based CLI.
 
 ### 2. Start a stage
 
@@ -129,19 +135,27 @@ complete even when a stage spans multiple working sessions.
 
 ### 6. Check where you are at any point
 
+Run `/designlens.status` to report the current stage, task completion, and the
+one next action to take. Start every session by asking your agent to run it.
+In a shell, you can also run
 ```bash
 designlens status
 ```
 
-This works in a shell or as an agent instruction. It reports the current stage,
-task completion, and the one next action to take. Start every session by asking
-your agent to run it.
+To directly see the current stage, and any outstanding tasks.
 
 ### 7. Repeat
 
 Once a stage is complete, run `/designlens.new-stage` again.
 
-## Maintenance
+## Help and maintenance
+
+To list commands and capabilities of {designlens}, run,
+```bash
+designlens help
+```
+in a command shell, or `/designlens.help` in an agent CLI environment. You can
+also update or uninstall the tool with:
 
 ```bash
 designlens update     # update to the latest version
