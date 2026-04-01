@@ -30,9 +30,20 @@ Then ask: **"Complete the design history now before proceeding? (strongly recomm
 
 ## STEP 2 — Confirm working directory (first session after init only)
 
-Check whether the current directory contains only the files and folders created by `designlens init` — that is, its contents are a subset of: `.designlens.json`, `AGENTS.md`, `specs/`, `.git/`, and one agent-specific config folder (e.g. `.claude/`). If there is anything else present, the project already has real content here, so skip this step and jump to **STEP 3**.
+Source the emptiness detection library by sourcing the output of `designlens lib is-empty`:
+```bash
+eval "$(designlens lib is-empty)"
+```
 
-If the directory contains only init artifacts, ask:
+Check whether the current directory contains only the files and folders created by `designlens init` — that is, its contents are a subset of: `.designlens.json`, `AGENTS.md`, `specs/`, `.git/`, and one agent-specific config folder (e.g. `.claude/`). If there is anything else present, skip this step and jump to **STEP 3**.
+
+If the emptiness detection function exists, call it to check for real content:
+- If `is_project_empty` returns non-zero (project has real content), skip this step and jump to **STEP 3**.
+- If it returns zero (truly empty project), ask the location question.
+
+Alternatively, if the function is not available, manually check whether the current directory contains only init artifacts. If there is anything else present, the project already has real content here, so skip this step and jump to **STEP 3**.
+
+If the directory contains only init artifacts (or the function confirms it's empty), ask:
 
 > **Should this be built within the current directory, or inside a subdirectory?**
 > The current directory is recommended — designlens is designed to be embedded directly in a project's main working directory.

@@ -28,6 +28,7 @@ COMMANDS:
   new-stage           Create the next spec stage directory and plan.md
   status              Show current project state
   config              Manage designlens configuration
+  lib                 Source library functions (e.g., designlens lib is-empty)
   version             Show installed version
   update              Update designlens to latest version
   uninstall           Uninstall designlens from system
@@ -81,6 +82,29 @@ case "$1" in
     else
       echo "designlens (version unknown)"
     fi
+    ;;
+  lib)
+    LIBRARY="$2"
+    if [ -z "$LIBRARY" ]; then
+      echo "Usage: designlens lib <library-name>" >&2
+      echo "Available: is-empty" >&2
+      exit 1
+    fi
+    case "$LIBRARY" in
+      is-empty)
+        source "$LIB_DIR/is-empty.sh"
+        echo "DESIGNLENS_PATHS='.designlens.json AGENTS.md specs .git .claude .opencode'"
+        declare -f is_designlens_path
+        declare -f check_git_history
+        declare -f check_filesystem
+        declare -f is_project_empty
+        ;;
+      *)
+        echo "Unknown library: $LIBRARY" >&2
+        echo "Available: is-empty" >&2
+        exit 1
+        ;;
+    esac
     ;;
   update)
     source "$LIB_DIR/update.sh"

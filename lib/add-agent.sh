@@ -4,7 +4,7 @@
 # Provides reusable functions for installing agent-specific files
 
 get_lib_dir() {
-  echo "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+  cd "$(dirname "${BASH_SOURCE[0]}")" && pwd
 }
 
 get_commands_dir() {
