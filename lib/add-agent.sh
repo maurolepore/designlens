@@ -21,7 +21,7 @@ add_agent_claude() {
 
   mkdir -p .claude/commands
   cp "$commands_dir"/*.md .claude/commands/
-  success "Installed command files to .claude/commands/"
+  success "Installed command files to .claude/commands/" >&2
   echo ".claude/commands"
 
   local hooks_dir="$lib_dir/hooks"
@@ -41,19 +41,17 @@ add_agent_claude() {
       merged=$(jq -s '.[0] * .[1]' "$settings_file" <(echo "$hook_config") 2>/dev/null) || merged=""
       if [ -n "$merged" ]; then
         echo "$merged" > "$settings_file"
-        success "Merged designlens hooks into .claude/settings.json"
+        success "Merged designlens hooks into .claude/settings.json" >&2
       else
-        warning "Could not merge hooks into existing .claude/settings.json — add hooks manually."
-        info "  PostToolUse: $post_hook_path"
-        info "  Stop: $stop_hook_path"
+        warning "Could not merge hooks into existing .claude/settings.json — add hooks manually." >&2
+        info "  PostToolUse: $post_hook_path" >&2
+        info "  Stop: $stop_hook_path" >&2
       fi
     else
       echo "$hook_config" > "$settings_file"
-      success "Created .claude/settings.json with designlens hooks"
+      success "Created .claude/settings.json with designlens hooks" >&2
     fi
   fi
-
-  echo "claude"
 }
 
 add_agent_opencode() {
@@ -64,17 +62,15 @@ add_agent_opencode() {
 
   mkdir -p .opencode/command
   cp "$commands_dir"/*.md .opencode/command/
-  success "Installed command files to .opencode/command/"
+  success "Installed command files to .opencode/command/" >&2
   echo ".opencode/command"
 
   mkdir -p .opencode/tools
   local tools_dir="$lib_dir/tools"
   if [ -d "$tools_dir" ]; then
     cp "$tools_dir"/get_session_stats.* .opencode/tools/ 2>/dev/null || true
-    success "Installed session stats tools to .opencode/tools/"
+    success "Installed session stats tools to .opencode/tools/" >&2
   fi
-
-  echo "opencode"
 }
 
 add_agent() {
