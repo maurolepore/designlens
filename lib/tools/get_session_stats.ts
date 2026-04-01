@@ -7,7 +7,8 @@ export const get_session_stats = tool({
   async execute(_args, _context) {
     try {
       const script = path.join(process.cwd(), ".opencode/tools/get_session_stats.py")
-      const proc = Bun.spawn(["python3", script])
+      const sessionID = _context.sessionID
+      const proc = Bun.spawn(["python3", script, sessionID])
       const output = await new Response(proc.stdout).text()
       const stats = JSON.parse(output.trim())
       
