@@ -21,4 +21,5 @@ __pycache__/
 # designlens
 # .designlens.json is committed (project config), not ignored
 .claude/
+.opencode/
 install-local.sh
