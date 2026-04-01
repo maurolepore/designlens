@@ -12,11 +12,15 @@ check_bats
 shellcheck_exit=0
 bash "$(dirname "$0")/shellcheck.sh" || shellcheck_exit=$?
 
+bats_exit=0
 if [ "$1" = "--no-parallel" ]; then
   shift
-  bats "${@:-tests/}"
+  bats "${@:-tests/}" || bats_exit=$?
 else
-  bats --jobs "$(nproc 2>/dev/null || sysctl -n hw.logicalcpu 2>/dev/null || echo 4)" "${@:-tests/}"
+  bats --jobs "$(nproc 2>/dev/null || sysctl -n hw.logicalcpu 2>/dev/null || echo 4)" "${@:-tests/}" || bats_exit=$?
 fi
 
-exit $((shellcheck_exit + $?))
+python_exit=0
+bash "$(dirname "$0")/run-python.sh" || python_exit=$?
+
+exit $((shellcheck_exit + bats_exit + python_exit))
