@@ -154,11 +154,10 @@ INIT_INPUT=$'n\nclaude\n'
 
 # --- git history stub ---
 
-@test "creates 000-design-history stub when repo exceeds history threshold" {
-  git commit --allow-empty -m "initial" -q
-  for i in $(seq 2 51); do
-    git commit --allow-empty -m "commit $i" -q
-  done
+@test "creates 000-design-history stub when repo has real content" {
+  echo "src" > main.c
+  git add main.c
+  git commit -m "initial" -q
   spec_init <<< $'n\nclaude\n'
   [ -f specs/000-design-history/design-decisions.md ]
   grep -q 'PENDING' specs/000-design-history/design-decisions.md
