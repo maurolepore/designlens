@@ -74,24 +74,24 @@ INIT_INPUT=$'n\nclaude\n'
 
 @test "records agent and commands_path in .designlens.json for claude" {
   spec_init <<< $'n\nclaude\n'
-  grep -q '"agent": "claude"' .designlens.json
-  grep -q '"commands_path": ".claude/commands"' .designlens.json
+  jq -e '.agent | index("claude")' .designlens.json > /dev/null
+  jq -e '.commands_path | index(".claude/commands")' .designlens.json > /dev/null
 }
 
 @test "records agent and commands_path in .designlens.json for opencode" {
   spec_init <<< $'n\nopencode\n'
-  grep -q '"agent": "opencode"' .designlens.json
-  grep -q '"commands_path": ".opencode/command"' .designlens.json
+  jq -e '.agent | index("opencode")' .designlens.json > /dev/null
+  jq -e '.commands_path | index(".opencode/command")' .designlens.json > /dev/null
 }
 
 @test "accepts partial agent name (c for claude)" {
   spec_init <<< $'n\nc\n'
-  grep -q '"agent": "claude"' .designlens.json
+  jq -e '.agent | index("claude")' .designlens.json > /dev/null
 }
 
 @test "re-prompts on unrecognised agent input" {
   spec_init <<< $'n\nfoo\nclaude\n'
-  grep -q '"agent": "claude"' .designlens.json
+  jq -e '.agent | index("claude")' .designlens.json > /dev/null
 }
 
 @test "installs command files into agent commands path" {
