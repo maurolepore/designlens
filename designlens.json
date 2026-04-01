@@ -8,7 +8,7 @@
   "Language": "en-GB",
   "URL": "https://github.com/ropensci-review-tools/designlens",
   "BugReports": "https://github.com/ropensci-review-tools/designlens/issues",
-  "SystemRequirements": "bash (>= 3.2), curl, git",
+  "SystemRequirements": "bash (>= 3.2), curl, git, jq (>= 1.6)",
   "Repository": {
     "type": "git",
     "url": "https://github.com/ropensci-review-tools/designlens.git"

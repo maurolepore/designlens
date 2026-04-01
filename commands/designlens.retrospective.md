@@ -147,6 +147,38 @@ No personal names, email addresses, or identifying information throughout.
 
 ## After completing all three steps
 
+### STEP 4 OF 4: Collect session stats
+
+Write session stats to `<stage_dir>/.metadata.json`. The schema is:
+
+```json
+{
+  "agents": ["<model-identifier>"],
+  "created": "<UTC timestamp ISO 8601 — set once on first write, never overwritten>",
+  "last_updated": "<current UTC timestamp ISO 8601>",
+  "sessions": 1,
+  "input_tokens": null,
+  "output_tokens": null,
+  "user_word_count": null,
+  "lines_added": null,
+  "lines_deleted": null,
+  "files_changed": null
+}
+```
+
+All numeric fields are `null` on failure. If `.metadata.json` already exists, sum numeric fields with the new values, append the current agent identifier to `agents` if not already present, increment `sessions`, preserve the existing `created` value, and overwrite `last_updated`.
+
+**If you are running under OpenCode** (i.e. a `get_session_stats` tool is available to you):
+- Call the `get_session_stats` tool.
+- Use its returned values to populate the fields. Set any field that errored to `null`.
+- Merge with any existing `.metadata.json` as described above and write the result.
+
+**If you are running under Claude Code** (i.e. no `get_session_stats` tool is available):
+- Write a `.metadata.json` with `agents` set to your model identifier, `last_updated` set to the current UTC timestamp, `sessions` incremented (or 1 if new), and all numeric fields set to `null`.
+- The Claude Code Stop hook will overwrite this file at session end with real stats. The file you write now ensures `sessions` and `agents` are not lost if the hook runs before the git add.
+
+---
+
 ```bash
 git add <stage_dir>/ specs/design-decisions.md
 ```

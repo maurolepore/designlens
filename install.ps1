@@ -40,7 +40,7 @@ Copy-Item -Path "$ScriptDir\LICENSE" -Destination "$InstallDir\" -Force
 
 # Make scripts executable (Git Bash requirement)
 Write-Host "Making scripts executable for Git Bash..."
-$scripts = Get-ChildItem -Path "$InstallDir\lib" -Filter "*.sh"
+$scripts = Get-ChildItem -Path "$InstallDir\lib" -Filter "*.sh" -Recurse
 foreach ($script in $scripts) {
     icacls $script.FullName /grant:r "$env:USERNAME`:(F)" | Out-Null
 }

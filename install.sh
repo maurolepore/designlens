@@ -59,7 +59,7 @@ case "$OS" in
 
     echo "Making scripts executable..."
     $SUDO chmod +x "$INSTALL_DIR"/bin/designlens
-    $SUDO chmod +x "$INSTALL_DIR"/lib/*.sh
+    $SUDO find "$INSTALL_DIR/lib" -name "*.sh" -exec $SUDO chmod +x {} \;
 
     echo "Creating symlink..."
     $SUDO ln -sf "$INSTALL_DIR/bin/designlens" "$BIN_DIR/designlens"
