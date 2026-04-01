@@ -24,22 +24,24 @@ USAGE:
   designlens <command> [options]
 
 COMMANDS:
+  help                Show this help message
   init                Initialize a project (run once)
-  new-stage           Create the next spec stage directory and plan.md
   status              Show current project state
   config              Manage designlens configuration
-  lib                 Source library functions (e.g., designlens lib is-empty)
   version             Show installed version
+  add-agent           Add configuration for additional agents
+  new-stage           Create the next spec stage directory and plan.md
+  lib                 Source library functions (e.g., designlens lib is-empty)
   update              Update designlens to latest version
   uninstall           Uninstall designlens from system
-  help                Show this help message
 
 WORKFLOW COMMANDS (native agent slash commands, installed by 'init'):
-  /designlens.new-stage       Gather requirements and create a new stage
-  /designlens.make-tasks      Generate tasks.md from the current plan.md
-  /designlens.implement       Implement all tasks in the current tasks.md
-  /designlens.retrospective   Generate transcript and design decisions
   /designlens.help            Show help inside the agent
+  /designlens.status          Show and remind agent of current project state
+  /designlens.new-stage       1. Gather requirements and create a new stage
+  /designlens.make-tasks      2. Generate tasks.md from the current plan.md
+  /designlens.implement       3. Implement all tasks in the current tasks.md
+  /designlens.retrospective   4. Generate transcript and design decisions
 
 EXAMPLES:
   designlens init
