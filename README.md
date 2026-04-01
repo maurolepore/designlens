@@ -174,7 +174,7 @@ instructions.
 The forward design workflow borrows heavily from
 [spec-kit](https://github.com/github/spec-kit), and is in many ways a
 streamlined version of similar ideas. {designlens} extends that model with the
-backward-facing retrospective step.
+backward-facing retrospective step and bonus metadata.
 
 ## License
 
