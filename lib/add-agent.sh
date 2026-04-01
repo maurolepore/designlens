@@ -113,8 +113,8 @@ add_agent() {
   for p in "${installed_paths[@]}"; do
     git add "$p/" 2>/dev/null || true
   done
-  [ -d ".claude/settings.json" ] || [ -f ".claude/settings.json" ] && git add .claude/settings.json 2>/dev/null || true
-  [ -d ".opencode/tools" ] && git add .opencode/tools/ 2>/dev/null || true
+  if [ -f ".claude/settings.json" ]; then git add .claude/settings.json 2>/dev/null || true; fi
+  if [ -d ".opencode/tools" ]; then git add .opencode/tools/ 2>/dev/null || true; fi
   success "Staged new files"
 
   local auto_commit
