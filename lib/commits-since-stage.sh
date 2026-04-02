@@ -19,7 +19,7 @@ commits_since_stage() {
 
   # Find the most recent stage directory that has a design-decisions.md
   local latest_dd=""
-  for dir in $(ls -d specs/[0-9][0-9][0-9]-* 2>/dev/null | sort -r); do
+  for dir in $(find specs -maxdepth 1 -type d -name '[0-9][0-9][0-9]-*' 2>/dev/null | sort -r); do
     if [ -f "$dir/design-decisions.md" ]; then
       latest_dd="$dir/design-decisions.md"
       break
