@@ -66,12 +66,15 @@ agent: <your model identifier, e.g. claude-sonnet-4-6>
 
 Read `plan.md`, `tasks.md`, and `.transcript.md` from the current stage. Also read `design-decisions.md` from all previous stages (in order) for context.
 
+Run `git rev-parse HEAD` to get the current commit hash.
+
 Generate `<stage_dir>/design-decisions.md` documenting what is **new in this stage**:
 
 ```markdown
 ---
 created: <current UTC timestamp in ISO 8601, e.g. 2026-03-31T14:05:00Z>
 agent: <your model identifier, e.g. claude-sonnet-4-6>
+git_hash: <result of git rev-parse HEAD — always overwrite with current value>
 ---
 
 # Design Decisions: [Stage Title]
@@ -113,12 +116,13 @@ Anonymization: no personal names, email addresses, or identifying information. U
 
 Read the `design-decisions.md` from every stage in order (including the one just written). Also read the current stage's `plan.md` to understand the project's current form.
 
-Write or update `specs/design-decisions.md` as a coherent project-level narrative:
+Write or update `specs/design-decisions.md` as a coherent project-level narrative. Include `git_hash` in the YAML block, always overwriting with the current value from `git rev-parse HEAD`:
 
 ```markdown
 ---
 created: <current UTC timestamp in ISO 8601, e.g. 2026-03-31T14:05:00Z>
 agent: <your model identifier, e.g. claude-sonnet-4-6>
+git_hash: <result of git rev-parse HEAD — always overwrite with current value>
 ---
 
 # Design Decisions: [Project Name]

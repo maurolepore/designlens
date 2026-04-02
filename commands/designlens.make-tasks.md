@@ -6,12 +6,13 @@ Find the highest-numbered stage directory under `specs/` (e.g. `specs/003-foo/`)
 
 If `tasks.md` already exists in that directory, ask the user before overwriting.
 
-Read `plan.md` and generate `tasks.md` in the same directory. The file must begin with a YAML front-matter block:
+Read `plan.md` and generate `tasks.md` in the same directory. Before writing, run `git rev-parse HEAD` to get the current commit hash. The file must begin with a YAML front-matter block:
 
 ```markdown
 ---
 created: <current UTC timestamp in ISO 8601, e.g. 2026-03-31T14:05:00Z>
 agent: <your model identifier, e.g. claude-sonnet-4-6>
+git_hash: <result of git rev-parse HEAD>
 ---
 ```
 

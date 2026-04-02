@@ -74,6 +74,7 @@ spec_new_stage() {
 ---
 created:
 agent:
+git_hash: $(git rev-parse HEAD)
 ---
 
 # Plan: $stage_name
