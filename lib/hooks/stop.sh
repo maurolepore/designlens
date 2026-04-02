@@ -35,9 +35,9 @@ main() {
     new_lines=$(tail -n +"$((transcript_offset + 1))" "$transcript_path" 2>/dev/null) || new_lines=""
 
     if [[ -n "$new_lines" ]]; then
-      # Sum input tokens from new assistant messages
+      # Sum input tokens from new assistant messages (including cache read/write tokens)
       local it
-      it=$(echo "$new_lines" | jq -r 'select(.message.role == "assistant") | .message.usage.input_tokens // 0' 2>/dev/null \
+      it=$(echo "$new_lines" | jq -r 'select(.message.role == "assistant") | (.message.usage.input_tokens // 0) + (.message.usage.cache_read_input_tokens // 0) + (.message.usage.cache_creation_input_tokens // 0)' 2>/dev/null \
         | awk '{s+=$1} END {if (NR>0) print s; else print "null"}') || it="null"
       [[ "$it" =~ ^[0-9]+$ ]] && input_tokens=$it
 

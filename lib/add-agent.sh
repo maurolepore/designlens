@@ -26,9 +26,14 @@ add_agent_claude() {
 
   local hooks_dir="$lib_dir/hooks"
   if [ -d "$hooks_dir" ]; then
-    local session_start_hook_path="$lib_dir/hooks/session_start.sh"
-    local post_hook_path="$lib_dir/hooks/post_tool_use.sh"
-    local stop_hook_path="$lib_dir/hooks/stop.sh"
+    mkdir -p .claude/hooks
+    cp "$hooks_dir"/*.sh .claude/hooks/
+    chmod +x .claude/hooks/*.sh
+    success "Installed hook scripts to .claude/hooks/" >&2
+
+    local session_start_hook_path=".claude/hooks/session_start.sh"
+    local post_hook_path=".claude/hooks/post_tool_use.sh"
+    local stop_hook_path=".claude/hooks/stop.sh"
     local settings_file=".claude/settings.json"
     local hook_config
     hook_config=$(jq -n \
@@ -114,6 +119,7 @@ add_agent() {
     git add "$p/" 2>/dev/null || true
   done
   if [ -f ".claude/settings.json" ]; then git add .claude/settings.json 2>/dev/null || true; fi
+  if [ -d ".claude/hooks" ]; then git add .claude/hooks/ 2>/dev/null || true; fi
   if [ -d ".opencode/tools" ]; then git add .opencode/tools/ 2>/dev/null || true; fi
   success "Staged new files"
 
