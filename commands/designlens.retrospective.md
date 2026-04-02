@@ -2,11 +2,112 @@
 description: "4. Generate transcript and design decisions for the current stage"
 ---
 
-Find the latest (highest-numbered) stage directory under `specs/`. Verify that `plan.md` and `tasks.md` exist in it. If either is missing, stop and tell the user what is needed.
+Find the latest (highest-numbered) stage directory under `specs/`. Then follow the branching logic below.
+
+Read `.designlens.json` to get `auto_commit` and run `git config user.name` to get the git user.
+
+---
+
+## DETECTION: Normal retrospective or auto-retrospective?
+
+Check whether the latest stage directory already has a `design-decisions.md`:
+
+**Case A — Latest stage has `design-decisions.md` (no open stage):**
+
+Run:
+```bash
+designlens lib commits-since-stage
+```
+
+Parse `count=` and `threshold=` from the output.
+
+- If `count` >= `threshold`: ask — "**`count` commits** have occurred since the last stage (threshold: `threshold`). Generate an auto-retrospective stage to capture this work? (y/n)"
+- If `count` < `threshold`: ask — "Only `count` commits since the last stage (threshold: `threshold`). Generate an auto-retrospective anyway? (y/n)"
+
+If the user answers **yes** to either prompt: proceed to **AUTO-RETROSPECTIVE FLOW** below.
+If the user answers **no**: inform them there is nothing to retrospect and stop.
+
+**Case B — Latest stage has `plan.md` and `tasks.md` but no `design-decisions.md` (open stage):**
 
 If `design-decisions.md` already exists in that directory, ask before overwriting.
 
-Read `.designlens.json` to get `auto_commit` and run `git config user.name` to get the git user.
+Continue to **STEP 1 OF 3** below (normal retrospective flow).
+
+---
+
+## AUTO-RETROSPECTIVE FLOW
+
+*(Only reached when Case A above is confirmed by the user.)*
+
+**1.** Create the new stage directory:
+```bash
+designlens new-stage "Retrospective: untracked development" "retrospective"
+```
+
+**2.** Immediately delete the generated `plan.md` from that directory — auto-retrospective stages have `design-decisions.md` only.
+
+**3.** Survey the commit window. Use the `git_hash` printed by `designlens lib commits-since-stage` (re-run if needed to capture it), then:
+```bash
+git log <git_hash>..HEAD --oneline
+git diff <git_hash>..HEAD --stat
+```
+
+**4.** Write `<stage_dir>/design-decisions.md` using this template:
+
+```markdown
+---
+created: <current UTC timestamp in ISO 8601>
+agent: <your model identifier>
+git_hash: <result of git rev-parse HEAD — always current HEAD>
+---
+
+# Design Decisions: Retrospective (NNN)
+
+## Commit Window
+From: <previous git_hash, first 8 chars>
+To: <current HEAD, first 8 chars>
+Commits: <count>
+
+## Summary
+[1–2 sentences summarising what changed in this window, derived from git log]
+
+## Changes Captured
+
+### [Theme or component name]
+**What changed:** [Description derived from git log/diff]
+**Rationale:** [Inferred from commit messages where possible; note if inferred]
+**Impact:** [What this affects going forward]
+
+## Notes
+[Patterns, pivots, or observations not captured in the sections above]
+```
+
+**5.** Write `<stage_dir>/.metadata.json`:
+```json
+{
+  "agents": ["<model-identifier>"],
+  "created": "<current UTC timestamp ISO 8601>",
+  "last_updated": "<current UTC timestamp ISO 8601>",
+  "sessions": 1,
+  "input_tokens": null,
+  "output_tokens": null,
+  "user_word_count": null,
+  "lines_added": null,
+  "lines_deleted": null,
+  "files_changed": null
+}
+```
+
+**6.** Also update `specs/design-decisions.md` (the root aggregate) following the same instructions as STEP 3 OF 3 in the normal flow below — read all stage `design-decisions.md` files in order and rewrite the project-level narrative.
+
+**7.**
+```bash
+git add <stage_dir>/ specs/design-decisions.md
+```
+- If `auto_commit` is `true`: commit with `git commit -m "<NNN>: Add auto-retrospective"`
+- If `auto_commit` is `false`: stage only, leave commit to the user.
+
+Tell the user to run `/designlens.new-stage` when ready to start the next stage. **Stop here — do not continue to STEP 1 OF 3.**
 
 ---
 

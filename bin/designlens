@@ -89,7 +89,7 @@ case "$1" in
     LIBRARY="$2"
     if [ -z "$LIBRARY" ]; then
       echo "Usage: designlens lib <library-name>" >&2
-      echo "Available: is-empty" >&2
+      echo "Available: is-empty, commits-since-stage" >&2
       exit 1
     fi
     case "$LIBRARY" in
@@ -101,9 +101,13 @@ case "$1" in
         declare -f check_filesystem
         declare -f is_project_empty
         ;;
+      commits-since-stage)
+        source "$LIB_DIR/commits-since-stage.sh"
+        commits_since_stage
+        ;;
       *)
         echo "Unknown library: $LIBRARY" >&2
-        echo "Available: is-empty" >&2
+        echo "Available: is-empty, commits-since-stage" >&2
         exit 1
         ;;
     esac

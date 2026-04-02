@@ -81,6 +81,10 @@ EOF
     success "Auto-commit disabled for this project"
   fi
 
+  # Add retrospective_threshold to .designlens.json
+  sed -i.bak 's/"auto_commit": \(true\|false\)/"auto_commit": \1,\n  "retrospective_threshold": 10/' .designlens.json
+  rm -f .designlens.json.bak
+
   echo ""
   rule
   echo ""

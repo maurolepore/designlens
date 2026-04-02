@@ -28,7 +28,35 @@ Then ask: **"Complete the design history now before proceeding? (strongly recomm
 
 ---
 
+## STEP 1.5 — Check for untracked development
+
+Skip this step if `specs/000-design-history/` is the only stage directory (new project with no completed stages yet).
+
+Otherwise:
+
+Run:
+```bash
+designlens lib commits-since-stage
+```
+
+Parse `count=` and `threshold=` from the output.
+
+If `count` >= `threshold`, ask:
+
+> **`count` commits have occurred since the last designlens stage (threshold: `threshold`). Run `/designlens.retrospective` first to capture this work as an auto-retrospective stage? (y/n)**
+
+- If **yes**: run the auto-retrospective flow now (follow the AUTO-RETROSPECTIVE FLOW in `/designlens.retrospective`), or tell the user to run `/designlens.retrospective` directly — either way, end with: "Once the retrospective is complete, run `/designlens.new-stage` again to continue." Then stop.
+- If **no**: continue to STEP 2 without further comment.
+
+If `count` < `threshold`, continue silently.
+
+If no `git_hash` baseline was found (new project with no completed stages), skip silently.
+
+---
+
 ## STEP 2 — Confirm working directory (first session after init only)
+
+**Skip this step entirely if `specs/` contains any numbered stage directories (i.e. any directory matching `specs/[0-9][0-9][0-9]-*`).** This step only applies immediately after `designlens init` on a brand-new project.
 
 Source the emptiness detection library by sourcing the output of `designlens lib is-empty`:
 ```bash
