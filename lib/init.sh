@@ -286,6 +286,10 @@ grep -rl '<!-- PENDING' specs/
 For each file returned, read it and complete the task described inside. Remove the `<!-- PENDING` block when done, then `git add` the file.
 
 Once all pending tasks are complete (i.e. the above command returns nothing), delete the entire designlens pending-tasks section from this file and `git add` it.
+
+## Commit messages
+
+Prefix every commit message with the current designlens stage in brackets, e.g. [001-revise-param-ranges]: <message>. The stage name comes from the highest-numbered directory under specs/.
 EOF
       success "Appended to AGENTS.md"
       info "Review AGENTS.md for instructions that conflict with .designlens.json — your agent will reconcile them on first run."
