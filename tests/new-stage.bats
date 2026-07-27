@@ -129,27 +129,47 @@ teardown() {
 
 # --- previous stage retrospective check ---
 
-@test "warns when previous stage has no design-decisions.md" {
+# Helper: make a git commit
+make_commit() {
+  echo "$1" > "file_$RANDOM.txt"
+  git add -A
+  git commit -q -m "$1"
+}
+
+@test "warns when previous stage has no design-decisions.md and enough commits exist" {
+  for i in $(seq 1 10); do make_commit "commit-$i"; done
   mkdir -p specs/001-initial
   run spec_new_stage "add caching" <<< $'y\n'
   [[ "$output" == *"design-decisions.md"* ]]
 }
 
 @test "continues when user confirms skip of retrospective" {
+  for i in $(seq 1 10); do make_commit "commit-$i"; done
   mkdir -p specs/001-initial
   spec_new_stage "add caching" <<< $'y\n'
   [ -d specs/002-add-caching ]
 }
 
 @test "aborts when user declines skip of retrospective" {
+  for i in $(seq 1 10); do make_commit "commit-$i"; done
   mkdir -p specs/001-initial
   run spec_new_stage "add caching" <<< $'n\n'
   [ "$status" -ne 0 ]
 }
 
 @test "skips retrospective check when previous stage is complete" {
+  for i in $(seq 1 10); do make_commit "commit-$i"; done
   mkdir -p specs/001-initial
   echo "# Decisions" > specs/001-initial/design-decisions.md
   run spec_new_stage "add caching"
   [[ "$output" != *"retrospective"* ]]
+}
+
+@test "skips retrospective check entirely for a brand-new repo with fewer than threshold commits" {
+  make_commit "only-commit"
+  mkdir -p specs/001-initial
+  run spec_new_stage "add caching"
+  [ "$status" -eq 0 ]
+  [ -d specs/002-add-caching ]
+  [[ "$output" != *"design-decisions.md"* ]]
 }

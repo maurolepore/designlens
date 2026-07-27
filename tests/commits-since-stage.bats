@@ -147,3 +147,30 @@ EOF
   # Should count from 002-bar's hash, not 001-foo's
   echo "$output" | grep -q "count=1"
 }
+
+@test "outputs total_commits reflecting all commits in the repo" {
+  make_commit "one"
+  make_commit "two"
+  make_commit "three"
+  run commits_since_stage
+  echo "$output" | grep -q "total_commits=3"
+}
+
+@test "total_commits stays below threshold for a brand-new repo with no specs" {
+  make_commit "initial"
+  run commits_since_stage
+  [ "$status" -eq 0 ]
+  echo "$output" | grep -q "total_commits=1"
+  echo "$output" | grep -q "threshold=10"
+}
+
+@test "total_commits is reported even when a stage baseline exists" {
+  make_commit "baseline"
+  local baseline_hash
+  baseline_hash=$(git rev-parse HEAD)
+  make_stage_dd "specs/001-foo" "$baseline_hash"
+  make_commit "after-1"
+  run commits_since_stage
+  echo "$output" | grep -q "total_commits=2"
+  echo "$output" | grep -q "count=1"
+}

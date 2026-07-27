@@ -87,7 +87,15 @@ EOF
 
 # --- retrospective missing ---
 
-@test "prompts to run retrospective when all tasks complete but design-decisions.md missing" {
+# Helper: make a git commit
+make_commit() {
+  echo "$1" > "file_$RANDOM.txt"
+  git add -A
+  git commit -q -m "$1"
+}
+
+@test "prompts to run retrospective when all tasks complete, design-decisions.md missing, and enough commits exist" {
+  for i in $(seq 1 10); do make_commit "commit-$i"; done
   mkdir -p specs/001-initial
   echo "# Plan" > specs/001-initial/plan.md
   cat > specs/001-initial/tasks.md << 'EOF'
@@ -95,7 +103,21 @@ EOF
 - [x] task two
 EOF
   run spec_status
-  [[ "$output" == *"retrospective"* ]]
+  [[ "$output" == *"/designlens.retrospective"* ]]
+}
+
+@test "skips the retrospective recommendation for a brand-new repo with fewer than threshold commits" {
+  make_commit "only-commit"
+  mkdir -p specs/001-initial
+  echo "# Plan" > specs/001-initial/plan.md
+  cat > specs/001-initial/tasks.md << 'EOF'
+- [x] task one
+- [x] task two
+EOF
+  run spec_status
+  [[ "$output" != *"/designlens.retrospective"* ]]
+  [[ "$output" == *"skipped"* ]]
+  [[ "$output" == *"/designlens.new-stage"* ]]
 }
 
 # --- stage complete ---
