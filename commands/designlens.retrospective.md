@@ -8,6 +8,21 @@ Read `.designlens.json` to get `auto_commit` and run `git config user.name` to g
 
 ---
 
+## GATE: Initial repository check
+
+Run:
+```bash
+designlens lib commits-since-stage
+```
+
+Parse `total_commits=` and `threshold=` from the output.
+
+If `total_commits` < `threshold`: this is a brand-new repository without enough history for a meaningful retrospective. Tell the user: "This repository has only `total_commits` commit(s) so far (fewer than the retrospective threshold of `threshold`). Skipping retrospective generation — there isn't enough history yet." **Stop here entirely** — do not proceed to the DETECTION step, Case A, Case B, or any generation step, and do not ask for confirmation. This check always wins regardless of task completion state.
+
+Otherwise, continue to the DETECTION step below.
+
+---
+
 ## DETECTION: Normal retrospective or auto-retrospective?
 
 Check whether the latest stage directory already has a `design-decisions.md`:

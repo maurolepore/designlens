@@ -7,6 +7,7 @@
 lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$lib_dir/colors.sh"
 source "$lib_dir/logo.sh"
+source "$lib_dir/commits-since-stage.sh"
 
 spec_status() {
   show_logo
@@ -85,6 +86,21 @@ spec_status() {
   fi
 
   if [ "$decisions_exists" = false ]; then
+    # Skip the retrospective recommendation for brand-new repos: with fewer
+    # than `threshold` commits total, there isn't enough history yet for a
+    # meaningful retrospective, so always and entirely skip it.
+    local csr_output total_commits threshold
+    csr_output=$(commits_since_stage 2>/dev/null)
+    total_commits=$(echo "$csr_output" | grep '^total_commits=' | cut -d= -f2)
+    threshold=$(echo "$csr_output" | grep '^threshold=' | cut -d= -f2)
+
+    if [ -n "$total_commits" ] && [ -n "$threshold" ] && [ "$total_commits" -lt "$threshold" ]; then
+      success "Stage complete! (retrospective skipped — only $total_commits commit(s) so far, fewer than the threshold of $threshold)"
+      echo ""
+      prompt "Next action: run /designlens.new-stage to begin the next stage"
+      return
+    fi
+
     prompt "Next action: run /designlens.retrospective to generate design decisions"
     return
   fi

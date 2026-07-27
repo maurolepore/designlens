@@ -7,6 +7,7 @@
 lib_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source "$lib_dir/colors.sh"
 source "$lib_dir/logo.sh"
+source "$lib_dir/commits-since-stage.sh"
 
 spec_new_stage() {
   local stage_description="$1"
@@ -44,18 +45,27 @@ spec_new_stage() {
     fi
   done
 
-  # Check if previous stage has retrospective
+  # Check if previous stage has retrospective. Skip this check entirely for
+  # brand-new repos (fewer than `threshold` commits total) since there isn't
+  # enough history yet for a meaningful retrospective.
   if [ "$max_num" -gt 0 ]; then
-    local prev_num
-    prev_num=$(printf "%03d" "$max_num")
-    prev_dir=$(find specs -maxdepth 1 -type d -name "${prev_num}-*" | sort | head -1)
-    if [ -d "$prev_dir" ] && [ ! -f "$prev_dir/design-decisions.md" ]; then
-      warning "Previous stage ($prev_dir) has no design-decisions.md"
-      prompt "Continue without running /designlens.retrospective first? (y/n)"
-      read -r response
-      if [ "$response" != "y" ]; then
-        error "Aborted. Run /designlens.retrospective then try again."
-        exit 1
+    local csr_output total_commits threshold
+    csr_output=$(commits_since_stage 2>/dev/null)
+    total_commits=$(echo "$csr_output" | grep '^total_commits=' | cut -d= -f2)
+    threshold=$(echo "$csr_output" | grep '^threshold=' | cut -d= -f2)
+
+    if [ -z "$total_commits" ] || [ -z "$threshold" ] || [ "$total_commits" -ge "$threshold" ]; then
+      local prev_num
+      prev_num=$(printf "%03d" "$max_num")
+      prev_dir=$(find specs -maxdepth 1 -type d -name "${prev_num}-*" | sort | head -1)
+      if [ -d "$prev_dir" ] && [ ! -f "$prev_dir/design-decisions.md" ]; then
+        warning "Previous stage ($prev_dir) has no design-decisions.md"
+        prompt "Continue without running /designlens.retrospective first? (y/n)"
+        read -r response
+        if [ "$response" != "y" ]; then
+          error "Aborted. Run /designlens.retrospective then try again."
+          exit 1
+        fi
       fi
     fi
   fi

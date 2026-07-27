@@ -4,6 +4,7 @@
 # Outputs:
 #   count=<N>
 #   threshold=<M>
+#   total_commits=<T>  (total commits in the repo's history, regardless of stage)
 # Exits 1 if count >= threshold, 0 otherwise.
 
 commits_since_stage() {
@@ -16,6 +17,11 @@ commits_since_stage() {
       threshold="$jq_val"
     fi
   fi
+
+  # Total commits in the repo, used to detect brand-new repos that don't
+  # yet have enough history for a meaningful retrospective.
+  local total_commits
+  total_commits=$(git rev-list --count HEAD 2>/dev/null || echo "0")
 
   # Find the most recent stage directory that has a design-decisions.md
   local latest_dd=""
@@ -30,6 +36,7 @@ commits_since_stage() {
   if [ -z "$latest_dd" ]; then
     echo "count=0"
     echo "threshold=$threshold"
+    echo "total_commits=$total_commits"
     exit 0
   fi
 
@@ -40,6 +47,7 @@ commits_since_stage() {
   if [ -z "$git_hash" ]; then
     echo "count=0"
     echo "threshold=$threshold"
+    echo "total_commits=$total_commits"
     exit 0
   fi
 
@@ -49,6 +57,7 @@ commits_since_stage() {
 
   echo "count=$count"
   echo "threshold=$threshold"
+  echo "total_commits=$total_commits"
 
   if [ "$count" -ge "$threshold" ]; then
     exit 1

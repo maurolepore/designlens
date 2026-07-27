@@ -21,7 +21,13 @@ On completion:
 git add <stage_dir>/plan.md <stage_dir>/tasks.md
 ```
 
-Then, based on `auto_commit`:
+Before mentioning retrospective at all, check whether there is enough history for one. Run:
+```bash
+designlens lib commits-since-stage
+```
+Parse `total_commits=` and `threshold=` from the output. If `total_commits` < `threshold`, this is a brand-new repository — skip retrospective entirely: do not ask about it or tell the user to run it. If `auto_commit` is `true`, commit now with `git commit -m "<NNN>: Add specs"`. Then stop; tell the user the stage is complete and there wasn't enough commit history yet for a retrospective.
+
+Otherwise, based on `auto_commit`:
 
 - If `true`: ask the user "Generate retrospective before committing stage specs? (y/n)".
   - If y: run `/designlens.retrospective`, then commit everything: `git add <stage_dir>/` && `git commit -m "<NNN>: Add specs and design decisions"`.
