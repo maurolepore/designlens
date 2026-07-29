@@ -36,11 +36,15 @@ designlens lib commits-since-stage
 
 Parse `count=` and `threshold=` from the output.
 
-- If `count` >= `threshold`: ask — "**`count` commits** have occurred since the last stage (threshold: `threshold`). Generate an auto-retrospective stage to capture this work? (y/n)"
+Also read `auto_retrospective` from `.designlens.json` (e.g. via `jq -r '.auto_retrospective // false' .designlens.json`), defaulting to `false` if the field is absent or `jq` is unavailable.
+
+- If `count` >= `threshold`:
+  - If `auto_retrospective` is `true`: do not ask. Print: "**`count` commits** have occurred since the last stage (threshold: `threshold`). `auto_retrospective` is enabled — generating an auto-retrospective stage automatically." Then proceed directly to **AUTO-RETROSPECTIVE FLOW** below.
+  - If `auto_retrospective` is `false`: ask — "**`count` commits** have occurred since the last stage (threshold: `threshold`). Generate an auto-retrospective stage to capture this work? (y/n)"
 - If `count` < `threshold`: ask — "Only `count` commits since the last stage (threshold: `threshold`). Generate an auto-retrospective anyway? (y/n)"
 
-If the user answers **yes** to either prompt: proceed to **AUTO-RETROSPECTIVE FLOW** below.
-If the user answers **no**: inform them there is nothing to retrospect and stop.
+If a prompt was asked and the user answers **yes**: proceed to **AUTO-RETROSPECTIVE FLOW** below.
+If a prompt was asked and the user answers **no**: inform them there is nothing to retrospect and stop.
 
 **Case B — Latest stage has `plan.md` and `tasks.md` but no `design-decisions.md` (open stage):**
 

@@ -41,12 +41,17 @@ designlens lib commits-since-stage
 
 Parse `count=` and `threshold=` from the output.
 
-If `count` >= `threshold`, ask:
+Also read `auto_retrospective` from `.designlens.json` (e.g. via `jq -r '.auto_retrospective // false' .designlens.json`), defaulting to `false` if the field is absent or `jq` is unavailable.
 
-> **`count` commits have occurred since the last designlens stage (threshold: `threshold`). Run `/designlens.retrospective` first to capture this work as an auto-retrospective stage? (y/n)**
+If `count` >= `threshold`:
 
-- If **yes**: run the auto-retrospective flow now (follow the AUTO-RETROSPECTIVE FLOW in `/designlens.retrospective`), or tell the user to run `/designlens.retrospective` directly — either way, end with: "Once the retrospective is complete, run `/designlens.new-stage` again to continue." Then stop.
-- If **no**: continue to STEP 2 without further comment.
+- If `auto_retrospective` is `true`: do not ask. Print: "**`count` commits** have occurred since the last designlens stage (threshold: `threshold`). `auto_retrospective` is enabled — running `/designlens.retrospective` automatically to capture this work as an auto-retrospective stage first." Then run the auto-retrospective flow now (follow the AUTO-RETROSPECTIVE FLOW in `/designlens.retrospective`), or tell the user to run `/designlens.retrospective` directly — either way, end with: "Once the retrospective is complete, run `/designlens.new-stage` again to continue." Then stop.
+- If `auto_retrospective` is `false`: ask:
+
+  > **`count` commits have occurred since the last designlens stage (threshold: `threshold`). Run `/designlens.retrospective` first to capture this work as an auto-retrospective stage? (y/n)**
+
+  - If **yes**: run the auto-retrospective flow now (follow the AUTO-RETROSPECTIVE FLOW in `/designlens.retrospective`), or tell the user to run `/designlens.retrospective` directly — either way, end with: "Once the retrospective is complete, run `/designlens.new-stage` again to continue." Then stop.
+  - If **no**: continue to STEP 2 without further comment.
 
 If `count` < `threshold`, continue silently.
 

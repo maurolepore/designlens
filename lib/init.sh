@@ -85,6 +85,10 @@ EOF
   sed -i.bak 's/"auto_commit": \(true\|false\)/"auto_commit": \1,\n  "retrospective_threshold": 10/' .designlens.json
   rm -f .designlens.json.bak
 
+  # Add auto_retrospective to .designlens.json
+  sed -i.bak 's/"retrospective_threshold": \([0-9]*\)/"retrospective_threshold": \1,\n  "auto_retrospective": false/' .designlens.json
+  rm -f .designlens.json.bak
+
   echo ""
   rule
   echo ""
