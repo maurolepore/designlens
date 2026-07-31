@@ -1,4 +1,4 @@
-"""Unit tests for lib/tools/get_session_stats.py."""
+"""Unit tests for lib/tools/designlens_get_session_stats.py."""
 
 import json
 import os
@@ -10,7 +10,7 @@ import pytest
 _lib_tools = os.path.join(os.path.dirname(__file__), "..", "lib", "tools")
 sys.path.insert(0, os.path.abspath(_lib_tools))
 
-import get_session_stats as gss  # noqa: E402
+import designlens_get_session_stats as gss  # noqa: E402
 
 
 # ---------------------------------------------------------------------------

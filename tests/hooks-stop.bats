@@ -1,5 +1,5 @@
 #!/usr/bin/env bats
-# Tests for lib/hooks/stop.sh
+# Tests for lib/hooks/designlens_stop.sh
 
 HOOKS_DIR="$(cd "$(dirname "$BATS_TEST_FILENAME")/../lib/hooks" && pwd)"
 
@@ -38,7 +38,7 @@ write_temp_file() {
 
 @test "creates .metadata.json with expected keys" {
   write_session_file "claude-opus" "sess-abc"
-  bash "$HOOKS_DIR/stop.sh" <<< "$STOP_PAYLOAD"
+  bash "$HOOKS_DIR/designlens_stop.sh" <<< "$STOP_PAYLOAD"
   [ -f "$METADATA_FILE" ]
   for key in agents sessions created last_updated last_session_id; do
     result=$(jq --arg k "$key" 'has($k)' "$METADATA_FILE")
@@ -49,7 +49,7 @@ write_temp_file() {
 @test "writes lines_added and lines_deleted from TEMP_FILE" {
   write_session_file "claude-opus" "sess-abc"
   write_temp_file 10 3
-  bash "$HOOKS_DIR/stop.sh" <<< "$STOP_PAYLOAD"
+  bash "$HOOKS_DIR/designlens_stop.sh" <<< "$STOP_PAYLOAD"
   added=$(jq -r '.lines_added' "$METADATA_FILE")
   deleted=$(jq -r '.lines_deleted' "$METADATA_FILE")
   [ "$added" = "10" ]
@@ -58,22 +58,22 @@ write_temp_file() {
 
 @test "sessions increments from 0 to 1 on new session_id" {
   write_session_file "claude-opus" "sess-abc"
-  bash "$HOOKS_DIR/stop.sh" <<< '{"session_id":"sess-abc","transcript_path":""}'
+  bash "$HOOKS_DIR/designlens_stop.sh" <<< '{"session_id":"sess-abc","transcript_path":""}'
   sessions=$(jq -r '.sessions' "$METADATA_FILE")
   [ "$sessions" = "1" ]
 }
 
 @test "sessions does not increment on repeated session_id" {
   write_session_file "claude-opus" "sess-abc"
-  bash "$HOOKS_DIR/stop.sh" <<< '{"session_id":"sess-abc","transcript_path":""}'
-  bash "$HOOKS_DIR/stop.sh" <<< '{"session_id":"sess-abc","transcript_path":""}'
+  bash "$HOOKS_DIR/designlens_stop.sh" <<< '{"session_id":"sess-abc","transcript_path":""}'
+  bash "$HOOKS_DIR/designlens_stop.sh" <<< '{"session_id":"sess-abc","transcript_path":""}'
   sessions=$(jq -r '.sessions' "$METADATA_FILE")
   [ "$sessions" = "1" ]
 }
 
 @test "null+null yields null for lines_added when no TEMP_FILE" {
   write_session_file "claude-opus" "sess-abc"
-  bash "$HOOKS_DIR/stop.sh" <<< "$STOP_PAYLOAD"
+  bash "$HOOKS_DIR/designlens_stop.sh" <<< "$STOP_PAYLOAD"
   result=$(jq -r '.lines_added' "$METADATA_FILE")
   [ "$result" = "null" ]
 }
@@ -81,7 +81,7 @@ write_temp_file() {
 @test "null+N yields N when existing metadata has null lines_added" {
   write_session_file "claude-opus" "sess-abc"
   write_temp_file 5 0
-  bash "$HOOKS_DIR/stop.sh" <<< "$STOP_PAYLOAD"
+  bash "$HOOKS_DIR/designlens_stop.sh" <<< "$STOP_PAYLOAD"
   result=$(jq -r '.lines_added' "$METADATA_FILE")
   [ "$result" = "5" ]
 }
@@ -89,24 +89,24 @@ write_temp_file() {
 @test "N+M yields sum when both existing metadata and TEMP_FILE have values" {
   write_session_file "claude-opus" "sess-abc"
   write_temp_file 3 0
-  bash "$HOOKS_DIR/stop.sh" <<< "$STOP_PAYLOAD"
+  bash "$HOOKS_DIR/designlens_stop.sh" <<< "$STOP_PAYLOAD"
   write_temp_file 5 0
-  bash "$HOOKS_DIR/stop.sh" <<< '{"session_id":"sess-xyz","transcript_path":""}'
+  bash "$HOOKS_DIR/designlens_stop.sh" <<< '{"session_id":"sess-xyz","transcript_path":""}'
   result=$(jq -r '.lines_added' "$METADATA_FILE")
   [ "$result" = "8" ]
 }
 
 @test "agent from SESSION_FILE appears in agents array" {
   write_session_file "claude-opus" "sess-abc"
-  bash "$HOOKS_DIR/stop.sh" <<< "$STOP_PAYLOAD"
+  bash "$HOOKS_DIR/designlens_stop.sh" <<< "$STOP_PAYLOAD"
   count=$(jq '[.agents[] | select(. == "claude-opus")] | length' "$METADATA_FILE")
   [ "$count" = "1" ]
 }
 
 @test "same agent model not duplicated in agents array" {
   write_session_file "claude-opus" "sess-abc"
-  bash "$HOOKS_DIR/stop.sh" <<< "$STOP_PAYLOAD"
-  bash "$HOOKS_DIR/stop.sh" <<< '{"session_id":"sess-xyz","transcript_path":""}'
+  bash "$HOOKS_DIR/designlens_stop.sh" <<< "$STOP_PAYLOAD"
+  bash "$HOOKS_DIR/designlens_stop.sh" <<< '{"session_id":"sess-xyz","transcript_path":""}'
   count=$(jq '.agents | length' "$METADATA_FILE")
   [ "$count" = "1" ]
 }
@@ -114,12 +114,12 @@ write_temp_file() {
 @test "TEMP_FILE is deleted after successful run" {
   write_session_file "claude-opus" "sess-abc"
   write_temp_file 2 1
-  bash "$HOOKS_DIR/stop.sh" <<< "$STOP_PAYLOAD"
+  bash "$HOOKS_DIR/designlens_stop.sh" <<< "$STOP_PAYLOAD"
   [ ! -f "$TEMP_FILE" ]
 }
 
 @test "exits 0 when no specs/NNN-*/ directory exists" {
   rm -rf specs
-  run bash "$HOOKS_DIR/stop.sh" <<< "$STOP_PAYLOAD"
+  run bash "$HOOKS_DIR/designlens_stop.sh" <<< "$STOP_PAYLOAD"
   [ "$status" -eq 0 ]
 }

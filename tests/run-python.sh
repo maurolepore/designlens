@@ -10,4 +10,4 @@ if ! command -v pytest >/dev/null 2>&1; then
   exit 0
 fi
 
-pytest tests/tools_get_session_stats_test.py -v
+pytest tests/tools_designlens_get_session_stats_test.py -v

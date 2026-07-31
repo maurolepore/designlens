@@ -292,12 +292,12 @@ Write session stats to `<stage_dir>/.metadata.json`. The schema is:
 
 All numeric fields are `null` on failure. If `.metadata.json` already exists, sum numeric fields with the new values, append the current agent identifier to `agents` if not already present, increment `sessions`, preserve the existing `created` value, and overwrite `last_updated`.
 
-**If you are running under OpenCode** (i.e. a `get_session_stats` tool is available to you):
-- Call the `get_session_stats` tool.
+**If you are running under OpenCode** (i.e. a `designlens_get_session_stats` tool is available to you):
+- Call the `designlens_get_session_stats` tool.
 - Use its returned values to populate the fields. Set any field that errored to `null`.
 - Merge with any existing `.metadata.json` as described above and write the result.
 
-**If you are running under Claude Code** (i.e. no `get_session_stats` tool is available):
+**If you are running under Claude Code** (i.e. no `designlens_get_session_stats` tool is available):
 - Write a `.metadata.json` with `agents` set to your model identifier, `last_updated` set to the current UTC timestamp, `sessions` incremented (or 1 if new), and all numeric fields set to `null`.
 - The Claude Code Stop hook will overwrite this file at session end with real stats. The file you write now ensures `sessions` and `agents` are not lost if the hook runs before the git add.
 

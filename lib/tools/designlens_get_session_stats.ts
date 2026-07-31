@@ -1,12 +1,12 @@
 import { tool } from "@opencode-ai/plugin"
 import path from "path"
 
-export const get_session_stats = tool({
+export const designlens_get_session_stats = tool({
   description: "Get token usage and session stats for the current opencode session. Returns input/output tokens, user message words, and lines added/deleted from write/edit operations.",
   args: {},
   async execute(_args, _context) {
     try {
-      const script = path.join(process.cwd(), ".opencode/tools/get_session_stats.py")
+      const script = path.join(process.cwd(), ".opencode/tools/designlens_get_session_stats.py")
       const sessionID = _context.sessionID
       const proc = Bun.spawn(["python3", script, sessionID])
       const output = await new Response(proc.stdout).text()

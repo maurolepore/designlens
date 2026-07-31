@@ -31,9 +31,9 @@ add_agent_claude() {
     chmod +x .claude/hooks/*.sh
     success "Installed hook scripts to .claude/hooks/" >&2
 
-    local session_start_hook_path=".claude/hooks/session_start.sh"
-    local post_hook_path=".claude/hooks/post_tool_use.sh"
-    local stop_hook_path=".claude/hooks/stop.sh"
+    local session_start_hook_path=".claude/hooks/designlens_session_start.sh"
+    local post_hook_path=".claude/hooks/designlens_post_tool_use.sh"
+    local stop_hook_path=".claude/hooks/designlens_stop.sh"
     local settings_file=".claude/settings.json"
     local hook_config
     hook_config=$(jq -n \
@@ -73,7 +73,7 @@ add_agent_opencode() {
   mkdir -p .opencode/tools
   local tools_dir="$lib_dir/tools"
   if [ -d "$tools_dir" ]; then
-    cp "$tools_dir"/get_session_stats.* .opencode/tools/ 2>/dev/null || true
+    cp "$tools_dir"/designlens_get_session_stats.* .opencode/tools/ 2>/dev/null || true
     success "Installed session stats tools to .opencode/tools/" >&2
   fi
 }
