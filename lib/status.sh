@@ -90,7 +90,7 @@ spec_status() {
     # than `threshold` commits total, there isn't enough history yet for a
     # meaningful retrospective, so always and entirely skip it.
     local csr_output total_commits threshold
-    csr_output=$(commits_since_stage 2>/dev/null)
+    csr_output=$(commits_since_stage 2>/dev/null) || true
     total_commits=$(echo "$csr_output" | grep '^total_commits=' | cut -d= -f2)
     threshold=$(echo "$csr_output" | grep '^threshold=' | cut -d= -f2)
 

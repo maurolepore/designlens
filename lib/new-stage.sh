@@ -50,7 +50,7 @@ spec_new_stage() {
   # enough history yet for a meaningful retrospective.
   if [ "$max_num" -gt 0 ]; then
     local csr_output total_commits threshold
-    csr_output=$(commits_since_stage 2>/dev/null)
+    csr_output=$(commits_since_stage 2>/dev/null) || true
     total_commits=$(echo "$csr_output" | grep '^total_commits=' | cut -d= -f2)
     threshold=$(echo "$csr_output" | grep '^threshold=' | cut -d= -f2)
 
