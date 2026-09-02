@@ -20,9 +20,8 @@ is_dark_background() {
     # shellcheck disable=SC1003,SC2016
     bg_color=$(timeout 0.1 bash -c 'read -rs -d \\ -p $'"'"'\e]11;?\e\\'"'"' BG 2>/dev/null; echo "$BG"' 2>/dev/null)
   else
-    # Fallback without timeout (might hang on some terminals)
-    # shellcheck disable=SC1003
-    bg_color=$(bash -c 'read -rs -d \\ -p $'"'"'\e]11;?\e\\'"'"' BG 2>/dev/null; echo "$BG"' 2>/dev/null)
+    # timeout not available (macOS) — skip probe to avoid hang
+    bg_color=""
   fi
 
   if [ -n "$bg_color" ]; then
