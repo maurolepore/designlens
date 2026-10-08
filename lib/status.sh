@@ -36,7 +36,7 @@ spec_status() {
   fi
 
   # Get the latest stage (portable to bash 3.2: no negative index)
-  local latest_stage="${stages[${#stages[@]}-1]}"
+  local latest_stage="${stages[${#stages[@]} - 1]}"
   local stage_name
   stage_name=$(basename "$latest_stage")
 
