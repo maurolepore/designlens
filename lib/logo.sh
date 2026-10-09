@@ -15,12 +15,7 @@ is_dark_background() {
 
   # Try to query terminal background color using OSC 11
   # This works on most modern terminal emulators (iTerm2, GNOME Terminal, etc.)
-  if command -v timeout &> /dev/null; then
-    # Use timeout to avoid hanging if terminal doesn't respond
-    # shellcheck disable=SC1003,SC2016
-    bg_color=$(timeout 0.1 bash -c 'read -rs -d \\ -p $'"'"'\e]11;?\e\\'"'"' BG 2>/dev/null; echo "$BG"' 2>/dev/null)
-  else
-    # timeout not available (macOS) — skip probe to avoid hang
+  if ! read -rs -t 0.1 -d $'\x5c' -p $'\e]11;?\e\x5c' bg_color 2>/dev/null; then
     bg_color=""
   fi
 
